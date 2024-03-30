@@ -1,0 +1,6 @@
+.blue {
+    color: #0095f6;
+}
+.nav-link:active {
+    background-color: #efefef !important;
+}
