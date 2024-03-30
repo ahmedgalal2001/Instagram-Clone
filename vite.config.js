@@ -8,6 +8,8 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/css/navbar.css',
+                'resources/js/editprofile.js',
+                'resources/css/edit-profile.css',
             ],
             refresh: true,
         }),
