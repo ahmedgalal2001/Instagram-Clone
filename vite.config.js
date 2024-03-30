@@ -8,6 +8,9 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/css/navbar.css',
+                'resources/js/home.js',
+                'resources/css/home.css',
+                'resources/css/fontawesome-free-6.5.1-web/css/all.min.css'
             ],
             refresh: true,
         }),

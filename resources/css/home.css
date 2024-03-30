@@ -1,0 +1,145 @@
+/******************* home page style ********************/
+.avatar{
+    border: 3px double rgba(213, 88, 10, 0.688);
+}
+
+
+.avatarImage {
+    vertical-align: middle;
+    width: 250px;
+    height: 100px;
+    border-radius: 50%;
+    border:3px solid black;
+    margin: 10px;
+ }
+
+
+
+ .avatar-container {
+    position: relative;
+}
+
+.profile-details-card {
+    display: none;
+    position: absolute;
+    top: -40%;
+    left: 0;
+    width: 350px;
+    background-color: #fff;
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    border: none;
+    border-radius: 10px;
+}
+
+.details-car{
+    box-shadow: 5px 5px 50px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-container:hover .profile-details-card {
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    animation-delay: 1ms;
+    animation-fill-mode: forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.profile-post-hover {
+    border: 1px solid black;
+}
+
+.comment-txt{
+    border: none;
+}
+
+.comment-txt:focus{
+    outline: none;
+}
+
+#submitButton{
+    display: none;
+    color: #0095F6;
+}
+/*************************************** Status Menu *****************************************/
+
+.scroll-images > div {
+  flex: 0 0 auto;
+  width: calc(100% / var(--visible-slides));
+}
+
+.scroll-images a {
+  text-decoration: none;
+  border-radius: 50%;
+}
+
+.scroll-images a:hover {
+  background-color: #555;
+}
+
+.cover {
+  position: relative;
+  padding: 0px 30px;
+  margin-top: 20px;
+  width: 75%;
+  display: flex;
+}
+
+.scroll-images {
+  position: relative;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  height: auto;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  width: 100%; 
+}
+
+.left,
+.right {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 25px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.left:hover,
+.right:hover {
+  color: #555;
+}
+
+.left {
+  position: absolute;
+  left: 0;
+  top: 40%;
+  transform: translateY(-50%);
+
+}
+
+.right {
+  position: absolute;
+  right: 0;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+/***********************************************************************************************/
