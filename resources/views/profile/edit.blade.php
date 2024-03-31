@@ -132,14 +132,14 @@ Change photo
                                     </>
                                 </div>
                         </div>
-
+                        <div class="d-flex justify-content-end flex-row ">
+                            <button type="submit" class="btn btn-primary mt-3 w-50">Submit</button>
+                        </div>
+    
+                        </form>
 
                     </div>
-                    <div class="d-flex justify-content-end flex-row ">
-                        <button type="submit" class="btn btn-primary mt-3 w-50">Submit</button>
-                    </div>
-
-                    </form>
+                    
                     <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab"
                 tabindex="0">
                 <h5 class="m-4"><strong>Blocked Accounts</strong></h5>
