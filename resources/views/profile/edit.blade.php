@@ -60,10 +60,9 @@ Change photo
         <h1  class="modal-title fs-5 text-dark" id="staticBackdropLabel">Change Profile photo</h1>        
     </div>
     <div class="modal-body text-light d-flex flex-column align-item-center">
-        <div class="text-center"> 
-            <button type="file" class="btn text-primary w-100 ">uplaod photo</button>
-            <label for="input-file">update</label>
-            <input class="text-center"  type="file" id="input-file">
+        <div class="upload-btn-wrapper text-center">
+            <button class="btn-navbar btn">Select form computer</button>
+            <input id="upload-img-navbar" type="file" id="myfile" name="myfile" />
         </div>
     </div> 
         <hr>
@@ -129,7 +128,6 @@ Change photo
                                         </div>
                                     </div>
 
-                                    </>
                                 </div>
                         </div>
                         <div class="d-flex justify-content-end flex-row ">
