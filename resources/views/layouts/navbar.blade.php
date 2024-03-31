@@ -72,7 +72,7 @@
                     @csrf
                     <div class="upload-btn-wrapper">
                         <button class="btn-navbar btn">Select form computer</button>
-                        <input type="file" id="myfile" name="myfile" />
+                        <input id="upload-img-navbar" type="file" id="myfile" name="myfile" />
                     </div>
                     {{-- <button type="submit">Submit</button> --}}
                 </form>

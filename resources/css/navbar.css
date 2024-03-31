@@ -36,7 +36,7 @@
     color: white;
 }
 
-input[type="file"] {
+#upload-img-navbar {
     font-size: 100px;
     position: absolute;
     left: 0;
