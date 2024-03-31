@@ -25,13 +25,13 @@
     display: inline-block;
 }
 
-.btn {
+.btn-navbar {
     background-color: rgb(0, 149, 246);
     color: white;
     border: none;
 }
 
-.btn:hover {
+.btn-navbar:hover {
     background-color: #3498db;
     color: white;
 }
