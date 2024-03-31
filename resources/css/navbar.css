@@ -12,7 +12,7 @@
     width: 24px !important;
     height: 24px !important;
 }
-.modal-content {
+.modal-content-navbar {
     background-color: #262626 !important;
     color: #fff !important;
 }
@@ -36,7 +36,7 @@
     color: white;
 }
 
-input[type="file"] {
+#upload-img-navbar {
     font-size: 100px;
     position: absolute;
     left: 0;

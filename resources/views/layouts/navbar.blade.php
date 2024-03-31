@@ -49,7 +49,7 @@
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
+        <div class="modal-content modal-content-navbar">
             <div class="modal-header p-2 justify-content-center">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Create New Post</h1>
             </div>
@@ -72,7 +72,7 @@
                     @csrf
                     <div class="upload-btn-wrapper">
                         <button class="btn-navbar btn">Select form computer</button>
-                        <input type="file" id="myfile" name="myfile" />
+                        <input id="upload-img-navbar" type="file" id="myfile" name="myfile" />
                     </div>
                     {{-- <button type="submit">Submit</button> --}}
                 </form>
