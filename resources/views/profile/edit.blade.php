@@ -37,12 +37,71 @@
                         <h5 class="m-3"><strong>Edit Profile</strong></h5>
                         <div class="card">
 
-                            <div class="card-body d-flex justify-content-between">
-                                <div>
-                                    <img class="rounded-circle " width="50px" height="50px"
-                                        src="{{ asset('images/galal.jpg') }}" alt="gloo">
-                                    <span><strong>karim desouki's</strong></span>
+                                <div class="card-body d-flex justify-content-between">
+                                    <div>
+                                        <img class="rounded-circle " id="profile-pic" width="50px" height="50px"
+                                            src="{{ asset('images/galal.jpg') }}" alt="gloo">
+                                        <span class="mx-2 "><strong>Karim Desouki's</strong></span>
+                                    </div>
+                                    <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Change photo
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class=" modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header justify-content-center">
+          <h1  class="modal-title fs-5 text-light" id="staticBackdropLabel">Change Profile photo</h1>        </div>
+        <div class="modal-body text-light d-flex flex-column align-item-center">
+            <div class="text-center"> 
+                <button type="file" class="btn text-primary w-100 ">uplaod photo</button>
+                <label for="input-file">update</label>
+                <input type="file" id="input-file">
+            </div>
+            <hr>
+            <div class="text-center">
+                <button type="button" class="btn text-danger w-100">remove current photo</button>
+            </div>
+            <hr>
+            <div class=" text-center ">
+                <button type="button" class="btn text-light w-100" data-bs-dismiss="modal">Close</button>
+              </div>
+        </div> 
+      </div>
+    </div>
+  </div>
+
                                 </div>
+                            </div>
+                            <div class="col-12">
+                                <form>
+                                    <div class="form-group ">
+                                        <label for="formGroupExampleInput" class="mt-3 h5">Website</label>
+                                        <input type="text" class="form-control mt-3" id="formGroupExampleInput"
+                                            placeholder="Website" disabled>
+                                        <p class="text-muted mt-1 small">Editing your links is only available on mobile.
+                                            Visit
+                                            the
+                                            Instagram app and
+                                            edit your profile to change the websites in your bio.</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="mt-3 h5"for="formGroupExampleInput2">Bio</label>
+                                        <input type="text" class="form-control mt-1" id="formGroupExampleInput2"
+                                            placeholder="Bio">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="mt-3 h5"for="inputState">Gender</label>
+                                        <select id="inputState" class="form-control mt-1">
+                                            <option selected>Male</option>
+                                            <option>Female</option>
+                                            <option>Custom</option>
+                                        </select>
+                                        <p class="text-muted mt-1 small">This won’t be part of your public profile.
+                                        </p>
+                                    </div>
 
                                 <button type="button" class="btn btn-primary">Change photo</button>
                             </div>
