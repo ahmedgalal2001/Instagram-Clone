@@ -1,0 +1,254 @@
+/******************* home page style ********************/
+.avatar{
+    border: 3px double rgba(213, 88, 10, 0.688);
+}
+
+
+.avatarImage {
+    vertical-align: middle;
+    width: 250px;
+    height: 100px;
+    border-radius: 50%;
+    border:3px solid black;
+    margin: 10px;
+ }
+
+
+
+ .avatar-container {
+    position: relative;
+}
+
+.profile-details-card {
+    display: none;
+    position: absolute;
+    top: -40%;
+    left: 0;
+    width: 350px;
+    background-color: #fff;
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    border: none;
+    border-radius: 10px;
+}
+
+.details-car{
+    box-shadow: 5px 5px 50px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-container:hover .profile-details-card {
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    animation-delay: 1ms;
+    animation-fill-mode: forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.profile-post-hover {
+    border: 1px solid black;
+}
+
+.comment-txt{
+    border: none;
+}
+
+.comment-txt:focus{
+    outline: none;
+}
+
+#submitButton{
+    display: none;
+    color: #0095F6;
+}
+/*************************************** Status Menu *****************************************/
+
+.scroll-images > div {
+  flex: 0 0 auto;
+  width: calc(100% / var(--visible-slides));
+}
+
+.scroll-images a {
+  text-decoration: none;
+  border-radius: 50%;
+}
+
+.scroll-images a:hover {
+  background-color: #555;
+}
+
+.cover {
+  position: relative;
+  padding: 0px 30px;
+  margin-top: 20px;
+  width: 75%;
+  display: flex;
+}
+
+.scroll-images {
+  position: relative;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 3px;
+  height: auto;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  width: 100%; 
+}
+
+.left,
+.right {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 25px;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.left:hover,
+.right:hover {
+  color: #555;
+}
+
+.left {
+  position: absolute;
+  left: 0;
+  top: 40%;
+  transform: translateY(-50%);
+
+}
+
+.right {
+  position: absolute;
+  right: 0;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+/********************************************* Kamal **************************************************/
+
+
+.test {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  margin: 5px 50px 5px 20px;
+}
+
+.sugg-card{
+  height: 40px;
+}
+.suggested{
+  display: block;
+}
+ul{
+  list-style: none;
+}
+.footer-links {
+padding: 0;
+margin: 0;
+display: inline;
+}
+
+.footer-links li {
+list-style: none;
+display: inline;
+margin-right: 10px; 
+}
+
+.footer-links a {
+color: #333;
+text-decoration: none;
+}
+.switch{
+color: blue
+}
+
+
+.avatar-container {
+position: relative;
+display: inline-block;
+
+}
+
+.popup {
+display: none;
+position: absolute;
+background-color: white;
+padding: 20px;
+padding-top: 20px;
+padding-left: 50px;
+z-index: 1;
+max-width: 400px; 
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+border-radius: 5px; 
+width: 1000px;
+height: 350px;
+margin-top: 70px
+}
+
+.popup img {
+width: 60px; 
+height: 60px;
+border-radius: 50%;
+}
+
+.popup .info .count {
+font-size: 18px; 
+font-weight: bold;
+}
+
+.popup .info .label {
+font-size: 14px; 
+color: #888; 
+margin-bottom: 5px;
+}
+
+.popup::after {
+content: '';
+position: absolute;
+top: 50%;
+left: 100%;
+margin-top: -10px;
+border-width: 10px;
+border-style: solid;
+border-color: transparent transparent transparent white;
+}
+.avatar-container:hover .popup {
+display: block;
+}
+.followBtn{
+display: block;
+width: 80%; 
+background-color: rgb(0 149 246);
+border: none;
+color: white;
+font-weight: bold;
+border-radius: 5px;
+margin-left: 20px;
+margin-top: 300px;
+}
+.followBtn:hover{
+background-color: rgb(0 180 246)
+}
+
+ul li a:hover{
+color: rgb(0 180 246)
+}

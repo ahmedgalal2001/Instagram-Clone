@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,5 +27,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::fallback(fn () => 'Route not found');
+
+Route::get('/home',[HomeController::class,'index']) -> name('home.index');
 
 require __DIR__ . '/auth.php';
