@@ -48,9 +48,9 @@
                 </div>
             @endauth
 
-            {{-- <div id="app" class="app col-10"> --}}
+            <div id="app" class="app col-10">
                 @yield('body')
-            {{-- </div> --}}
+            </div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

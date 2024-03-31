@@ -9,7 +9,7 @@
 <!------------------------------------------>
 
     {{-- <div class="row bg-danger"> --}}
-        <div class="col-4 col-md-10 col-lg-6 col-sm-12 d-flex flex-column align-items-center">
+        <div class="col-7 col-md-10 col-lg-7 col-sm-12 d-flex flex-column align-items-center">
             <!------------------------------- Menu of statue ------------------------------>
             <div class="cover">
                 <button class="left">
@@ -71,7 +71,7 @@
             </div>
     
             <!------- Posts side -------->
-            <div class="card w-50 col-sm-12 col-lg-6 mt-2 border border-dark border ">
+            <div class="card w-50 col-sm-12 col-lg-6 mt-2 border border-dark border">
                 <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
                     <div class="row m-0">
                         <div class="col-md-9 d-flex align-items-center p-0">
@@ -218,11 +218,11 @@
     
 
         {{---------------------------------------------------Kamal--------------------------------------------------- --}}
-        <div class="col-4 d-none d-lg-block mt-4">
+        <div class="col-3 d-none d-lg-block mt-4">
                 <div class="card mb-3 " >
                     <div class="row g-0">
-                        <div class="col-md-4 avatar d-flex">
-                           <a href="#"><img class="img-fluid rounded-circle test " src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="dog"></a>
+                        <div class="col-md-4 d-flex">
+                           <a href="#"><img class="img-fluid rounded-circle test" src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="dog"></a>
                         </div>
                         <div class="col-md-8 ">
                             <div class="card-body d-flex justify-content-between align-items-center sugg-card">
