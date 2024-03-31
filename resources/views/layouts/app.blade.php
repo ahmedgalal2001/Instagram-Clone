@@ -8,50 +8,19 @@
     <title>@yield('title')</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
-    {{-- @vite(['resources/css/navbar.css']) --}}
-
-
-    <style>
-        .sidebar {
-            background-color: #f8f9fa;
-            height: 100vh;
-            /* Adjust the height as needed */
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding-top: 60px;
-            /* Adjust the top padding to accommodate the navbar height */
-            width: 200px;
-            /* Adjust the width as needed */
-            border-right: 1px solid #dee2e6;
-        }
-
-        .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar ul li {
-    display: block; /* Display list items as block elements */
-    margin-bottom: 10px; /* Adjust margin between list items */
-}
-    </style>
+    @vite(['resources/css/app.css'])
+    @vite(['resources/js/app.js'])
 </head>
 
 <body>
     <div class="container-fluid">
         <div class="row">
             @auth
-                <div class="col-2">
-                    <div id="sidebar" class="sidebar">
-                        @include('layouts.navbar')
-                    </div>
+                <div class="col-2 p-0">
+                    @include('layouts.navbar')
                 </div>
             @endauth
-
-            <div id="app" class="app col-10 bg-black text-light">
+            <div class="app">
                 @yield('body')
             </div>
         </div>
@@ -60,7 +29,5 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 </body>
-
 </html>

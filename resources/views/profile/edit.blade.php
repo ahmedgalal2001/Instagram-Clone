@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Edit')
 @section('body')
-    <div class="col-12">
+    <div class="col-10">
         {{-- we here will put the navbar with col 3 max --}}
         <div class="col-md-9">
             <div class="d-flex align-items-start col-12">

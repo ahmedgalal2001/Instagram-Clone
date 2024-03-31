@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.app {
+    width: calc(100% - 200px);
+}
+
+.bg-website{
+    background-color: #262626 !important;
+    color: #fff !important;
+}
+
+@media (min-width: 300px) and (max-width: 768px) {
+    .app {
+        width: 100%;
+    }
+}
