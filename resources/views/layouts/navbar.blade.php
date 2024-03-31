@@ -71,7 +71,7 @@
                 <form method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="upload-btn-wrapper">
-                        <button class="btn">Select form computer</button>
+                        <button class="btn-navbar btn">Select form computer</button>
                         <input type="file" id="myfile" name="myfile" />
                     </div>
                     {{-- <button type="submit">Submit</button> --}}
