@@ -1,6 +1,11 @@
 .blue {
-    color: #0095f6;
+    color: #0095F6;
 }
+
 .nav-link:active {
-    background-color: #efefef !important;
+    background-color: #EFEFEF !important;
+}
+
+.gray {
+    background-color: #EFEFEF !important;
 }
