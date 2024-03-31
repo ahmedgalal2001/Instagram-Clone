@@ -58,7 +58,7 @@
       <div class="modal-content">
         <div class="modal-header justify-content-center">
           <h1  class="modal-title fs-5 text-light" id="staticBackdropLabel">Change Profile photo</h1>        </div>
-        <div class="modal-body text-dark d-flex flex-column align-item-center">
+        <div class="modal-body text-light d-flex flex-column align-item-center">
             <div class="text-center"> 
                 <button type="file" class="btn text-primary w-100 ">uplaod photo</button>
                 <label for="input-file">update</label>
@@ -70,7 +70,7 @@
             </div>
             <hr>
             <div class=" text-center ">
-                <button type="button" class="btn text-dark w-100" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn text-light w-100" data-bs-dismiss="modal">Close</button>
               </div>
         </div> 
       </div>
