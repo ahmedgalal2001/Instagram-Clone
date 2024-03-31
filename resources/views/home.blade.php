@@ -216,11 +216,94 @@
         </div>
         <!-------------------------------------------- End of Posts side ------------------------------------------->
     
-        <div class="col-4 d-lg-flex d-md-none">
-            <!---------- Right side --------->
-            <div class="bg-primary">
-                <!----- Footer -------->
+
+        {{---------------------------------------------------Kamal--------------------------------------------------- --}}
+        <div class="col-4 d-none d-lg-block mt-4">
+                <div class="card mb-3 " >
+                    <div class="row g-0">
+                        <div class="col-md-4 avatar d-flex">
+                           <a href="#"><img class="img-fluid rounded-circle test " src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="dog"></a>
+                        </div>
+                        <div class="col-md-8 ">
+                            <div class="card-body d-flex justify-content-between align-items-center sugg-card">
+                                <h6 class="card-title mb-0">Ahmed Kamal</h6>
+                                <a class="switch mt-4 btn btn-sm">Switch</a>
+                            </div>
+                            <p class="card-text mb-2 "><small class="text-muted ">Suggested For You</small></p>
+                        </div>
+                    </div>
+                </div>
+                {{------------------------------------------------------------------------------------------------------------}}
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h6 class="suggested">Suggested for you</h6>
+                    <button class="btn btn-sm">See All</button>
+                </div>
+                {{-- -----------------------------------------------Suggestion and Poopup------------------------------------ --}}
+                <div class="card mb-3 pb-3 pt-3" >
+                    @for ($i = 0; $i < 3; $i++)
+                    <div class="row g-0">
+                        <div class="col-md-4 w-100 d-flex">
+                            <div class="avatar-container d-flex">
+                                <a href="#"><img class="img-fluid rounded-circle test" src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="ahmed" id="avatar-image"></a>
+                                <div class="popup " id="popup">
+                                    <div class="d-flex align-items-center">
+                                        <a href="#"><img class="img-fluid mr-3 test" src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="dog"></a>
+                                        <div>
+                                            <h6 class="card-title mb-0">Ahmed Kamal</h6>
+                                            <p>ahmed_kamal71</p>
+                                        </div>
+                                    </div>
+                                    <div class="info mt-3">
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <p class="count">1000</p>
+                                                <p class="label">Followers</p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="count">4000</p>
+                                                <p class="label">Following</p>
+                                            </div>
+                                            <div class="col-4">
+                                                <p class="count">120</p>
+                                                <p class="label">Posts</p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button class="followBtn mt-4 ">Follow</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                            </div>
+                        <div class="col-md-8 ">
+                            <div class="card-body d-flex justify-content-between align-items-center sugg-card ">
+                                <h6 class="card-title mb-0">Ahmed Kamal</h6>
+                                <button class="btn  btn-sm mt-4 switch">Follow</button>
+                            </div>
+                            <p class="card-text mb-2 "><small class="text-muted ">Suggested For You</small></p>
+                        </div>
+                    </div>
+                </div>
+                @endfor
+                {{-- --------------------------------------- Footer ---------------------------------------- --}}
+                <div class="row ">
+                        <div class="col-12 mt-5 w-100 d-flex px-5">
+                        <ul class="footer-links">
+                            <li><a href="#">About</a></li>
+                            <li><a href="#">-Help</a></li>
+                            <li><a href="#">-Press</a></li>
+                            <li><a href="#">-Job</a></li>
+                            <li><a href="#">-Privacy</a></li>
+                            <li><a href="#">-Terms</a></li>
+                            <li><a href="#">-Location</a></li>
+                            <li><a href="#">-Languages</a></li>
+                            <li><a href="#">-Meta Verified</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+               {{-----------------------------------------------------------------}}
         </div>
     
         <!-------------------- post options Modal ------------------>
