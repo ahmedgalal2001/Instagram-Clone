@@ -16,54 +16,14 @@
                 <i class="fas fa-angle-left"></i>
                 </button>
                 <div class="scroll-images d-flex align-items-start">
-                    <div class="d-flex flex-column align-items-center m-2">
-                        <a type="button">
-                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
-                        </a>
-                        <p>mohamed</p>
-                    </div>
-                    <div class="d-flex flex-column align-items-center m-2">
-                        <a type="button">
-                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
-                        </a>
-                        <p>mohamed</p>
-                    </div>
-                    <div class="d-flex flex-column align-items-center m-2">
-                        <a type="button">
-                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
-                        </a>
-                        <p>mohamed</p>
-                    </div>
-                    <div class="d-flex flex-column align-items-center m-2">
-                        <a type="button">
-                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
-                        </a>
-                        <p>mohamed</p>
-                    </div>
-                    <div class="d-flex flex-column align-items-center m-2">
-                        <a type="button">
-                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
-                        </a>
-                        <p>mohamed</p>
-                    </div>
-                    <div class="d-flex flex-column align-items-center m-2">
-                        <a type="button">
-                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
-                        </a>
-                        <p>mohamed</p>
-                    </div>
-                    <div class="d-flex flex-column align-items-center m-2">
-                        <a type="button">
-                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
-                        </a>
-                        <p>mohamed</p>
-                    </div>
-                    <div class="d-flex flex-column align-items-center m-2">
-                        <a type="button">
-                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
-                        </a>
-                        <p>mohamed</p>
-                    </div>
+                    @for ($i = 0; $i < 15; $i++)
+                        <div class="d-flex flex-column align-items-center m-2">
+                            <a type="button">
+                                <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
+                            </a>
+                            <p>mohamed</p>
+                        </div>
+                    @endfor
                 </div>
                 <button class="right">
                 <i class="fas fa-angle-right"></i>
@@ -73,7 +33,7 @@
             <!------- Posts side -------->
             @for ($i = 0; $i < 5; $i++)
                 
-            <div class="card w-50 col-sm-12 col-lg-6 mt-2 main-post-div">
+            <div class="card w-50 col-sm-12 col-lg-6 mt-2 mb-2 main-post-div">
                 <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
                     <div class="row m-0">
                         <div class="col-md-9 d-flex align-items-center p-0">
@@ -186,7 +146,9 @@
                             <h4><b><i class="fa-regular fa-comment"></i></b></h4>
                         </a>
     
-                        <h4><b><i class="bi-share"></i></b></h4>
+                        <a type="button">
+                            <h4><b><i class="far fa-paper-plane"></i></b></h4>
+                        </a>
     
     
                     </div>
@@ -391,7 +353,9 @@
                                         <h4><b><i class="fa-regular fa-comment"></i></b></h4>
                                     </a>
     
-                                    <h4><b><i class="bi-share"></i></b></h4>
+                                    <a type="button">
+                                        <h4><b><i class="far fa-paper-plane"></i></b></h4>
+                                    </a>
     
     
                                 </div>

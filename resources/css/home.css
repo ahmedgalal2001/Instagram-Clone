@@ -123,7 +123,7 @@
 
 .left {
   position: absolute;
-  left: 0;
+  left: -10px;
   height: 25%;
   top: 40%;
   transform: translateY(-50%);
@@ -134,7 +134,7 @@
 
 .right {
   position: absolute;
-  right: 0;
+  right: -10px;
   height: 25%;
   top: 40%;
   transform: translateY(-50%);
