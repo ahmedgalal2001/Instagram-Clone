@@ -12,59 +12,59 @@ let People = document.querySelector("#People");
 
     //------------posts,save Tagged sections--------------------------
     posts.addEventListener("click", () => {
-      bodyPosts.classList.remove("d-none");
-      bodySave.classList.add("d-none");
-      bodyTagged.classList.add("d-none");
+        bodyPosts.classList.remove("d-none");
+        bodySave.classList.add("d-none");
+        bodyTagged.classList.add("d-none");
 
-      posts.classList.add("border-top", "border-light");
-      Save.classList.remove("border-top", "border-light");
-      Tagged.classList.remove("border-top", "border-light");
+        posts.classList.add("border-top", "border-dark");
+        Save.classList.remove("border-top", "border-dark");
+        Tagged.classList.remove("border-top", "border-dark");
 
-      posts.classList.add("text-light");
-      Save.classList.remove("text-light");
-      Tagged.classList.remove("text-light");
-    });
+        posts.classList.remove("text-muted");
+        Save.classList.add("text-muted");
+        Tagged.classList.add("text-muted");
+      });
+
 
     Save.addEventListener("click", () => {
-      bodyPosts.classList.add("d-none");
-      bodySave.classList.remove("d-none");
-      bodyTagged.classList.add("d-none");
+        bodyPosts.classList.add("d-none");
+        bodySave.classList.remove("d-none");
+        bodyTagged.classList.add("d-none");
 
-      posts.classList.remove("border-top", "border-light");
-      Save.classList.add("border-top", "border-light");
-      Tagged.classList.remove("border-top", "border-light");
+        posts.classList.remove("border-top", "border-dark");
+        Save.classList.add("border-top", "border-dark");
+        Tagged.classList.remove("border-top", "border-dark");
 
-      posts.classList.remove("text-light");
-      Save.classList.add("text-light");
-      Tagged.classList.remove("text-light");
-    });
+        posts.classList.add("text-muted");
+        Save.classList.remove("text-muted");
+        Tagged.classList.add("text-muted");
+      });
 
-    Tagged.addEventListener("click", () => {
-      bodyPosts.classList.add("d-none");
-      bodySave.classList.add("d-none");
-      bodyTagged.classList.remove("d-none");
+      Tagged.addEventListener("click", () => {
+        bodyPosts.classList.add("d-none");
+        bodySave.classList.add("d-none");
+        bodyTagged.classList.remove("d-none");
 
-      posts.classList.remove("border-top", "border-light");
-      Save.classList.remove("border-top", "border-light");
-      Tagged.classList.add("border-top", "border-light");
+        posts.classList.remove("border-top", "border-dark");
+        Save.classList.remove("border-top", "border-dark");
+        Tagged.classList.add("border-top", "border-dark");
 
-      posts.classList.remove("text-light");
-      Save.classList.remove("text-light");
-      Tagged.classList.add("text-light");
-
-    });
-
+        posts.classList.add("text-muted");
+        Save.classList.add("text-muted");
+        Tagged.classList.remove("text-muted");
+      });
     //----------People and Hashtags setction--------------------------
+   
     People.addEventListener("click", () => {
-      bodyPeople.classList.remove("d-none");
-      bodyHashtags.classList.add("d-none");
-      People.classList.add("text-light");
-      Hashtags.classList.remove("text-light")
-    });
+        bodyPeople.classList.remove("d-none");
+        bodyHashtags.classList.add("d-none");
+        People.classList.add("text-muted");
+        Hashtags.classList.remove("text-muted")
+      });
 
-    Hashtags.addEventListener("click", () => {
-      bodyPeople.classList.add("d-none");
-      bodyHashtags.classList.remove("d-none");
-      People.classList.remove("text-light");
-      Hashtags.classList.add("text-light")
-    });
+      Hashtags.addEventListener("click", () => {
+        bodyPeople.classList.add("d-none");
+        bodyHashtags.classList.remove("d-none");
+        People.classList.remove("text-muted");
+        Hashtags.classList.add("text-muted")
+      });
