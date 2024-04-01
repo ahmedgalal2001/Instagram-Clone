@@ -12,6 +12,8 @@ export default defineConfig({
                 'resources/js/home.js',
                 'resources/css/home.css',
                 'resources/css/fontawesome-free-6.5.1-web/css/all.min.css',
+                'resources/js/editprofile.js',
+                'resources/css/edit-profile.css',
             ],
             refresh: true,
         }),
