@@ -490,7 +490,7 @@
                                  <button type="button" class="btn btn-primary  btn-sm fs-6">Follwoing</button>
                              </div>
                          </li>
-
+                         
 
                          <!----add following------->
                      </ul>
