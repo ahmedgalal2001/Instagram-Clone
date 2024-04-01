@@ -1,18 +1,12 @@
 /******************* home page style ********************/
 .avatar{
-    border: 3px double rgba(213, 88, 10, 0.688);
+    border: 1px solid rgba(182, 182, 182, 0.688);
+    box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.1);
 }
 
-
-.avatarImage {
-    vertical-align: middle;
-    width: 250px;
-    height: 100px;
-    border-radius: 50%;
-    border:3px solid black;
-    margin: 10px;
- }
-
+.status-avatar{
+  border: 3px double rgba(213, 88, 10, 0.688);
+}
 
 
  .avatar-container {
@@ -89,7 +83,7 @@
 
 .cover {
   position: relative;
-  padding: 0px 30px;
+  padding: 0px 10px;
   margin-top: 20px;
   width: 75%;
   display: flex;
@@ -130,16 +124,23 @@
 .left {
   position: absolute;
   left: 0;
+  height: 25%;
   top: 40%;
   transform: translateY(-50%);
-
+  display: flex;
+  border-radius: 50%;
+  margin: 0;
 }
 
 .right {
   position: absolute;
   right: 0;
+  height: 25%;
   top: 40%;
   transform: translateY(-50%);
+  display: flex;
+  border-radius: 50%;
+  margin: 0;
 }
 
 /********************************************* Kamal **************************************************/

@@ -13,71 +13,73 @@
             <!------------------------------- Menu of statue ------------------------------>
             <div class="cover">
                 <button class="left">
-                <i class="fas fa-angle-double-left"></i>
+                <i class="fas fa-angle-left"></i>
                 </button>
                 <div class="scroll-images d-flex align-items-start">
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
-                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle avatar" width="65px" height="65px" alt="Avatar"/>
+                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
                         </a>
                         <p>mohamed</p>
                     </div>
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
-                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle avatar" width="65px" height="65px" alt="Avatar"/>
+                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
                         </a>
                         <p>mohamed</p>
                     </div>
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
-                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle avatar" width="65px" height="65px" alt="Avatar"/>
+                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
                         </a>
                         <p>mohamed</p>
                     </div>
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
-                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle avatar" width="65px" height="65px" alt="Avatar"/>
+                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
                         </a>
                         <p>mohamed</p>
                     </div>
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
-                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle avatar" width="65px" height="65px" alt="Avatar"/>
+                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
                         </a>
                         <p>mohamed</p>
                     </div>
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
-                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle avatar" width="65px" height="65px" alt="Avatar"/>
+                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
                         </a>
                         <p>mohamed</p>
                     </div>
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
-                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle avatar" width="65px" height="65px" alt="Avatar"/>
+                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
                         </a>
                         <p>mohamed</p>
                     </div>
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
-                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle avatar" width="65px" height="65px" alt="Avatar"/>
+                            <img src="{{ asset('images/dog.jpg') }}" class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar"/>
                         </a>
                         <p>mohamed</p>
                     </div>
                 </div>
                 <button class="right">
-                <i class="fas fa-angle-double-right"></i>
+                <i class="fas fa-angle-right"></i>
                 </button>
             </div>
     
             <!------- Posts side -------->
-            <div class="card w-50 col-sm-12 col-lg-6 mt-2 border border-dark border">
+            @for ($i = 0; $i < 5; $i++)
+                
+            <div class="card w-50 col-sm-12 col-lg-6 mt-2 main-post-div">
                 <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
                     <div class="row m-0">
                         <div class="col-md-9 d-flex align-items-center p-0">
                             <div class="col-3 d-flex pt-3 justify-content-center align-items-center">
                                 <div class="avatar-container position-relative mb-2">
-                                    <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle avatar" width="65px" height="65px" alt="Avatar"/>
+                                    <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" class="rounded-circle avatar" width="50px" height="50px" alt="Avatar"/>
                                     <div class="profile-details-card position-absolute p-0 mt-5">
                                         <!-- Profile details content goes here -->
                                         <div class="card w-100 px-1 pt-0 details-card">
@@ -147,7 +149,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-9 mx-1">
+                            <div class="col-md-9">
                                 <div class="d-flex">
                                     <p class="mb-0 h6">
                                         mohamed algharabawy
@@ -156,7 +158,7 @@
                                         <i>.1h</i>
                                     </p>
                                 </div>
-                                <p class="m-0 text-secondary"><i>Original audio</i></p>
+                                <p class="m-0 text-secondary fs-6 h6"><i>Original audio</i></p>
                             </div>
                         </div>
                         <div class="col-md-3 d-flex align-items-center justify-content-end">
@@ -177,7 +179,7 @@
                     <div class="col-4 col-lg-4 col-md-6 col-sm-6 d-flex align-items-center justify-content-between">
     
                         <a type="button" id="like-btn">
-                            <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
+                            <h4><b><i id="like-icon" class="like-icon fa-regular fa-heart"></i></b></h4>
                         </a>
     
                         <a type="button" id="commenr-btn" data-toggle="modal" data-target="#commentsModal">
@@ -190,7 +192,7 @@
                     </div>
                     <div class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
                         <a type="button" id="book-mark-btn">
-                        <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
+                        <h4><b><i id="book-mark-icon" class="bookmark-icon fa-regular fa-bookmark"></i></b></h4>
                         </a>
                     </div>
                 </div>
@@ -213,6 +215,7 @@
                 </div>
                 </div>
             </div>
+            @endfor
         </div>
         <!-------------------------------------------- End of Posts side ------------------------------------------->
     
@@ -240,7 +243,7 @@
                 </div>
                 {{-- -----------------------------------------------Suggestion and Poopup------------------------------------ --}}
                 <div class="card mb-3 pb-3 pt-3" >
-                    @for ($i = 0; $i < 3; $i++)
+                    @for ($i = 0; $i < 7; $i++)
                     <div class="row g-0">
                         <div class="col-md-4 w-100 d-flex">
                             <div class="avatar-container d-flex">
@@ -305,7 +308,7 @@
             </div>
                {{-----------------------------------------------------------------}}
         </div>
-    
+        @for ($i = 0; $i < 5; $i++)
         <!-------------------- post options Modal ------------------>
         <div class="modal fade" id="postOptionsAlert" tabindex="-1" role="dialog" aria-labelledby="postOptionsAlert" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -380,7 +383,7 @@
                             <div class="row">
                                 <div class="col-4 col-lg-4 col-md-6 col-sm-6 d-flex align-items-center justify-content-between">
     
-                                    <a type="button" id="like-btn">
+                                    <a type="button" class="like-btn" id="like-btn">
                                         <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
                                     </a>
     
@@ -393,7 +396,7 @@
     
                                 </div>
                                 <div class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
-                                    <a type="button" id="book-mark-btn">
+                                    <a type="button" class="bookmark-btn" id="book-mark-btn">
                                     <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
                                     </a>
                                 </div>
@@ -429,6 +432,7 @@
         </div>
         </div>
         </div>
+        @endfor
         <!----------------------- End of Comments modal ------------------------>
     {{-- </div> --}}
 
