@@ -1,6 +1,6 @@
 .navbar {
     width: 150px;
-    background-color: gray;
+    /* background-color: gray; */
     padding: 10px;
     position: fixed;
     height: 100vh;
