@@ -3,40 +3,59 @@
 /************************** Post image hover timer **************************/
 
 document.addEventListener("DOMContentLoaded", function() {
-    let avatarContainer = document.querySelector(".avatar-container");
-    let profileDetailsCard = document.querySelector(".profile-details-card");
+  let avatarImg = document.querySelectorAll(".avatar");
+  let avatarContainer = document.querySelectorAll(".avatar-container");
+  let postsContainer = document.querySelectorAll(".main-post-div");
 
-    avatarContainer.addEventListener("mouseenter", function() {
-        setTimeout(function() {
-            profileDetailsCard.style.display = "block";
-        }, 500);
-    });
+  avatarImg.forEach(element => {
+      element.addEventListener("mouseenter", function() {
+          let profileDetailsCard = element.closest('.avatar-container').querySelector(".profile-details-card");
+          if (profileDetailsCard) {
+              profileDetailsCard.style.display = "block";
+          }
+      });
+  });
 
-    avatarContainer.addEventListener("mouseleave", function() {
-        profileDetailsCard.style.display = "none";
-    });
+  avatarContainer.forEach(container => {
+      container.addEventListener("mouseleave", function() {
+          let profileDetailsCard = container.querySelector(".profile-details-card");
+          if (profileDetailsCard) {
+              profileDetailsCard.style.display = "none";
+          }
+      });
+  });
+
+  postsContainer.forEach(container => {
+      container.addEventListener("mouseleave", function() {
+          let profileDetailsCard = container.querySelector(".profile-details-card");
+          if (profileDetailsCard) {
+              profileDetailsCard.style.display = "none";
+          }
+      });
+  });
 });
+
+
 
 /***************** Toggle post a comment btn during typing *******************/
 
-function toggleButtonVisibility()
-{
-    let inputText = document.querySelector('.comment-txt').value;
-    let submitButton = document.getElementById('submitButton');
-
-    if (inputText.trim() !== '')
-    {
-        submitButton.style.display = 'block';
-    } else {
-        submitButton.style.display = 'none';
-    }
+function toggleButtonVisibility(input, submitButton) {
+  if (input.value.trim() !== '') {
+      submitButton.style.display = 'block';
+  } else {
+      submitButton.style.display = 'none';
+  }
 }
 
-let commentInput = document.querySelector(".comment-txt");
-// console.log(commentInput);
-commentInput.addEventListener('keyup',function(){
-    toggleButtonVisibility();
-})
+document.querySelectorAll(".comment-txt").forEach(function(input) {
+  // let submitButton = input.closest('.main-post-div').querySelector("#submitButton");
+  let submitButton = document.querySelector(".main-post-div #submitButton");
+
+  input.addEventListener('keyup', function() {
+      toggleButtonVisibility(input, submitButton);
+  });
+});
+
 
 /********************************** Status Menu***************************************/
 
