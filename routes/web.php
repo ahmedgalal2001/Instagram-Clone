@@ -17,7 +17,9 @@ use App\Http\Controllers\PostsController;
 |
 */
 
-Route::get('/', fn () => view("home"));
+Route::get('/', [HomeController::class, 'index'])->name('home.index');
+Route::get('/home', [HomeController::class, 'index']);
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -25,11 +27,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users', [UserController::class, 'index'])->name('user.index');
-    Route::post('/posts', [PostsController::class , "store"])->name("posts.store");
+    Route::post('/posts', [PostsController::class, "store"])->name("posts.store");
 });
 
 Route::fallback(fn () => 'Route not found');
-
-Route::get('/home',[HomeController::class,'index']) -> name('home.index');
 
 require __DIR__ . '/auth.php';

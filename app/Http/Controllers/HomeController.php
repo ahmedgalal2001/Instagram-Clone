@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $posts = Post::with("likes")->with("comments")->with("user")->get();
-        return view("home");
+        $posts = Post::with("user")->get();
+        return view("home")->with('posts', $posts);
     }
 }
