@@ -6,7 +6,7 @@
     <div class="col-md-6 col-lg-6  img-fluid text-center d-none d-lg-block">
         <img src={{ asset('images/login.png') }} alt="LoginPage" >
     </div>
-    <div class="col-6 col-sm-6 col-md-6 col-lg-4">
+    <div class="col-12 col-sm-6 col-md-6 col-lg-4">
         <div class="border p-5">
         <div class="text-center mb-5 ">
             <h1>Instagram</h1>
