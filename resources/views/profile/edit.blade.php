@@ -11,10 +11,6 @@
                     aria-orientation="vertical">
                     <div class="m-3">
                         <h5>Settings</h5>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button  type="submit">logout</button>
-                        </form>
                     </div>
                     <div class="card">
                         <div class="card-body">
