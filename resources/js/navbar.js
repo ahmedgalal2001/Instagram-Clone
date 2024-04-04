@@ -24,7 +24,7 @@ myfile.addEventListener('change', function (event) {
 search_username.onkeyup = () => {
     users.innerHTML = "";
     let username = search_username.value;
-    if (username == null) username = "";
+    console.log(username);
     axios.get(`/users/${username}`).then((res) => {
         res.data.forEach(user => {
             let elementUser = `
@@ -40,18 +40,38 @@ search_username.onkeyup = () => {
         </a>
     </div>
 `;
-
             users.insertAdjacentHTML("beforeend", elementUser);
         });
     });
 }
 
-// document.addEventListener('click', function (event) {
-//     var offcanvas = document.getElementById('offcanvasScrolling');
-//     var target = event.target;
-//     var isClickInside = offcanvas.contains(target);
-//     if (!isClickInside) {
-//         var bsOffcanvas = new bootstrap.Offcanvas(offcanvas);
-//         bsOffcanvas.hide();
-//     }
-// });
+function closeOffcanvas() {
+    var offcanvas = document.getElementById('offcanvasScrolling');
+    offcanvas.classList.remove('show');
+    offcanvas.setAttribute('aria-hidden', 'true');
+    offcanvas.setAttribute('style', 'display: none');
+}
+
+// Event listener to handle click outside offcanvas
+window.addEventListener('click', function (event) {
+    var offcanvas = document.getElementById('offcanvasScrolling');
+    var toggleButton = document.getElementById('offcanvasToggle');
+    var isClickInsideOffcanvas = offcanvas.contains(event.target);
+    var isToggleButton = toggleButton.contains(event.target);
+    if (!isClickInsideOffcanvas && !isToggleButton) {
+        var offcanvasRect = offcanvas.getBoundingClientRect();
+        var isNearOffcanvas = event.clientX >= offcanvasRect.left && event.clientX <= offcanvasRect.right &&
+            event.clientY >= offcanvasRect.top && event.clientY <= offcanvasRect.bottom;
+        if (!isNearOffcanvas) {
+            closeOffcanvas();
+        }
+    }
+});
+
+// Event listener to toggle offcanvas visibility
+document.getElementById('offcanvasToggle').addEventListener('click', function () {
+    var offcanvas = document.getElementById('offcanvasScrolling');
+    offcanvas.classList.toggle('show');
+    offcanvas.setAttribute('aria-hidden', offcanvas.classList.contains('show') ? 'false' : 'true');
+    offcanvas.setAttribute('style', offcanvas.classList.contains('show') ? 'display: block' : 'display: none');
+});

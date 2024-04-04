@@ -1,26 +1,30 @@
 .navbar {
     width: 150px;
-    /* background-color: gray; */
     padding: 10px;
     position: fixed;
     height: 100vh;
     border: 1px solid #ccc;
     color: #000 !important;
 }
-.custom {
+
+.offcanvas-start {
     left: 150px !important;
+    transform: translateX(0px) !important;
+    transition: transform 0.3s ease-in-out !important;
+}
+
+.dropup .dropdown-toggle::after {
+    display: none;
 }
 .img-profile {
+    width: 44px !important;
+    height: 44px !important;
+}
+.my-profile {
     width: 24px !important;
     height: 24px !important;
 }
-.modal-content-navbar {
-    background-color: #262626 !important;
-    color: #fff !important;
-}
-.instrg {
-    display: none;
-}
+
 .upload-btn-wrapper {
     position: relative;
     overflow: hidden;
@@ -103,9 +107,6 @@
         display: none;
     }
     .more {
-        display: none !important;
-    }
-    .custom {
         display: none !important;
     }
 }

@@ -17,8 +17,6 @@ use App\Http\Controllers\PostsController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home.index');
-Route::get('/home', [HomeController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
@@ -27,6 +25,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{username}', [UserController::class, 'show'])->name('user.show');
     Route::post('/posts', [PostsController::class, "store"])->name("posts.store");
+    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::get('/home', [HomeController::class, 'index']);
 });
 
 Route::fallback(fn () => 'Route not found');

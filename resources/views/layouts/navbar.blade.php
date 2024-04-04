@@ -3,14 +3,13 @@
 <nav class="navbar flex-column align-items-start">
     <div class="side-one">
         <a class="navbar-brand text-center" href="/">
-            <img class="me-2 instrg" src="{{ asset('images/instagram24x24.png') }}" alt="dog">
             <span class="desc">Instagram</span>
         </a>
         <a class="nav-link d-flex align-items-center py-3 active" aria-current="page" href="/">
             <img class="me-2" src="{{ asset('images/home24x24.png') }}" alt="dog">
             <span class="desc">Home</span>
         </a>
-        <a class="nav-link d-flex align-items-center py-3 " aria-current="page" href="#"
+        <a id="offcanvasToggle" class="nav-link d-flex align-items-center py-3 " aria-current="page" href="#"
             data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
             <img class="me-2" src="{{ asset('images/search24x24.png') }}" alt="dog">
             <span class="desc">Search</span>
@@ -25,28 +24,46 @@
         <a class="nav-link d-flex align-items-center py-3 " aria-current="page" href="{{ route('profile.index') }}">
             <img width="24px" height="24px"
                 src="https://img.freepik.com/free-photo/portrait-american-black-person-looking-up_23-2148749586.jpg"
-                class=" rounded-circle me-2 img-profile" alt="">
+                class=" rounded-circle me-2 my-profile" alt="">
             <span class="desc">Profile</span>
         </a>
-        <a class="nav-link d-flex more align-items-center py-3 " aria-current="page" href="#">
-            <img class="me-2" src="{{ asset('images/menu24x24.png') }}" alt="dog">
-            <span class="desc">More</span>
-        </a>
+        <div class="dropup dropup-center">
+            <a class="nav-link d-flex align-items-center py-3 dropdown-toggle"id="dropdownMenuButton"
+                data-bs-toggle="dropdown" href="#" aria-expanded="false">
+                <img class="me-2" src="{{ asset('images/menu24x24.png') }}" alt="dog">
+                <span>More</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuButton">
+                <li>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="dropdown-item"><i class="bi bi-box-arrow-right me-2"></i>
+                            Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
+
+
+
+
 {{-- modal search --}}
-<div class="offcanvas offcanvas-start custom" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-    id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">
-            <div class="d-flex align-items-center">
-                <i class="fas fa-search fs-5 mt-1 mx-2"></i>
-                <input id="search-username" class="form-control me-2" type="search" placeholder="Search"
-                    aria-label="Search">
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header d-flex flex-column">
+        <h2 class="text-start w-100 mb-4">Search</h2>
+        <div class="offcanvas-title w-100" id="offcanvasScrollingLabel">
+            <div class="input-group flex-nowrap">
+                <span class="input-group-text" id="addon-wrapping">
+                    <i class="fas fa-search fs-5 mt-1 mx-2"></i>
+                </span>
+                <input type="text" id="search-username" class="form-control p-2" placeholder="Search" aria-label="search"
+                    aria-describedby="addon-wrapping">
             </div>
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
     </div>
+    <hr>
     <div class="offcanvas-body">
         <div id="users">
         </div>
@@ -55,7 +72,7 @@
 {{-- create posts --}}
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered modal-xl h-100" role="document">
         <div class="modal-content modal-content-navbar">
             <div class="modal-header p-2 justify-content-center">
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Create New Post</h1>
@@ -88,24 +105,22 @@
                     </div>
 
                     <div id="sceond-view">
-                        <div class="card mb-3 bg-website" style="max-width: 540px;">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <img id="img-post" class="w-100" alt="Selected Image">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
+                        <div class="row g-0">
+                            <div class="col-6 p-3">
+                                <img id="img-post" class="w-100" alt="Selected Image">
+                            </div>
+                            <div class="col-6 d-flex align-items-center justify-content-center">
+                                <div class="card-body">
 
-                                        <a class="nav-link d-flex align-items-center py-3 " aria-current="page"
-                                            href="{{ route('profile.index') }}">
-                                            <img width="24px" height="24px"
-                                                src="https://img.freepik.com/free-photo/portrait-american-black-person-looking-up_23-2148749586.jpg"
-                                                class=" rounded-circle me-2 img-profile" alt="">
-                                            <span class="desc">{{ Auth::user()->email }}</span>
-                                        </a>
-                                        <textarea class="form-control bg-website" name="commit_message" rows="3" placeholder="Add a commit message"></textarea>
-                                        <button type="submit" class="btn btn-primary">Create Post</button>
-                                    </div>
+                                    <a class="nav-link d-flex align-items-center py-3 " aria-current="page"
+                                        href="{{ route('profile.index') }}">
+                                        <img width="24px" height="24px"
+                                            src="https://img.freepik.com/free-photo/portrait-american-black-person-looking-up_23-2148749586.jpg"
+                                            class=" rounded-circle me-2 img-profile" alt="">
+                                        <span class="desc">{{ Auth::user()->email }}</span>
+                                    </a>
+                                    <textarea class="form-control bg-website" name="commit_message" rows="3" placeholder="Add a commit message"></textarea>
+                                    <button type="submit" class="btn btn-primary">Create Post</button>
                                 </div>
                             </div>
                         </div>
