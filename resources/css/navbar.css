@@ -4,6 +4,8 @@
     padding: 10px;
     position: fixed;
     height: 100vh;
+    border: 1px solid #ccc;
+    color: #000 !important;
 }
 .custom {
     left: 150px !important;
@@ -43,6 +45,32 @@
     top: 0;
     opacity: 0;
     cursor: pointer;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    margin-bottom: 10px; /* Adjust margin as needed */
+}
+
+.user-profile .nav-link {
+    text-decoration: none;
+    color: #333;
+}
+
+.user-profile img {
+    border: 2px solid #fff; /* Add border to the profile image */
+}
+
+.user-profile .user-info {
+    margin-left: 10px; /* Adjust margin between image and user info */
+}
+
+.user-profile .user-email {
+    font-weight: bold;
 }
 
 @media (min-width: 300px) and (max-width: 768px) {
