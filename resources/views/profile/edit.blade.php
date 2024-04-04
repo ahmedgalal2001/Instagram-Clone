@@ -10,6 +10,10 @@
                 <div class="nav flex-column nav-pills me-5 col-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <div class="m-3">
                         <h5>Settings</h5>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button  type="submit">logout</button>
+                        </form>
                     </div>
                     <div class="card">
                         <div class="card-body">
