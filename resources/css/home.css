@@ -4,6 +4,40 @@
     box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.1);
 }
 
+.post-like{
+  color: black;
+}
+
+.post-book-mark{
+  color: black;
+}
+
+.commentBtn{
+  display: none;
+  text-decoration: none;
+}
+
+.main-post-div{
+  border-top:  none;
+  border-left: none ;
+  border-right:none ;
+  border-bottom-left-radius:  0px;
+  border-bottom-right-radius: 0px;
+}
+
+.post-caption p{
+  font-size: 13px;
+}
+
+.user_name_post{
+  font-size: 14px;
+}
+
+.comment-like{
+  color: grey;
+}
+
+
 .status-avatar{
   border: 3px double rgba(213, 88, 10, 0.688);
 }

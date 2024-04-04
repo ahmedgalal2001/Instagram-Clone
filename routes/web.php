@@ -5,6 +5,8 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\LikeContoller;
+use App\Http\Controllers\CommentContoller;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users', [UserController::class, 'index'])->name('user.index');
     Route::post('/posts', [PostsController::class, "store"])->name("posts.store");
+    Route::post('/like', [LikeContoller::class, 'store'])->name("like.store");
+    Route::delete('/like/destroy/{id}', [LikeContoller::class, 'destroy'])->name("like.destroy");
+    Route::post('/comment', [CommentContoller::class, 'store'])->name("comment.store");
+    Route::delete('/comment/destroy/{id}', [LikeContoller::class, 'destroy'])->name("comment.destroy");
 });
 
 Route::fallback(fn () => 'Route not found');

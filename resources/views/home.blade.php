@@ -33,14 +33,41 @@
 
         <!------- Posts side -------->
         @foreach ($posts as $post)
-            <div class="card w-50 col-sm-12 col-lg-6 mt-2 mb-2 main-post-div">
+            <div class="card w-50 col-sm-12 col-lg-6 mt-0 mb-0 main-post-div">
                 <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
                     <div class="row m-0">
-                        <div class="col-md-9 d-flex align-items-center p-0">
-                            <div class="col-3 d-flex pt-3 justify-content-center align-items-center">
-                                <div class="avatar-container position-relative mb-2">
+                        <div class="col-md-12 d-flex align-items-center p-0">
+                            <div class="col-12 d-flex pt-3 px-0 p-0 justify-content-start align-items-center">
+                                <div class="avatar-container col-12 d-flex position-relative mb-2 mx-0">
                                     <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
                                         class="rounded-circle avatar" width="50px" height="50px" alt="Avatar" />
+                                        <div class="w-100 d-flex flex-column justify-content-center px-2">
+                                            <div class="d-flex">
+                                                <a type="button">
+                                                    <p class="mb-0 h6 user_name_post">
+                                                        <b>{{ $post->user->name }}</b>
+                                                    </p>
+                                                </a>
+                                                <p class="mb-0 mx-1 h6 text-secondary user_name_post">
+                                                    <i>.{{ $post->created_at->format('g:i:s A') }}</i>
+                                                </p>
+                                            </div>
+                                            <p class="m-0 text-secondary fs-6 h6"><i>Original audio</i></p>
+                                        </div>
+
+                                        <div class="d-flex align-items-center justify-content-end">
+                                            <a type="button" data-toggle="modal" data-target="#postOptionsAlert">
+                                                <svg aria-label="More options" class="x1lliihq x1n2onr6 x5n08af" height="24"
+                                                    role="img" viewBox="0 0 24 24" width="24">
+                                                    <title>More options</title>
+                                                    <circle cx="12" cy="12" r="1.5" fill="black"></circle>
+                                                    <circle cx="6" cy="12" r="1.5" fill="black"></circle>
+                                                    <circle cx="18" cy="12" r="1.5" fill="black"></circle>
+                                                </svg>
+                                            </a>
+                                        </div>
+
+
                                     <div class="profile-details-card position-absolute p-0 mt-5">
                                         <!-- Profile details content goes here -->
                                         <div class="card w-100 px-1 pt-0 details-card">
@@ -59,7 +86,7 @@
                                                         <div class="col-9 mx-3">
                                                             <div class="d-flex">
                                                                 <p class="mb-0 h6">
-                                                                    mohamed algharabawy
+                                                                    {{ $post->user->name }}
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -67,7 +94,9 @@
                                                 </div>
                                                 <div class="row d-flex justify-content-between">
                                                     <div class="col-4 d-flex flex-column align-items-center">
-                                                        <p class="m-0">2200</p>
+                                                        <p class="m-0">
+                                                            200
+                                                        </p>
                                                         <p class="m-0">Posts</p>
                                                     </div>
 
@@ -117,29 +146,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-9">
-                                <div class="d-flex">
-                                    <p class="mb-0 h6">
-                                        mohamed algharabawy
-                                    </p>
-                                    <p class="mb-0 h6 text-secondary">
-                                        <i>.1h</i>
-                                    </p>
-                                </div>
-                                <p class="m-0 text-secondary fs-6 h6"><i>Original audio</i></p>
-                            </div>
+                            
                         </div>
-                        <div class="col-md-3 d-flex align-items-center justify-content-end">
-                            <a type="button" data-toggle="modal" data-target="#postOptionsAlert">
-                                <svg aria-label="More options" class="x1lliihq x1n2onr6 x5n08af" height="24"
-                                    role="img" viewBox="0 0 24 24" width="24">
-                                    <title>More options</title>
-                                    <circle cx="12" cy="12" r="1.5" fill="black"></circle>
-                                    <circle cx="6" cy="12" r="1.5" fill="black"></circle>
-                                    <circle cx="18" cy="12" r="1.5" fill="black"></circle>
-                                </svg>
-                            </a>
-                        </div>
+                        
                     </div>
                     <img src="{{ asset('images/posts/' . $post->image_url) }}" class="img-fluid" />
                 </div>
@@ -147,17 +156,24 @@
                     <div class="row">
                         <div class="col-4 col-lg-4 col-md-6 col-sm-6 d-flex align-items-center justify-content-between">
 
-                            <a type="button" id="like-btn">
-                                <h4><b><i id="like-icon" class="like-icon fa-regular fa-heart"></i></b></h4>
+                            <a type="button" class="post-like"
+                                @foreach ($post->likes as $like)
+                                @if (Auth::id() == $like->user_id && $post->id == $like->post_id)
+                                style="color:red !important;"
+                                data-bs-like="{{ $like->id }}"
+                                @endif @endforeach
+                                data-bs-post="{{ $post->id }}" id="like-btn">
+                                <h4><b><i class="fa-regular fa-heart"></i></b></h4>
+
                             </a>
 
-                            <a type="button" id="commenr-btn" data-toggle="modal" data-target="#commentsModal">
+                            <a type="button" 
+                            
+                            id="commenr-btn" 
+                            data-toggle="modal" 
+                            data-target="#commentsModal">
                                 <h4><b><i class="fa-regular fa-comment"></i></b></h4>
                             </a>
-
-                            <h4><b><i class="bi-share"></i></b></h4>
-
-
 
                             <a type="button">
                                 <h4><b><i class="far fa-paper-plane"></i></b></h4>
@@ -166,33 +182,80 @@
 
                         </div>
                         <div class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
-                            <a type="button" id="book-mark-btn">
-                                <h4><b><i id="book-mark-icon" class="bookmark-icon fa-regular fa-bookmark"></i></b></h4>
+                            <a type="button" 
+                            id="book-mark-btn"
+                            data-bs-post="{{ $post->id }}"
+                            class="post-book-mark"
+                            >
+                                <h4><b><i class="fa-regular fa-bookmark"></i></b></h4>
                             </a>
                         </div>
+                    </div>
+                    <div class="mt-1 d-flex align-items-start post-caption" id="{{ $post->id }}">
+                        <p>
+                            <a type="button">
+                                <b>{{ $post -> user ->  name }}</b>
+                            </a>
+                            {{ $post->caption }}
+                        </p>
                     </div>
                     <div class="d-flex">
                         <p class="m-1 mx-0">Liked by</p>
                         <a type="button">
-                            <p class="m-1"><b>_8arabawy</b></p>
+                            <p class="m-1"><b>
+                                @foreach ($post->likes as $like)
+                                    @if ($post->id == $like->post_id)
+                                        @if (Auth::id() == $like->user_id )
+                                            You
+                                        @else
+                                            {{ $like->user->name }}
+                                         @endif
+                                    @endif 
+                                @endforeach
+                            </b></p>
                         </a>
                         <p class="m-1">and</p>
                         <a type="button">
                             <p class="m-1"><b>others</b></p>
                         </a>
                     </div>
-                    <div class="d-flex">
+                    <div class="d-flex flex-column">
                         <a type="button">
                             <p class="text-secondary m-0">View all 23 comments</p>
                         </a>
+                        <div id="post-{{ $post->id }}">
+                            <div class="comments-container">
+                                @foreach ($post->comments as $comment)
+                                    <div class="col-md-12 mb-0 aligh-items-center d-flex">
+                                        <div class="d-flex col-10 align-items-center">
+                                            @if ($post->id == $comment->post_id)  
+                                                <p>
+                                                    <a type="button">
+                                                        <b>{{ $comment->user->name }}</b>
+                                                    </a>
+                                                    {{ $comment->comment_text }}
+                                                </p>
+                                            @endif
+                                        </div>
+                                        <div class="col-2 d-flex align-items-end justify-content-end">
+                                            <a type="button" class="comment-like" id="like-btn">
+                                                <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-10">
-                            <input type="text" name="comment" placeholder="Add a comment..."
+                            <input type="text" name="comment" data-bs-comment="{{ $post->id }}" placeholder="Add a comment..."
                                 class="comment-txt fs-6">
                         </div>
                         <div class="col-2">
-                            <a type="button" id="submitButton">Post</a>
+                            <a type="button" 
+                            
+                            class="commentBtn">Post</a>
                         </div>
                     </div>
                 </div>

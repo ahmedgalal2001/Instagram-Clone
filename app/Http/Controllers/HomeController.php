@@ -9,7 +9,12 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $posts = Post::with("user")->get();
+        // $following = User::with("following")->get();
+        // $following->where(Auth::id() == "following_id")->get();
+        
+        $posts = Post::with("user")->with("likes")->get();
+        // $posts_count = Post::withCount('user')->get();
+        // dd($posts_count);
         return view("home")->with('posts', $posts);
     }
 }

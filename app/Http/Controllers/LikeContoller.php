@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Like;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class PostsController extends Controller
+class LikeContoller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,19 +30,13 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'commit_message' => 'string|max:500', // Assuming commit_message is a string with a maximum length of 255 characters
-            'myfile' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
-        $image = $request->file('myfile');
-        $imageName = time() . '.' . $image->getClientOriginalExtension(); // Generate a unique image name
-        $image->move(public_path('images/posts'), $imageName);
-        $post = new Post();
-        $post->user_id = Auth::id();
-        $post->image_url = $imageName;
-        $post->caption = $validatedData['commit_message'];
-        $post->save();
-        return redirect()->action([HomeController::class, 'index']);
+        $id_post = $request->input("id");
+        $id_user = Auth::id();
+        $like = new Like();
+        $like->user_id = $id_user;
+        $like->post_id = $id_post;
+        $like->save();
+        return json_decode("success");
     }
 
     /**
@@ -73,6 +68,7 @@ class PostsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Like::where('id', $id)->delete();
+        return json_encode($id);
     }
 }

@@ -12,7 +12,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::get();
+        $users = User::with("posts")->withCount("likes")->get();
         return view("users.index")->with("users", $users);
     }
 
