@@ -56,7 +56,8 @@
                                         </div>
 
                                         <div class="d-flex align-items-center justify-content-end">
-                                            <a type="button" data-toggle="modal" data-target="#postOptionsAlert">
+                                            <a type="button" data-toggle="modal" 
+                                                data-target="#postOptionsAlert" >
                                                 <svg aria-label="More options" class="x1lliihq x1n2onr6 x5n08af" height="24"
                                                     role="img" viewBox="0 0 24 24" width="24">
                                                     <title>More options</title>
@@ -95,7 +96,7 @@
                                                 <div class="row d-flex justify-content-between">
                                                     <div class="col-4 d-flex flex-column align-items-center">
                                                         <p class="m-0">
-                                                            200
+                                                            {{ $users->where('id', $post->user->id)->first()->posts_count }}
                                                         </p>
                                                         <p class="m-0">Posts</p>
                                                     </div>
@@ -161,16 +162,17 @@
                                 @if (Auth::id() == $like->user_id && $post->id == $like->post_id)
                                 style="color:red !important;"
                                 data-bs-like="{{ $like->id }}"
-                                @endif @endforeach
+                                @endif 
+                                @endforeach
                                 data-bs-post="{{ $post->id }}" id="like-btn">
                                 <h4><b><i class="fa-regular fa-heart"></i></b></h4>
 
                             </a>
 
                             <a type="button" 
-                            
-                            id="commenr-btn" 
-                            data-toggle="modal" 
+                            class="comment-btn"
+                            data-toggle="modal"
+                            data-bs-commentBtn = "{{ $post->id }}"
                             data-target="#commentsModal">
                                 <h4><b><i class="fa-regular fa-comment"></i></b></h4>
                             </a>
@@ -194,7 +196,7 @@
                     <div class="mt-1 d-flex align-items-start post-caption" id="{{ $post->id }}">
                         <p>
                             <a type="button">
-                                <b>{{ $post -> user ->  name }}</b>
+                                <b>{{ $post->user->name }}</b>
                             </a>
                             {{ $post->caption }}
                         </p>
@@ -203,15 +205,19 @@
                         <p class="m-1 mx-0">Liked by</p>
                         <a type="button">
                             <p class="m-1"><b>
-                                @foreach ($post->likes as $like)
-                                    @if ($post->id == $like->post_id)
-                                        @if (Auth::id() == $like->user_id )
-                                            You
-                                        @else
-                                            {{ $like->user->name }}
-                                         @endif
-                                    @endif 
-                                @endforeach
+                                    @foreach ($post->likes as $like)
+                                        @if ($post->id == $like->post_id)
+                                            @php
+                                                $foundUser = explode(' ', $like->user->name)[0];
+                                            @endphp
+                                            @if (Auth::id() == $like->user_id )
+                                                You
+                                            @else
+                                                {{ $foundUser }}
+                                            @endif
+                                        @endif 
+                                        @break
+                                    @endforeach
                             </b></p>
                         </a>
                         <p class="m-1">and</p>
@@ -358,7 +364,6 @@
         </div>
         {{-- ------------------------------------------------------------- --}}
     </div>
-    @for ($i = 0; $i < 5; $i++)
         <!-------------------- post options Modal ------------------>
         <div class="modal fade" id="postOptionsAlert" tabindex="-1" role="dialog" aria-labelledby="postOptionsAlert"
             aria-hidden="true">
@@ -366,21 +371,18 @@
                 <div class="modal-content">
                     <div class="modal-header d-flex justify-content-center">
                         <h4><a type="button" class="w-100 text-decoration-none text-danger"
-                                data-dismiss="modal">Unfollow</a></h4>
+                            data-dismiss="modal">Unfollow</a></h4>
                     </div>
                     <div class="modal-body d-flex justify-content-center">
-                        <h4><a type="button" class="w-100 text-decoration-none text-secondary" data-dismiss="modal">Go
-                                To
-                                post</a></h4>
+                        <h4><a type="button" class="w-100 text-decoration-none text-secondary" data-dismiss="modal">Go To post</a></h4>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <h4><a type="button" class="w-100 text-decoration-none text-secondary"
-                                data-dismiss="modal">About
-                                This Account</a></h4>
+                            data-dismiss="modal">About This Account</a></h4>
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <h4><a type="button" class="w-100 text-decoration-none text-secondary"
-                                data-dismiss="modal">Cancel</a></h4>
+                            data-dismiss="modal">Cancel</a></h4>
                     </div>
 
                 </div>
@@ -388,8 +390,16 @@
         </div>
         <!------------------- End of post options modal --------------------->
 
+        <!-------------------- post likes others Modal ------------------>
+        <div class="modal fade z-20" id="postOthersLikesAlert" tabindex="-1" role="dialog" aria-labelledby="postOptionsAlert"
+            aria-hidden="true">
+            
+        </div>
+        <!------------------- End of post options modal --------------------->
+
         <!------------------------- Comments Modal -------------------------->
-        <div class="modal fade bg-none" id="commentsModal" tabindex="-1" role="dialog"
+        {{-- <div id="comment-modal"> --}}
+            <div class="modal fade bg-none z-0" id="commentsModal" tabindex="-1" role="dialog"
             aria-labelledby="commentsModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl h-100" role="document">
                 <div class="modal-content">
@@ -421,7 +431,7 @@
                                                 <div class="col-12 mx-3">
                                                     <div class="d-flex justify-content-between">
                                                         <p class="mb-0 h6">
-                                                            mohamed algharabawy
+                                                            Ahmed
                                                         </p>
                                                         <a type="button" data-toggle="modal" data-target="">
                                                             <svg aria-label="More options"
@@ -454,8 +464,7 @@
                                                 <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
                                             </a>
 
-                                            <a type="button" id="commenr-btn" data-toggle="modal"
-                                                data-target="#commentsModal">
+                                            <a type="button" id="commenr-btn">
                                                 <h4><b><i class="fa-regular fa-comment"></i></b></h4>
                                             </a>
 
@@ -510,7 +519,7 @@
                 </div>
             </div>
         </div>
-    @endfor
+        {{-- </div> --}}
     <!----------------------- End of Comments modal ------------------------>
     {{-- </div> --}}
 

@@ -36,7 +36,10 @@ class LikeContoller extends Controller
         $like->user_id = $id_user;
         $like->post_id = $id_post;
         $like->save();
-        return json_decode("success");
+        return response()->json([
+            'message' => 'Comment stored successfully',
+            'id' => $like->id,
+        ]);
     }
 
     /**

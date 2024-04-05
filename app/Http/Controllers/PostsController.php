@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,7 +52,14 @@ class PostsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $post = Post::with("user")->find($id);
+        $like_user = Like::where('post_id', $id)->with('post')->with('user')->first();
+        $like = Like::where('post_id', $id)->with('post')->with('user')->get();
+        return response()->json([
+            'post' => $post,
+            'likes' => $like,
+            'like_user' => $like_user,
+        ]);
     }
 
     /**
