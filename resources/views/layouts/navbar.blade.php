@@ -127,7 +127,7 @@
 
                         <div class="upload-btn-wrapper">
                             <button class="btn-navbar btn">Select form computer</button>
-                            <input id="upload-img-navbar" type="file" name="myfile" />
+                            <input id="upload-img-post" class="upload-img-navbar" type="file" name="myfile" />
                         </div>
                     </div>
 

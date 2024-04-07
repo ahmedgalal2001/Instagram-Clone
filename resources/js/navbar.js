@@ -1,6 +1,6 @@
 import axios from "axios";
 
-let myfile = document.getElementById("upload-img-navbar");
+let myfile = document.getElementById("upload-img-post");
 let img_post = document.getElementById("img-post");
 let first_view = document.querySelector("#first-view");
 let sceond_view = document.querySelector("#sceond-view");
