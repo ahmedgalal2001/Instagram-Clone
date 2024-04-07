@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @extends('layouts.app')
 @section('title', 'User')
 @section('body')
@@ -46,6 +45,3 @@
             </div>
         </div>
     @endsection
-=======
-g
->>>>>>> de7b88d8dbcd8de21765156579cc6f860f4c35f2
