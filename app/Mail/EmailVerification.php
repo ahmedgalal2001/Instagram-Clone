@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Dotenv\Util\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

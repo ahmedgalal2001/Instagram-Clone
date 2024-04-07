@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'username'
     ];
 
     /**
@@ -65,7 +66,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Hashtag::class, 'post_hashtags');
     }
 
-    
+
     public function following()
     {
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');

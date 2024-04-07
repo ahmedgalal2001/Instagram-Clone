@@ -40,7 +40,7 @@
                                     id="password" placeholder="Password">
                             </div>
                             <div class="mb-3">
-                                <input type="password" name="password-confirmation" class="form-control rounded-0 bg-light"
+                                <input type="password" name="password_confirmation" class="form-control rounded-0 bg-light"
                                     id="password" placeholder="Confirm Password">
                             </div>
                             <p class="text-muted">People who use our service may have uploaded your contact information to
