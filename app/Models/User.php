@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Database\Seeders\LikesTableSeeder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -47,6 +49,23 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
+
+     public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->where('post_id','id');
+    }
+
+    public function hashtags()
+    {
+        return $this->belongsToMany(Hashtag::class, 'post_hashtags');
+    }
+
+    
     public function following()
     {
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');
@@ -59,4 +78,7 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'blocks', 'user_id', 'blocked_user_id');
     }
+
+
+
 }

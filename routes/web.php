@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\followerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -26,8 +27,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{username}', [UserController::class, 'show'])->name('user.show');
     Route::post('/posts', [PostsController::class, "store"])->name("posts.store");
+    Route::post('/follow', [ProfileController::class, 'add'])->name('follow.add');
+    Route::get('/post/{id}', [ProfileController::class, 'showModelPost'])->name('Post.show');
+    Route::delete('/followers/{id}', [ProfileController::class, 'removeFollower'])->name('follower.delete');
+    Route::delete('/following/{id}', [ProfileController::class, 'unfollow'])->name('following.delete');
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::get('/home', [HomeController::class, 'index']);
+
 });
 
 

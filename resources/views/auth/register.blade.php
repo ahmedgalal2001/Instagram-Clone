@@ -24,19 +24,23 @@
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
                             <div class="mb-3">
+                                <input type="email" name="email" class="form-control rounded-0 bg-light" id="email"
+                                    placeholder="Mobile Number or Email">
+                            </div>
+                            <div class="mb-3">
                                 <input type="text" name="name" class="form-control rounded-0 bg-light" id="name"
                                     placeholder="Full Name">
                             </div>
                             <div class="mb-3">
-                                <input type="email" name="email" class="form-control rounded-0 bg-light" id="email"
-                                    placeholder="Mobile Number or Email">
+                                <input type="text" name="username" class="form-control rounded-0 bg-light" id="name"
+                                    placeholder="User Name">
                             </div>
                             <div class="mb-3">
                                 <input type="password" name="password" class="form-control rounded-0 bg-light"
                                     id="password" placeholder="Password">
                             </div>
                             <div class="mb-3">
-                                <input type="password" name="confirm-password" class="form-control rounded-0 bg-light"
+                                <input type="password" name="password-confirmation" class="form-control rounded-0 bg-light"
                                     id="password" placeholder="Confirm Password">
                             </div>
                             <p class="text-muted">People who use our service may have uploaded your contact information to
