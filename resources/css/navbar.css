@@ -1,24 +1,36 @@
 .navbar {
     width: 150px;
-    /* background-color: gray; */
     padding: 10px;
     position: fixed;
     height: 100vh;
+    border: 1px solid #ccc;
+    color: #000 !important;
 }
-.custom {
+
+.offcanvas-start {
     left: 150px !important;
+    transform: translateX(0px) !important;
+    transition: transform 0.3s ease-in-out !important;
+}
+.custome-text-area {
+    border: none;
+    outline: none;
+}
+.custome-text-area:focus {
+    box-shadow: none;
+}
+.dropup .dropdown-toggle::after {
+    display: none;
 }
 .img-profile {
+    width: 44px !important;
+    height: 44px !important;
+}
+.my-profile {
     width: 24px !important;
     height: 24px !important;
 }
-.modal-content-navbar {
-    background-color: #262626 !important;
-    color: #fff !important;
-}
-.instrg {
-    display: none;
-}
+
 .upload-btn-wrapper {
     position: relative;
     overflow: hidden;
@@ -36,7 +48,7 @@
     color: white;
 }
 
-#upload-img-navbar {
+.upload-img-navbar {
     font-size: 100px;
     position: absolute;
     left: 0;
@@ -45,11 +57,42 @@
     cursor: pointer;
 }
 
+.user-profile {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    margin-bottom: 10px; /* Adjust margin as needed */
+}
+
+.user-profile .nav-link {
+    text-decoration: none;
+    color: #333;
+}
+
+.user-profile img {
+    border: 2px solid #fff; /* Add border to the profile image */
+}
+
+.user-profile .user-info {
+    margin-left: 10px; /* Adjust margin between image and user info */
+}
+
+.user-profile .user-email {
+    font-weight: bold;
+}
+
+.link-navbar:hover {
+    background-color: #eee;
+    transform: translateX(2%);
+}
+
 @media (min-width: 300px) and (max-width: 768px) {
     .navbar {
         width: 100%;
         height: 50px;
-        background-color: gray;
+        background-color: #fff;
         padding: 10px;
         position: fixed;
         z-index: 1;
@@ -64,20 +107,15 @@
     .side-one {
         display: flex;
         justify-content: space-between;
-        flex-grow: 1;
     }
     .side-two {
         display: flex;
-        justify-content: space-evenly;
-        flex-grow: 1;
+        justify-content: space-around;
     }
     .desc {
-        display: none;
-    }
-    .more {
         display: none !important;
     }
-    .custom {
+    .more {
         display: none !important;
     }
 }
