@@ -32,7 +32,7 @@
                                     placeholder="Full Name">
                             </div>
                             <div class="mb-3">
-                                <input type="text" name="username" class="form-control rounded-0 bg-light" id="username"
+                                <input type="password" name="password_confirmation" class="form-control rounded-0 bg-light" id="username"
                                     placeholder="Username">
                             </div>
                             <div class="mb-3">

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\PostsController;
 
 /*
@@ -28,6 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::get('/home', [HomeController::class, 'index']);
 });
+
+
+Route::get("/emailtest/{email}",[MailController::class,"sendMsg"])->name("mail.sendMsg");
 
 Route::fallback(fn () => 'Route not found');
 
