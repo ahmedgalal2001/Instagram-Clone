@@ -8,8 +8,12 @@
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-4">
             <div class="border p-5">
-                <div class="text-center mb-5 ">
-                    <h1>Instagram</h1>
+                <div class="text-center">
+                    <a href="{{ route('login') }}">
+                        <img class="img-fluid w-50"
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png"
+                            alt="">
+                    </a>
                 </div>
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
