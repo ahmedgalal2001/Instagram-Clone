@@ -12,6 +12,9 @@ class FollowsTableSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        $numberOfFollowers = 100;
+
+        // Create followers using factory
+        \App\Models\User::factory($numberOfFollowers)->create();
     }
 }
