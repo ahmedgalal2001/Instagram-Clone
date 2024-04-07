@@ -40,6 +40,14 @@
                         <p>Have an account? <a href="{{ route('login') }}">Log in</a></p>
                     </div>
                 </div>
+                <div class="text-center mt-3">
+                    <p>Get the app.</p>
+                </div>
+                <div class="text-center">
+                    <img class="me-3" src={{ asset('images/googleplay.png') }} alt="googleplay" width="120px"
+                        height="40px">
+                    <img src={{ asset('images/microsoftstore.png') }} alt="microsoftstore" width="120px" height="40px">
+                </div>
             </div>
         </div>
     @endsection
