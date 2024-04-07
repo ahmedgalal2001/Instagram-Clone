@@ -23,26 +23,41 @@
                     <div class="text-center">
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
-                            <div class="mb-3">
+                            <div class="mb-1">
                                 <input type="email" name="email" class="form-control rounded-0 bg-light" id="email"
                                     placeholder="Mobile Number or Email">
                             </div>
-                            <div class="mb-3">
+                            @error('email')
+                                <p class="text-danger mb-1 text-start">{{ $message }}</p>
+                            @enderror
+                            <div class="mb-1">
                                 <input type="text" name="name" class="form-control rounded-0 bg-light" id="name"
                                     placeholder="Full Name">
                             </div>
-                            <div class="mb-3">
+                            @error('name')
+                                <p class="text-danger mb-1 text-start">{{ $message }}</p>
+                            @enderror
+                            <div class="mb-1">
                                 <input type="text" name="username" class="form-control rounded-0 bg-light" id="name"
                                     placeholder="User Name">
                             </div>
-                            <div class="mb-3">
+                            @error('name')
+                                <p class="text-danger mb-1 text-start">{{ $message }}</p>
+                            @enderror
+                            <div class="mb-1">
                                 <input type="password" name="password" class="form-control rounded-0 bg-light"
                                     id="password" placeholder="Password">
                             </div>
-                            <div class="mb-3">
+                            @error('password')
+                                <p class="text-danger mb-1 text-start">{{ $message }}</p>
+                            @enderror
+                            <div class="mb-1">
                                 <input type="password" name="password-confirmation" class="form-control rounded-0 bg-light"
                                     id="password" placeholder="Confirm Password">
                             </div>
+                            @error('password')
+                                <p class="text-danger mb-1 text-start">{{ $message }}</p>
+                            @enderror
                             <p class="text-muted">People who use our service may have uploaded your contact information to
                                 Instagram. Learn More</p>
                             <p class="text-muted">By signing up, you agree to our <a href="#">Terms</a>, <a
