@@ -120,7 +120,7 @@
                             <div class="col-md-9">
                                 <div class="d-flex">
                                     <p class="mb-0 h6">
-                                        mohamed algharabawy
+                                        {{$post->user->name}}
                                     </p>
                                     <p class="mb-0 h6 text-secondary">
                                         <i>.1h</i>

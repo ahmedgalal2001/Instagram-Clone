@@ -6,15 +6,17 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class followerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::get();
-        return view("users.index")->with("users", $users);
+        $Currnet_user=User::find(Auth::id());
+        $followers=$Currnet_user->followers;
+        $followings=$Currnet_user->following;
+       return view('profile.index',compact('followers','followings'));
     }
 
     /**
@@ -36,10 +38,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $username)
+    public function show(string $id)
     {
-        $users = User::where("name", "like", "%$username%")->get();
-        return json_encode($users);
+        //
     }
 
     /**
@@ -65,4 +66,9 @@ class UserController extends Controller
     {
         //
     }
+
+
+
+    
+
 }

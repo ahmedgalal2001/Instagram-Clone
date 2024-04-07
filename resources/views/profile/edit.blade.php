@@ -58,93 +58,93 @@
                                         data-bs-target="#staticBackdropghrabawy" id="ghrabaawy">
                                         Change photo
                                     </button>
-                                    </form>
+                                </form>
 
-                                    {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropghrabawy" id="ghrabaawy">
+                                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropghrabawy" id="ghrabaawy">
                                     Change photo
                                     </button> --}}
-                                    <!-- Modal -->
-                                    <div class="modal fade " id="staticBackdropghrabawy" data-bs-backdrop="static"
-                                        data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
-                                        aria-hidden="true">
-                                        <div class=" modal-dialog modal-dialog-centered">
-                                            <div class="modal-content ">
-                                                <div class="modal-header justify-content-center">
-                                                    <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabel">Change
-                                                        Profile photo</h1>
-                                                </div>
-                                                <div class="modal-body text-light d-flex flex-column align-item-center">
-                                                    <div class="upload-btn-wrapper text-center">
-                                                        <button class="btn-navbar btn">Select form computer</button>
-                                                        <input class="upload-img-navbar" type="file" id="chgphoto"
-                                                            name="myfile" />
-                                                    </div>
-                                                </div>
-                                                <hr>
-                                                <div class="text-center">
-                                                    <a type="button" class="btn text-danger w-100">remove current photo</a>
-                                                </div>
-                                                <hr>
-                                                <div class=" text-center ">
-                                                    <button type="button" class="btn text-dark mb-2 w-100"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                </div>
-
+                                <!-- Modal -->
+                                <div class="modal fade " id="staticBackdropghrabawy" data-bs-backdrop="static"
+                                    data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                    aria-hidden="true">
+                                    <div class=" modal-dialog modal-dialog-centered">
+                                        <div class="modal-content ">
+                                            <div class="modal-header justify-content-center">
+                                                <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabel">Change
+                                                    Profile photo</h1>
                                             </div>
+                                            <div class="modal-body text-light d-flex flex-column align-item-center">
+                                                <div class="upload-btn-wrapper text-center">
+                                                    <button class="btn-navbar btn">Select form computer</button>
+                                                    <input class="upload-img-navbar" type="file" id="chgphoto"
+                                                        name="myfile" />
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="text-center">
+                                                <a type="button" class="btn text-danger w-100">remove current photo</a>
+                                            </div>
+                                            <hr>
+                                            <div class=" text-center ">
+                                                <button type="button" class="btn text-dark mb-2 w-100"
+                                                    data-bs-dismiss="modal">Close</button>
+                                            </div>
+
                                         </div>
                                     </div>
+                                </div>
 
                             </div>
                         </div>
                         <div class="col-12">
                             <form>
-                            <div class="form-group ">
-                                <label for="formGroupExampleInput" class="mt-3 h5">Website</label>
-                                <input type="text" class="form-control mt-3" id="formGroupExampleInput"
-                                    placeholder="Website" disabled>
-                                <p class="text-muted mt-1 small">Editing your links is only available on mobile.
-                                    Visit
-                                    the
-                                    Instagram app and
-                                    edit your profile to change the websites in your bio.</p>
-                            </div>
-                            <div class="form-group">
-                                <label class="mt-3 h5"for="formGroupExampleInput2">Bio</label>
-                                <input type="text" class="form-control mt-1" id="formGroupExampleInput2"
-                                    placeholder="Bio">
-                            </div>
-                            <div class="form-group">
-                                <label class="mt-3 h5"for="inputState">Gender</label>
-                                <select id="inputState" class="form-control mt-1">
-                                    <option selected>Male</option>
-                                    <option>Female</option>
-                                    <option>Custom</option>
-                                </select>
-                                <p class="text-muted mt-1 small">This won’t be part of your public profile.
-                                </p>
-                            </div>
-
-                            <div class="row align-items-center">
-                                <h5>Show account suggestions on profiles
-                                </h5>
-                                <div class="col d-flex card flex-row">
-                                    <div>
-                                        <h5 class="mt-3"for="flexSwitchCheckChecked">Show account
-                                            suggestions on profiles</h5>
-                                        <p class="text-muted small">Choose whether people can see similar
-                                            account
-                                            suggestions on your
-                                            profile, and whether your account can be suggested on other
-                                            profiles.
-                                        </p>
-                                    </div>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch"
-                                            id="flexSwitchCheckChecked" checked>
-                                    </div>
+                                <div class="form-group ">
+                                    <label for="formGroupExampleInput" class="mt-3 h5">Website</label>
+                                    <input type="text" class="form-control mt-3" id="formGroupExampleInput"
+                                        placeholder="Website" disabled>
+                                    <p class="text-muted mt-1 small">Editing your links is only available on mobile.
+                                        Visit
+                                        the
+                                        Instagram app and
+                                        edit your profile to change the websites in your bio.</p>
+                                </div>
+                                <div class="form-group">
+                                    <label class="mt-3 h5"for="formGroupExampleInput2">Bio</label>
+                                    <input type="text" class="form-control mt-1" id="formGroupExampleInput2"
+                                        placeholder="Bio">
+                                </div>
+                                <div class="form-group">
+                                    <label class="mt-3 h5"for="inputState">Gender</label>
+                                    <select id="inputState" class="form-control mt-1">
+                                        <option selected>Male</option>
+                                        <option>Female</option>
+                                        <option>Custom</option>
+                                    </select>
+                                    <p class="text-muted mt-1 small">This won’t be part of your public profile.
+                                    </p>
                                 </div>
 
-                            </div>
+                                <div class="row align-items-center">
+                                    <h5>Show account suggestions on profiles
+                                    </h5>
+                                    <div class="col d-flex card flex-row">
+                                        <div>
+                                            <h5 class="mt-3"for="flexSwitchCheckChecked">Show account
+                                                suggestions on profiles</h5>
+                                            <p class="text-muted small">Choose whether people can see similar
+                                                account
+                                                suggestions on your
+                                                profile, and whether your account can be suggested on other
+                                                profiles.
+                                            </p>
+                                        </div>
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" role="switch"
+                                                id="flexSwitchCheckChecked" checked>
+                                        </div>
+                                    </div>
+
+                                </div>
                         </div>
                         <div class="d-flex justify-content-end flex-row ">
                             <button type="submit" class="btn btn-primary mt-3 w-50">Submit</button>
