@@ -12,7 +12,13 @@
     transform: translateX(0px) !important;
     transition: transform 0.3s ease-in-out !important;
 }
-
+.custome-text-area {
+    border: none;
+    outline: none;
+}
+.custome-text-area:focus {
+    box-shadow: none;
+}
 .dropup .dropdown-toggle::after {
     display: none;
 }
@@ -77,11 +83,16 @@
     font-weight: bold;
 }
 
+.link-navbar:hover {
+    background-color: #eee;
+    transform: translateX(2%);
+}
+
 @media (min-width: 300px) and (max-width: 768px) {
     .navbar {
         width: 100%;
         height: 50px;
-        background-color: gray;
+        background-color: #fff;
         padding: 10px;
         position: fixed;
         z-index: 1;
@@ -96,15 +107,13 @@
     .side-one {
         display: flex;
         justify-content: space-between;
-        flex-grow: 1;
     }
     .side-two {
         display: flex;
-        justify-content: space-evenly;
-        flex-grow: 1;
+        justify-content: space-around;
     }
     .desc {
-        display: none;
+        display: none !important;
     }
     .more {
         display: none !important;

@@ -6,6 +6,7 @@ let first_view = document.querySelector("#first-view");
 let sceond_view = document.querySelector("#sceond-view");
 let search_username = document.querySelector("#search-username");
 let users = document.querySelector("#users");
+let modal_create_post = document.querySelector("#modal-create-post");
 
 sceond_view.style.display = "none";
 first_view.style.display = "flex";
@@ -19,6 +20,7 @@ myfile.addEventListener('change', function (event) {
     var selectedFile = event.target.files[0];
     var imgUrl = URL.createObjectURL(selectedFile);
     img_post.src = imgUrl;
+    modal_create_post.classList.add("modal-xl");
 });
 
 search_username.onkeyup = () => {
@@ -34,7 +36,7 @@ search_username.onkeyup = () => {
                 src="https://img.freepik.com/free-photo/portrait-american-black-person-looking-up_23-2148749586.jpg"
                 class="rounded-circle me-2 img-profile" alt="">
             <div class="user-info">
-                <span class="user-email">${user.email}</span>
+                <span class="user-email">${user.name}</span>
                 <!-- Add more user information here if needed -->
             </div>
         </a>
