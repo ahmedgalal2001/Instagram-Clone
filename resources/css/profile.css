@@ -37,12 +37,11 @@
   }
 
 
-  a:link {
+  .custom-link:link{
     color: #000;
     text-decoration: none;
-
-  }
-  a:visited {
+}
+.custom-link:visited {
     color: #000;
     text-decoration: none;
 
