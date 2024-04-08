@@ -18,12 +18,23 @@
                             <p>Enter the confirmation code sent to your email.
                             </p>
                             <div class="text-center">
-                                <form method="POST" action="{{ route('register') }}">
+                                <form action="{{ route('verify.code') }}" method="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <input type="email" name="code" class="form-control rounded-0 bg-light"
+                                        <input type="email" hidden name="email" value="{{ old('email', $email) }}"
+                                            class="form-control rounded-0 bg-light" id="email"
+                                            placeholder="Mobile Number or Email">
+                                    </div>
+                                    @error('email')
+                                        <p class="alert alert-danger">{{ $message }}</p>
+                                    @enderror
+                                    <div class="mb-3">
+                                        <input type="text" name="code" class="form-control rounded-0 bg-light"
                                             id="code" placeholder="CodeXXXXXXXXXX">
                                     </div>
+                                    @error('code')
+                                        <p class="alert alert-danger">{{ $message }}</p>
+                                    @enderror
                                     <button type="submit" class="btn btn-primary w-100">Send Login Link</button>
                                 </form>
                             </div>

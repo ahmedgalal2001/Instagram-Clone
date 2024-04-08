@@ -22,16 +22,16 @@
                             aria-describedby="emailHelp" placeholder="Phone number,username, or email">
                     </div>
                     @error('email')
-                        <p class="text-danger mb-1 text-start">{{ $message }}</p>
+                        <p class="alert alert-danger">{{ $message }}</p>
                     @enderror
-                    <div class="mb-1 ">
+                    <div class="mb-3 ">
                         <input type="password" name="password" class=" form-control" id="exampleInputPassword1"
                             placeholder="password">
                     </div>
                     @error('password')
-                        <p class="text-danger mb-1 text-start">{{ $message }}</p>
+                        <p class="alert alert-danger">{{ $message }}</p>
                     @enderror
-                    <div class=" mb-1">
+                    <div class=" mb-3">
                         <button type="submit" class="btn lightblue w-100 text-light">Login</button>
                     </div>
                     <div>

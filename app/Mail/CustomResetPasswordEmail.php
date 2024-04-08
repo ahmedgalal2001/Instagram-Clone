@@ -2,8 +2,6 @@
 
 namespace App\Mail;
 
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Dotenv\Util\Str;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -11,17 +9,20 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class EmailVerification extends Mailable
+class CustomResetPasswordEmail extends Mailable
 {
     use Queueable, SerializesModels;
-    private $code;
-    public function __construct(string $code)
+
+    /**
+     * Create a new message instance.
+     */
+    public function __construct()
     {
-        $this->code = $code;
+        //
     }
     public function build()
     {
-        return $this->subject('Test Email')
-            ->view('emails.email-code-verification')->with(['code' => $this->code]);
+        return $this->view('emails.email-reset-password') // Specify the name of your custom Blade template
+                    ->subject('Reset Your Password'); // Set the email subject
     }
 }

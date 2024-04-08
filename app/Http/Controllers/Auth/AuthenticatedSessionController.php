@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -25,11 +26,23 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
+        ]);
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+            if ($user->email_verified_at) {
+                $request->authenticate();
 
-        $request->session()->regenerate();
+                $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+                return redirect()->intended(RouteServiceProvider::HOME);
+            }
+            return redirect()->route('verify.sendMsg', ['email' => $user->email]);
+        } else {
+            return back()->withErrors(['email' => 'The User Not Found.']);
+        }
     }
 
     /**
@@ -43,6 +56,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }
