@@ -52,7 +52,7 @@
                                 <p class="text-danger mb-1 text-start">{{ $message }}</p>
                             @enderror
                             <div class="mb-1">
-                                <input type="password" name="password-confirmation" class="form-control rounded-0 bg-light"
+                                <input type="password" name="password_confirmation" class="form-control rounded-0 bg-light"
                                     id="password" placeholder="Confirm Password">
                             </div>
                             @error('password')

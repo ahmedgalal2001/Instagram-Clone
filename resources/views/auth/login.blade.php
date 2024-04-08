@@ -24,14 +24,14 @@
                     @error('email')
                         <p class="alert alert-danger">{{ $message }}</p>
                     @enderror
-                    <div class="mb-3 ">
+                    <div class="mb-1 ">
                         <input type="password" name="password" class=" form-control" id="exampleInputPassword1"
                             placeholder="password">
                     </div>
                     @error('password')
                         <p class="alert alert-danger">{{ $message }}</p>
                     @enderror
-                    <div class=" mb-3">
+                    <div class=" mb-1">
                         <button type="submit" class="btn lightblue w-100 text-light">Login</button>
                     </div>
                     <div>
