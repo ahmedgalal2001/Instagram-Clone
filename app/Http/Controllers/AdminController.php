@@ -15,9 +15,8 @@ class AdminController extends Controller
             $users = User::all();
             $posts = Post::all();
             $comments = Comment::all();
-            return view('admin', ["users" => $users, "posts"=>$posts, "comments"=> $comments]);
+            return view('admin.posts', ["users" => $users, "posts"=>$posts, "comments"=> $comments]);
         }
-        
-        return view('admin');
+        return view('home');
     }
 }
