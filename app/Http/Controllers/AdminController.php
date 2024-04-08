@@ -13,8 +13,6 @@ class AdminController extends Controller
     {
         if (!auth()->user()->is_admin) {
             $posts = Post::all();
-            // $users = User::all();
-            // $comments = Comment::all();
             return view('admin.posts', ["posts"=>$posts]);
         }
         return view('home');
@@ -24,6 +22,14 @@ class AdminController extends Controller
         if (!auth()->user()->is_admin) {
             $comments = Comment::all();
             return view('admin.comments', ["comments"=> $comments]);
+        }
+        return view('home');
+    }
+    public function usersIndex()
+    {
+        if (!auth()->user()->is_admin) {
+            $users = User::all();
+            return view('admin.users', ["users"=> $users]);
         }
         return view('home');
     }
