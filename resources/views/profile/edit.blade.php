@@ -46,7 +46,7 @@
                                 <div>
                                     <img class="rounded-circle " id="profile-pic" width="50px" height="50px"
                                         src="{{ asset('images/profile/' . auth()->user()->image) }}" alt="gloo">
-                                    <span class="mx-2 "><strong>Karim Desouki's</strong></span>
+                                    <span class="mx-2 "><strong>{{ auth()->user()->username }}</strong></span>
                                 </div>
                                 <!-- Button trigger modal -->
                                 {{-- ------------Form--------------------- --}}
