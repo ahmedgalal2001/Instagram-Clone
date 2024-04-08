@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,7 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard')->middleware('auth');
 
 Route::get("/emailtest/{email}",[MailController::class,"sendMsg"])->name("mail.sendMsg");
 
