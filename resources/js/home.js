@@ -180,144 +180,199 @@ commentButton.forEach((btn) => {
         let postId = btn.getAttribute("data-bs-commentBtn");
         axios.get(`/post/${postId}`).then((res) => {
             console.log(res.data);
-            let random = Math.random();
-            let user = res.data.user;
             let likes = res.data.likes;
-            // let that = this;foundUser
             console.log(res.data.like_user);
 
             modalDiv.innerHTML = `
-      <div class="modal-dialog modal-dialog-centered modal-xl h-100" role="document">
-          <div class="modal-content">
-              <div class="d-flex justify-content-end">
-                  <button type="button" class="close border-0 bg-white" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <div class="modal-body">
-                  <div class="row">
-                      <div class="col-6 p-3">
-                          <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid" />
-                      </div>
-                      <div class="col-6 d-flex align-items-center justify-content-center">
+            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                <div class="modal-content p-0">
+                        
+                    <div class="modal-body m-0 p-0">
+                        <div class="row p-0">
+                            <div class="col-7 d-flex p-0 m-0">
+                                <img src="https://mdbcdn.b-cdn.net/img/new/standard/nature/111.webp" class="img-fluid" />
+                            </div>
+                            <div class="col-5 d-flex flex-column p-0 align-items-center justify-content-start">  
+                                <div class="container-fluid">
+                                    <div class="col-12 d-flex justify-content-end">
+                                        <button type="button" class="close border-0 bg-white" data-dismiss="modal" aria-label="Close">
+                                            <h3 aria-hidden="true" class="m-0">&times;</h3>
+                                        </button>
+                                    </div>
+                                    <!------------------- User's profile --------------------->
+                                    <div class="bg-image hover-overlay m-0" data-mdb-ripple-init
+                                        data-mdb-ripple-color="light">
+                                        <div class="row m-0 p-0">
+                                            <div class="col-9 d-flex align-items-center p-0 m-0">
+                                                <div class="col-2 d-flex pt-3 justify-content-start align-items-center">
+                                                    <div class="avatar-container position-relative">
+                                                        <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                                            class="rounded-circle mb-3 avatar" width="50px"
+                                                            height="50px" alt="Avatar" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-12">
+                                                    <div class="d-flex justify-content-between">
+                                                        <p class="mb-0 h6">
+                                                            ${res.data.post.user.name}
+                                                        </p>
+                                                        <a type="button" data-toggle="modal" data-target="">
+                                                            <svg aria-label="More options"
+                                                                class="x1lliihq x1n2onr6 x5n08af" height="24"
+                                                                role="img" viewBox="0 0 24 24" width="24">
+                                                                <title>More options</title>
+                                                                <circle cx="12" cy="12" r="1.5"
+                                                                    fill="black"></circle>
+                                                                <circle cx="6" cy="12" r="1.5"
+                                                                    fill="black"></circle>
+                                                                <circle cx="18" cy="12" r="1.5"
+                                                                    fill="black"></circle>
+                                                            </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                          <div class="container-fluid">
-                              <!------------------- User's profile --------------------->
-                              <div class="bg-image hover-overlay" data-mdb-ripple-init
-                                  data-mdb-ripple-color="light">
-                                  <div class="row m-0 p-0">
-                                      <div class="col-9 d-flex align-items-center p-0">
-                                          <div class="col-3 d-flex pt-3 justify-content-center align-items-center">
-                                              <div class="avatar-container position-relative">
-                                                  <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
-                                                      class="rounded-circle mb-3 avatar" width="65px"
-                                                      height="65px" alt="Avatar" />
-                                              </div>
-                                          </div>
-                                          <div class="col-12 mx-3">
-                                              <div class="d-flex justify-content-between">
-                                                  <p class="mb-0 h6">
-                                                      
-                                                  </p>
-                                                  <a type="button" data-toggle="modal" data-target="">
-                                                      <svg aria-label="More options"
-                                                          class="x1lliihq x1n2onr6 x5n08af" height="24"
-                                                          role="img" viewBox="0 0 24 24" width="24">
-                                                          <title>More options</title>
-                                                          <circle cx="12" cy="12" r="1.5"
-                                                              fill="black"></circle>
-                                                          <circle cx="6" cy="12" r="1.5"
-                                                              fill="black"></circle>
-                                                          <circle cx="18" cy="12" r="1.5"
-                                                              fill="black"></circle>
-                                                      </svg>
-                                                  </a>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
+                                    <!-------------------------------------------------------->
+                                    <hr class="mt-0">
+                                    <!----------------------------- Icons ---------------------->
 
-                              <!-------------------------------------------------------->
-                              <hr class="mt-0">
-                              <!----------------------------- Icons ---------------------->
+                                    
+                                    <div class="d-flex">
+                                        <p class="m-1 mx-0">Liked by</p>
+                                        <a type="button"> 
+                                        <p class="m-1">
+                                        <b>
+                                            ${res.data.like_user ? res.data.like_user.user.name : "No Likes"}
+                                        </b>
+                                        </p>
+                                        </a>
+                                        ${res.data.like_user ? `
+                                        <p class="m-1">and</p>
 
-                              <div class="row">
-                                  <div
-                                      class="col-4 col-lg-4 col-md-6 col-sm-6 d-flex align-items-center justify-content-between">
+                                        <a type="button"  
+                                        data-toggle="modal"
+                                        data-bs-othersLikes = "${res.data.post.id}"
+                                        class = "others-modal"
+                                        data-target="#postOthersLikesAlert">
+                                            <p class="m-1"><b>others</b></p>
+                                        </a>
+                                        
+                                        ` : ""}
+                                        
+                                    </div>
+                                    <div class="d-flex flex-column modal-comments">
+                                        <div class="p-1 ">
+                                            ${res.data.allComments.length == 0 ? 
+                                                `<p class="text-center">No Comments</p>`
+                                                :
+                                                `<div class="comments-modal-container">
+                                                
+                                                </div>`
+                                            }
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-3 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center justify-content-between">
 
-                                      <a type="button" class="like-btn" id="like-btn">
-                                          <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
-                                      </a>
+                                            <a type="button" class="post-like" id="like-btn">
+                                                <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
+                                            </a>
 
-                                      <a type="button" id="commenr-btn">
-                                          <h4><b><i class="fa-regular fa-comment"></i></b></h4>
-                                      </a>
+                                            <a type="button" id="commenr-btn">
+                                                <h4><b><i class="fa-regular fa-comment"></i></b></h4>
+                                            </a>
 
-                                      <a type="button">
-                                          <h4><b><i class="far fa-paper-plane"></i></b></h4>
-                                      </a>
+                                            <a type="button">
+                                                <h4><b><i class="far fa-paper-plane"></i></b></h4>
+                                            </a>
 
 
-                                  </div>
-                                  <div
-                                      class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
-                                      <a type="button" class="bookmark-btn" id="book-mark-btn">
-                                          <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
-                                      </a>
-                                  </div>
-                              </div>
-                              <div class="d-flex">
-                                <p class="m-1 mx-0">Liked by</p>
-                                <a type="button"> 
-                                  <p class="m-1">
-                                  <b>
-                                    ${res.data.like_user ? res.data.like_user.user.name : "No Likes"}
-                                  </b>
-                                  </p>
-                                </a>
-                                ${res.data.like_user ? `
-                                <p class="m-1">and</p>
+                                        </div>
+                                        <div class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
+                                            <a type="button" class="bookmark-btn" id="book-mark-btn">
+                                                <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
+                                            </a>
+                                        </div>
+                                    </div>
 
-                                <a type="button"  
-                                data-toggle="modal"
-                                data-bs-othersLikes = "${res.data.post.id}"
-                                class = "others-modal"
-                                data-target="#postOthersLikesAlert">
-                                    <p class="m-1"><b>others</b></p>
-                                </a>
+                                    <div>
+                                        <p><i>12:20:30</i></p>
+                                    </div>
+                                    <hr>
+                                    
+                                    <div class="row w-100 px-1 pb-2 pt-0">
+                                        <div class="col-10 px-1">
+                                            <input type="text" name="comment" placeholder="Add a comment..."
+                                                class="comment-txt fs-6 w-100 m-0">
+                                        </div>
+                                        <div class="col-2 d-flex justify-content-end">
+                                            <a type="button">Post</a>
+                                        </div>
+                                    </div>
+
+                                    <!---------------------------------------------------------->
+                                    
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `;
+
+
+            /******************************* Display All Comments ****************************/
+
+            let commentsDiv = document.querySelector(".comments-modal-container");
+            console.log(commentsDiv);
+            let allComentsData = res.data.allComments;
+            console.log(allComentsData);
+
+            allComentsData.forEach((comment)=>{          
+                let allComents = `
+                    <div class="col-md-12 mb-0 aligh-items-center d-flex">
+                        <div class="d-flex col-10 align-items-center p-0">   
+                                <div class="col-2 d-flex pt-2 justify-content-start align-items-center">
+                                    <div class="avatar-container position-relative">
+                                        <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                            class="rounded-circle mb-3 avatar" width="50px"
+                                            height="50px" alt="Avatar" />
+                                    </div>
+                                </div>
+    
+                                <div>
+                                    <p class="m-0">
+                                        <a type="button">
+                                            <b>${comment.user.name}</b>
+                                        </a>
+                                        ${comment.comment_text} 
+                                    </p>
+    
+                                    <p class="m-0 text-secondary">
+                                        <i>${res.data.comments[0]}</i> 
+                                    </p>
+                                </div>
                                 
-                                ` : ""}
-                                 
-                              </div>
-                              <div class="d-flex">
-                                  <a type="button">
-                                      <p class="text-secondary m-0">View all 23 comments</p>
-                                  </a>
-                              </div>
-                              <div class="row">
-                                  <div class="col-10">
-                                      <input type="text" name="comment" placeholder="Add a comment..."
-                                          class="comment-txt fs-6">
-                                  </div>
-                                  <div class="col-2">
-                                      <a type="button">Post</a>
-                                  </div>
-                              </div>
+                        </div>
+                        <div class="col-2 d-flex p-2 align-items-end justify-content-end align-items-center">
+                            <a type="button" class="comment-like" id="like-btn">
+                                <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
+                            </a>
+                        </div>
+                    </div>
+                `;
 
-                              <!---------------------------------------------------------->
-                              {{-- <hr class="mt-0"> --}}
+                commentsDiv.innerHTML += allComents;
+            });
 
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-          </div>
-      </div>
-    `;
+            /*********************************************************************************/
+
+
             let othersModalMainDiv = document.getElementById("postOthersLikesAlert");
             let othersModal = document.querySelectorAll(".others-modal");
             othersModal.forEach((btn)=>{
@@ -370,4 +425,84 @@ commentButton.forEach((btn) => {
             })
         }); // axios end
     });
+});
+
+
+/******************************** Main posts others btn forr likes **********************************/
+
+
+let othersModalMainDiv = document.getElementById("postOthersLikesAlert");
+// console.log(othersModalMainDiv);
+let othersButton = document.querySelectorAll(".others-post");
+// console.log(othersButton);
+othersButton.forEach((btn) => {
+    btn.addEventListener('click', () => {
+        let postId = btn.getAttribute("data-bs-othersLikesPost");
+        axios.get(`/post/${postId}`).then((res) => {
+        console.log(res.data);
+        let likes = res.data.likes;
+
+        othersModalMainDiv.innerHTML = `
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md" role="document">
+                <div class="modal-content">
+                    <div class="d-flex align-items-center">
+                        <div class="col-11 d-flex align-items-center justify-content-center">
+                            <p class="m-0"><b>Likes</b></p>
+                        </div>
+                        <button type="button" class="col-1 close other-close-btn border-0 bg-white m-0" data-dismiss="modal" aria-label="Close">
+                            <h1 aria-hidden="true" class="m-0">&times;</h1>
+                        </button>
+                    </div>
+                    <hr class="m-0">
+                    <div class="modal-body p-0 d-flex justify-content-center flex-column">
+                        <h6 class="text-secondary m-4"><b>${res.data.post.user.name}</b>. can see the total number of people who liked this post.</h6>
+
+                        <div class="vertical-menu w-100 m-0">      
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            `;
+
+          let other_close_btn = document.querySelector(".other-close-btn");
+          let others_likes_modal = document.querySelector(".others-likes-modal")
+          other_close_btn.addEventListener('click', function() {
+            // console.log(others_likes_modal);
+            others_likes_modal.classList.remove('show');
+            others_likes_modal.setAttribute('aria-hidden', 'true');
+            others_likes_modal.setAttribute('style', 'display: none');
+
+        });
+
+        
+            others_likes_modal.classList.toggle('show');
+            others_likes_modal.setAttribute('aria-hidden', others_likes_modal.classList.contains('show') ? 'false' : 'true');
+            others_likes_modal.setAttribute('style', others_likes_modal.classList.contains('show') ? 'display: block' : 'display: none');
+
+
+            let likes_div = document.querySelector('.vertical-menu');
+            likes.forEach((myLike) => {
+                let str = `
+                <div class="row w-100 d-flex align-items-center justify-content-between mb-2">
+                    <div class="col-9 d-flex align-items-center px-4">
+                        <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                        class="rounded-circle avatar bg-dark" width="45px"
+                        height="45px" alt="Avatar"/>
+                        <a type="button">
+                        <b>${myLike.user.name}</b>
+                        </a>
+                    </div>
+                    <div class="col-3 d-flex justify-content-end">
+                    <button class="btn btn-primary m-0 w-100">
+                        <b>follow</b>
+                    </button>
+                    </div>
+                </div>
+            `;
+                likes_div.innerHTML += str;
+            });
+        })
+    })
+
 });

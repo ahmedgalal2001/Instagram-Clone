@@ -6,6 +6,7 @@ use App\Models\Like;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -52,14 +53,33 @@ class PostsController extends Controller
      */
     public function show(string $id)
     {
-        $post = Post::with("user")->find($id);
-        $like_user = Like::where('post_id', $id)->with('post')->with('user')->first();
-        $like = Like::where('post_id', $id)->with('post')->with('user')->get();
-        return response()->json([
-            'post' => $post,
-            'likes' => $like,
-            'like_user' => $like_user,
-        ]);
+        try{
+
+            $post = Post::with("user")->find($id);
+            $like_user = Like::where('post_id', $id)->with('post')->with('user')->first();
+            $like = Like::where('post_id', $id)->with('post')->with('user')->get();
+            
+            $comments = $post->comments->map(function($comment) {
+                return $comment->created_at->format('g:i:s A');
+            });
+
+            $userComment = $post->comments->map(function($comment) {
+                return $comment->user;
+            });
+            
+            return response()->json([
+                'post' => $post,
+                'likes' => $like,
+                'like_user' => $like_user,
+                'comments'=> $comments,
+                'userComment' => $userComment,
+                'allComments'=> $post->comments,
+            ]);
+        } catch(\Exception $e){
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ]);
+        }
     }
 
     /**

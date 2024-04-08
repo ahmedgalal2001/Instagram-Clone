@@ -166,7 +166,6 @@
                                 @endforeach
                                 data-bs-post="{{ $post->id }}" id="like-btn">
                                 <h4><b><i class="fa-regular fa-heart"></i></b></h4>
-
                             </a>
 
                             <a type="button" 
@@ -202,7 +201,11 @@
                         </p>
                     </div>
                     <div class="d-flex">
+                        @php
+                            $allLikes = $post->likes;
+                        @endphp
                         <p class="m-1 mx-0">Liked by</p>
+                        @if (count($allLikes) > 0)
                         <a type="button">
                             <p class="m-1"><b>
                                     @foreach ($post->likes as $like)
@@ -221,37 +224,55 @@
                             </b></p>
                         </a>
                         <p class="m-1">and</p>
-                        <a type="button">
+                        
+                        <a type="button"  
+                        data-toggle="modal"
+                        data-bs-othersLikesPost = "{{ $post->id }}"
+                        class = "others-post text-dark text-decoration-none"
+                        data-target="#postOthersLikesAlert">
                             <p class="m-1"><b>others</b></p>
                         </a>
+                        @else
+                            <p class="m-1 mx-2"><b>No Likes</b></p>
+                        @endif
                     </div>
                     <div class="d-flex flex-column">
-                        <a type="button">
+                        <a 
+                        type="button"
+                        class="comment-btn text-decoration-none"
+                        data-toggle="modal"
+                        data-bs-commentBtn = "{{ $post->id }}"
+                        data-target="#commentsModal">
                             <p class="text-secondary m-0">View all 23 comments</p>
                         </a>
-                        <div id="post-{{ $post->id }}">
-                            <div class="comments-container">
-                                @foreach ($post->comments as $comment)
-                                    <div class="col-md-12 mb-0 aligh-items-center d-flex">
-                                        <div class="d-flex col-10 align-items-center">
-                                            @if ($post->id == $comment->post_id)  
-                                                <p>
-                                                    <a type="button">
-                                                        <b>{{ $comment->user->name }}</b>
+                        @if (count($post->comments) > 0)
+                            <div id="post-{{ $post->id }}">
+                                <div class="comments-container">
+                                    @foreach ($post->comments as $comment)
+                                        @if ($post->id == $comment->post_id && $comment->user_id == Auth::id())  
+                                            <div class="col-md-12 mb-0 aligh-items-center d-flex">
+                                                <div class="d-flex col-10 align-items-center">
+                                                        <p>
+                                                            <a type="button">
+                                                                <b>{{ $comment->user->name }}</b>
+                                                            </a>
+                                                            {{ $comment->comment_text }}
+                                                        </p>
+                                                    
+                                                </div>
+                                                <div class="col-2 d-flex align-items-start justify-content-end m-1">
+                                                    <a type="button" class="comment-like" id="like-btn">
+                                                        <h6><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h6>
                                                     </a>
-                                                    {{ $comment->comment_text }}
-                                                </p>
-                                            @endif
-                                        </div>
-                                        <div class="col-2 d-flex align-items-end justify-content-end">
-                                            <a type="button" class="comment-like" id="like-btn">
-                                                <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
-                                            </a>
-                                        </div>
-                                    </div>
-                                @endforeach
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <h4><b>No Comments</b></h4>
+                        @endif
                     </div>
                     <div class="row">
                         <div class="col-10">
@@ -391,7 +412,7 @@
         <!------------------- End of post options modal --------------------->
 
         <!-------------------- post likes others Modal ------------------>
-        <div class="modal fade z-20" id="postOthersLikesAlert" tabindex="-1" role="dialog" aria-labelledby="postOptionsAlert"
+        <div class="modal fade z-20 others-likes-modal" id="postOthersLikesAlert" tabindex="-1" role="dialog" aria-labelledby="postOthersLikesAlert"
             aria-hidden="true">
             
         </div>
