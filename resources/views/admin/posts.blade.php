@@ -5,13 +5,11 @@
 @endsection
 
 @section('content')
-    
-<div class="text-center mt-4">
-  <a href="" type="button" class="btn btn-success">Create</a>
-</div>
+
 <table class="table mt-4" style="text-align: center">
   <thead>
     <tr>
+        <th scope="col">Post ID</th>
         <th scope="col">Owner</th>
       <th scope="col">Caption</th>
       <th scope="col">Image</th>
@@ -21,6 +19,7 @@
   <tbody>
     @foreach ($posts as $post)
     <tr>
+        <td>{{ $post->id }}</td>
         <td>{{ $post->user_id }}</td>
         <td>{{ $post->caption }}</td>
         <td>{{ $post->iamge }}</td>

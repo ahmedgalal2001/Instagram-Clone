@@ -37,7 +37,8 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::get('/posts/dashboard', [AdminController::class, 'index'])->name('posts.dashboard')->middleware('auth');
+Route::get('/posts/dashboard', [AdminController::class, 'postsIndex'])->name('posts.dashboard')->middleware('auth');
+Route::get('/comments/dashboard', [AdminController::class, 'commentsIndex'])->name('comments.dashboard')->middleware('auth');
 
 Route::get("/emailtest/{email}",[MailController::class,"sendMsg"])->name("mail.sendMsg");
 

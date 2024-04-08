@@ -17,10 +17,7 @@
                 <a class="nav-link" href="{{route("posts.dashboard")}}">Posts</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{route("posts.dashboard")}}">Users</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{{route("posts.dashboard")}}">Comments</a>
+                <a class="nav-link" href="{{route("comments.dashboard")}}">Comments</a>
               </li>
             </ul>
           </div>
