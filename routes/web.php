@@ -37,8 +37,7 @@ Route::middleware('auth')->group(function () {
 });
 
 
-Route::get("/emailtest/{email}",[MailController::class,"sendMsg"])->name("mail.sendMsg");
+require __DIR__ . '/auth.php';
+
 
 Route::fallback(fn () => 'Route not found');
-
-require __DIR__ . '/auth.php';
