@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\editProfileController;
 use App\Http\Controllers\followerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -23,6 +24,9 @@ use App\Http\Controllers\PostsController;
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('/profile/edit', [editProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/changephoto', [editProfileController::class, 'changephoto'])->name('profile.changephoto');
+    Route::post('/profile/removeimage', [editProfileController::class, 'removeImage'])->name('profile.removeimage');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{username}', [UserController::class, 'show'])->name('user.show');
