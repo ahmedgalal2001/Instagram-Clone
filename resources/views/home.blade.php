@@ -183,7 +183,7 @@
                         </div>
                         <div class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
                             <a type="button" 
-                            id="book-mark-btn"
+                            id="book-mark-btn-{{ $post->id }}"
                             data-bs-post="{{ $post->id }}"
                             class="post-book-mark"
                             >

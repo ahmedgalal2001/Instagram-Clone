@@ -333,7 +333,10 @@ commentButton.forEach((btn) => {
 
                                         </div>
                                         <div class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
-                                            <a type="button" class="bookmark-btn" id="book-mark-btn">
+                                            <a 
+                                            type="button" 
+                                            class="bookmark-btn-${res.data.post.id}" 
+                                            id="book-mark-btn">
                                                 <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
                                             </a>
                                         </div>
@@ -365,6 +368,7 @@ commentButton.forEach((btn) => {
             </div>
             `;
 
+            /************************* Modal with post likes btn *************************/
             let postLike = document.getElementById(`${res.data.post.id}`);
             let postLikeModal = document.querySelector(`.btn-${res.data.post.id}`)
             console.log(postLike);
@@ -401,6 +405,24 @@ commentButton.forEach((btn) => {
                     });
                 }
             })
+            /******************************* Save btn post with modal *******************************/
+
+            let bookMarkBtnModal = document.querySelector(`.bookmark-btn-${res.data.post.id}`);
+            let bookMarkBtnPost = document.querySelector(`#book-mark-btn-${res.data.post.id}`)
+            // console.log(bookMarkBtnModal);
+            // console.log(bookMarkBtnPost);
+
+            bookMarkBtn.forEach((bookMark) => {
+                bookMark.addEventListener("click", function () {
+                    if (bookMark.style.color === 'orange') {
+                        bookMark.style.color = 'black';
+                    } else {
+                        bookMark.style.color = 'orange'
+                    }
+                })
+            })
+
+            /****************************************************************************************/
 
 
             /******************************* Display All Comments ****************************/

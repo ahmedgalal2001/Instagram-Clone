@@ -121,7 +121,12 @@ class PostsController extends Controller
             ]);
         }
     }
+    
+    // public function addToFavourite(Request $request)
+    // {
+    //     $post = Post::find($request->input("id"));
 
+    // }
     /**
      * Show the form for editing the specified resource.
      */
@@ -137,6 +142,7 @@ class PostsController extends Controller
     {
         //
     }
+
 
     /**
      * Remove the specified resource from storage.

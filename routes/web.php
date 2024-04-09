@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/comment', [CommentContoller::class, 'store'])->name("comment.store");
     Route::delete('/comment/destroy/{id}', [LikeContoller::class, 'destroy'])->name("comment.destroy");
     Route::get('/post/{id}', [PostsController::class, 'show'])->name("post.show");
+    // Route::post('/save',[PostsController::class, 'addToFavourite'])->name('save.addtofavourite');
 });
 
 Route::fallback(fn () => 'Route not found');
