@@ -9,7 +9,7 @@
     <!------------------------------------------>
 
     {{-- <div class="row bg-danger"> --}}
-    <div class="col-7 col-md-10 col-lg-7 col-sm-12 d-flex flex-column align-items-center">
+    <div class="col-6 col-md-10 col-lg-6 col-sm-12 d-flex flex-column align-items-center">
         <!------------------------------- Menu of statue ------------------------------>
         <div class="cover">
             <button class="left">
@@ -42,17 +42,17 @@
                                     <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
                                         class="rounded-circle avatar" width="50px" height="50px" alt="Avatar" />
                                         <div class="w-100 d-flex flex-column justify-content-center px-2">
-                                            <div class="d-flex">
-                                                <a type="button">
-                                                    <p class="mb-0 h6 user_name_post">
+                                            <div class="d-flex align-ite">
+                                                <a type="button" class="text-decoration-none text-dark user-name-btn">
+                                                    <p class="m-0 user_name_post">
                                                         <b>{{ $post->user->name }}</b>
                                                     </p>
                                                 </a>
-                                                <p class="mb-0 mx-1 h6 text-secondary user_name_post">
+                                                <p class="m-0 h6 text-secondary user_name_post">
                                                     <i>.{{ $post->created_at->format('g:i:s A') }}</i>
                                                 </p>
                                             </div>
-                                            <p class="m-0 text-secondary fs-6 h6"><i>Original audio</i></p>
+                                            <p class="m-0 mt-2 text-secondary fs-6 h6"><i>Original audio</i></p>
                                         </div>
 
                                         <div class="d-flex align-items-center justify-content-end">
@@ -68,7 +68,6 @@
                                             </a>
                                         </div>
 
-
                                     <div class="profile-details-card position-absolute p-0 mt-5">
                                         <!-- Profile details content goes here -->
                                         <div class="card w-100 px-1 pt-0 details-card">
@@ -80,8 +79,8 @@
                                                             class="col-3 d-flex pt-3 justify-content-center align-items-center">
                                                             <div class="avatar-container position-relative">
                                                                 <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
-                                                                    class="rounded-circle mb-3 avatar" width="65px"
-                                                                    height="65px" alt="Avatar" />
+                                                                    class="rounded-circle mb-3 avatar" width="50px"
+                                                                    height="50px" alt="Avatar" />
                                                             </div>
                                                         </div>
                                                         <div class="col-9 mx-3">
@@ -164,7 +163,7 @@
                                 data-bs-like="{{ $like->id }}"
                                 @endif 
                                 @endforeach
-                                data-bs-post="{{ $post->id }}" id="like-btn">
+                                data-bs-post="{{ $post->id }}" id="{{ $post->id }}">
                                 <h4><b><i class="fa-regular fa-heart"></i></b></h4>
                             </a>
 
@@ -205,35 +204,36 @@
                             $allLikes = $post->likes;
                         @endphp
                         <p class="m-1 mx-0">Liked by</p>
-                        @if (count($allLikes) > 0)
-                        <a type="button">
-                            <p class="m-1"><b>
-                                    @foreach ($post->likes as $like)
-                                        @if ($post->id == $like->post_id)
-                                            @php
-                                                $foundUser = explode(' ', $like->user->name)[0];
-                                            @endphp
-                                            @if (Auth::id() == $like->user_id )
-                                                You
-                                            @else
-                                                {{ $foundUser }}
-                                            @endif
-                                        @endif 
-                                        @break
-                                    @endforeach
-                            </b></p>
-                        </a>
-                        <p class="m-1">and</p>
-                        
-                        <a type="button"  
-                        data-toggle="modal"
-                        data-bs-othersLikesPost = "{{ $post->id }}"
-                        class = "others-post text-dark text-decoration-none"
-                        data-target="#postOthersLikesAlert">
-                            <p class="m-1"><b>others</b></p>
-                        </a>
+                        @if (count($allLikes) <= 0)
+                            <p class="m-1 mx-2" id="p-{{ $post->id }}"><b>No Likes</b></p>
                         @else
-                            <p class="m-1 mx-2"><b>No Likes</b></p>
+                            <a type="button">
+                                <p class="m-1"><b>
+                                        @foreach ($post->likes as $like)
+                                            @if ($post->id == $like->post_id)
+                                                @php
+                                                    $foundUser = explode(' ', $like->user->name)[0];
+                                                @endphp
+                                                @if (Auth::id() == $like->user_id )
+                                                    You
+                                                @else
+                                                    {{ $foundUser }}
+                                                @endif
+                                            @endif 
+                                            @break
+                                        @endforeach
+                                </b></p>
+                            </a>
+                            <div class="d-flex" id="likes-{{ $post->id }}">
+                                <p class="m-1">and</p>
+                                <a type="button"  
+                                data-toggle="modal"
+                                data-bs-othersLikesPost = "{{ $post->id }}"
+                                class = "others-post text-dark text-decoration-none"
+                                data-target="#postOthersLikesAlert">
+                                    <p class="m-1"><b>others</b></p>
+                                </a>
+                            </div>
                         @endif
                     </div>
                     <div class="d-flex flex-column">
@@ -243,7 +243,7 @@
                         data-toggle="modal"
                         data-bs-commentBtn = "{{ $post->id }}"
                         data-target="#commentsModal">
-                            <p class="text-secondary m-0">View all 23 comments</p>
+                            <p class="text-secondary m-0">View all {{ $post->comments->count() }} comments</p>
                         </a>
                         @if (count($post->comments) > 0)
                             <div id="post-{{ $post->id }}">
@@ -260,8 +260,16 @@
                                                         </p>
                                                     
                                                 </div>
+
+
                                                 <div class="col-2 d-flex align-items-start justify-content-end m-1">
-                                                    <a type="button" class="comment-like" id="like-btn">
+                                                    <a 
+                                                    {{-- style="color:red !important;" --}}
+                                                    data-bs-likeComment="{{ $like->id }}"
+                                                    type="button" 
+                                                    class="comment-like" 
+                                                    id="like-btn"
+                                                    data-bs-postCommment="{{ $post->comments[0]->id }}" id="like-btn">
                                                         <h6><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h6>
                                                     </a>
                                                 </div>
@@ -294,80 +302,129 @@
 
     {{-- -------------------------------------------------Kamal--------------------------------------------------- --}}
     <div class="col-3 d-none d-lg-block mt-4">
-        <div class="card mb-3 ">
+        <div class="card mb-3">
             <div class="row g-0">
-                <div class="col-md-4 d-flex">
-                    <a href="#"><img class="img-fluid rounded-circle test"
-                            src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="dog"></a>
+                <div class="col-md-3 d-flex">
+                    <a href="#">
+                        <img class="img-fluid rounded-circle test" src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="dog">
+                    </a>
                 </div>
-                <div class="col-md-8 ">
-                    <div class="card-body d-flex justify-content-between align-items-center sugg-card">
-                        <h6 class="card-title mb-0">Ahmed Kamal</h6>
-                        <a class="switch mt-4 btn btn-sm">Switch</a>
-                    </div>
-                    <p class="card-text mb-2 "><small class="text-muted ">Suggested For You</small></p>
+                <div class="col-md-9 d-flex flex-column align-items-center justify-content-center">
+                        <h6 class="card-title mb-0">{{ $post->user->name }}</h6>
+                        <p class="card-text mb-2"><small class="text-muted">Suggested For You</small></p>
                 </div>
             </div>
         </div>
-        {{-- -------------------------------------------------------------------------------------------------------- --}}
         <div class="d-flex align-items-center justify-content-between mb-3">
             <h6 class="suggested">Suggested for you</h6>
             <button class="btn btn-sm">See All</button>
         </div>
-        {{-- -----------------------------------------------Suggestion and Poopup------------------------------------ --}}
         <div class="card mb-3 pb-3 pt-3">
             @for ($i = 0; $i < 7; $i++)
                 <div class="row g-0">
                     <div class="col-md-4 w-100 d-flex">
-                        <div class="avatar-container d-flex">
-                            <a href="#"><img class="img-fluid rounded-circle test"
-                                    src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="ahmed"
-                                    id="avatar-image"></a>
-                            <div class="popup " id="popup">
-                                <div class="d-flex align-items-center">
-                                    <a href="#"><img class="img-fluid mr-3 test"
-                                            src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
-                                            alt="dog"></a>
-                                    <div>
-                                        <h6 class="card-title mb-0">Ahmed Kamal</h6>
-                                        <p>ahmed_kamal71</p>
-                                    </div>
+                        <div class="avt-container m-1 d-flex align-items-center rounded-circle">
+                            <div class="avatar-container position-relative">
+                                <a type="button" class="avatar-link rounded-circle m-1">
+                                <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                        class="rounded-circle mb-3 avatar" width="50px"
+                                        height="50px" alt="Avatar" />
+                                    </a>
                                 </div>
-                                <div class="info mt-3">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <p class="count">1000</p>
-                                            <p class="label">Followers</p>
+                                {{-- <img class="img-fluid rounded-circle test" src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="ahmed" id="avatar-image"> --}}
+                            <div class="popup p-0" id="popup">
+                                
+                                <!-- Profile details content goes here -->
+                                    <div class="card w-100 px-1 pt-0 details-card">
+                                        <div class="bg-image hover-overlay" data-mdb-ripple-init
+                                            data-mdb-ripple-color="light">
+                                            <div class="row m-0 p-0">
+                                                <div class="col-9 d-flex align-items-center p-0">
+                                                    <div class="col-3 d-flex pt-3 justify-content-center align-items-center">
+                                                        <div class="avatar-container position-relative">
+                                                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                                                class="rounded-circle mb-3 avatar" width="50px"
+                                                                height="50px" alt="Avatar" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-11 mx-3">
+                                                        <div class="d-flex">
+                                                            <p class="mb-0 h6">
+                                                                {{ $post->user->name }}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row d-flex justify-content-between">
+                                                <div class="col-4 d-flex flex-column align-items-center">
+                                                    <p class="m-0">
+                                                        {{ $users->where('id', $post->user->id)->first()->posts_count }}
+                                                    </p>
+                                                    <p class="m-0">Posts</p>
+                                                </div>
+    
+                                                <div class="col-4 d-flex flex-column align-items-center">
+                                                    <p class="m-0">1M</p>
+                                                    <p class="m-0">followers</p>
+                                                </div>
+    
+                                                <div class="col-4 d-flex flex-column align-items-center">
+                                                    <p class="m-0">50k</p>
+                                                    <p class="m-0">following</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-4">
-                                            <p class="count">4000</p>
-                                            <p class="label">Following</p>
-                                        </div>
-                                        <div class="col-4">
-                                            <p class="count">120</p>
-                                            <p class="label">Posts</p>
+                                        <div class="card-body">
+                                            <div class="row d-flex justify-content-between">
+                                                <div class="col-4">
+                                                    <img src="{{ asset('images/dog.jpg') }}"
+                                                        class="w-100 h-100 profile-post-hover">
+                                                </div>
+                                                <div class="col-4">
+                                                    <img src="{{ asset('images/dog.jpg') }}"
+                                                        class="w-100 h-100 profile-post-hover">
+                                                </div>
+                                                <div class="col-4">
+                                                    <img src="{{ asset('images/dog.jpg') }}"
+                                                        class="w-100 h-100 profile-post-hover">
+                                                </div>
+                                            </div>
+                                            <div class="row mt-3">
+                                                <div class="col-6 mt-4">
+                                                    <button class="btn btn-primary w-100 follow-btn-text">
+                                                        <i class="fa-solid fa-user"></i>
+                                                        View Profile
+                                                    </button>
+                                                </div>
+                                                <div class="col-6 mt-4">
+                                                    <button class="btn btn-primary w-100 follow-btn-text">
+                                                        <i class="fa-solid fa-user-plus"></i>
+                                                        follow
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <button class="followBtn mt-4 ">Follow</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                <!---------- End of details card ----------->
                             </div>
+
+
+
                         </div>
-                        <div class="col-md-8 ">
-                            <div class="card-body d-flex justify-content-between align-items-center sugg-card ">
+                        <div class="col-md-9">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <h6 class="card-title mb-0">Ahmed Kamal</h6>
-                                <button class="btn  btn-sm mt-4 switch">Follow</button>
+                                <button class="btn btn-sm text-primary">Follow</button>
                             </div>
-                            <p class="card-text mb-2 "><small class="text-muted ">Suggested For You</small></p>
+                            <div>
+                                <p class="card-text mb-2"><small class="text-muted">Suggested For You</small></p>
+                            </div>
                         </div>
                     </div>
                 </div>
             @endfor
-            {{-- --------------------------------------- Footer ---------------------------------------- --}}
-            <div class="row ">
+            <div class="row">
                 <div class="col-12 mt-5 w-100 d-flex px-5">
                     <ul class="footer-links">
                         <li><a href="#">About</a></li>
@@ -383,6 +440,8 @@
                 </div>
             </div>
         </div>
+    </div>
+    
         {{-- ------------------------------------------------------------- --}}
     </div>
         <!-------------------- post options Modal ------------------>

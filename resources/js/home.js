@@ -73,7 +73,7 @@ document.querySelectorAll(".commentBtn").forEach(function (button) {
                   </div>
                   <div class="col-2 d-flex align-items-end justify-content-end">
                       <a type="button" class="comment-like" id="like-btn">
-                          <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
+                          <h6><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h6>
                       </a>
                   </div>
               </div>
@@ -136,12 +136,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 /************************************* Handling likes button ************************************/
 
-let likes = document.querySelectorAll(".post-like");
-likes.forEach((like) => {
+let likesBtn = document.querySelectorAll(".post-like");
+likesBtn.forEach((like) => {
+    console.log(like);
     like.addEventListener("click", function () {
         let postId = like.getAttribute("data-bs-post");
         let likeId = like.getAttribute("data-bs-like");
-
+        
         if (like.style.color === 'red') {
             like.style.color = 'black';
             axios.delete(`/like/destroy/${likeId}`).then((res) => {
@@ -149,9 +150,21 @@ likes.forEach((like) => {
             });
         } else {
             like.style.color = 'red'
+            // console.log(document.querySelector(`#likes-${postId}`));
+            // document.querySelector(`#likes-${postId}`).innerHTML = `
+            // <p class="m-1">and</p>                  
+            // <a type="button"  
+            // data-toggle="modal"
+            // data-bs-othersLikesPost = "${postId}"
+            // class = "others-post text-dark text-decoration-none"
+            // data-target="#postOthersLikesAlert">
+            //     <p class="m-1"><b>others</b></p>
+            // </a>
+            // `;
             axios.post("/like", { "id": postId }).then((res) => {
-                like.setAttribute("data-bs-like", res.data.id);
                 console.log(res.data);
+                like.setAttribute("data-bs-like", res.data.id);
+                // console.log(res.data);
             });
         }
     })
@@ -170,6 +183,29 @@ bookMarkBtn.forEach((bookMark) => {
         }
     })
 })
+
+/************** Likes for Comment ****************/
+
+let CommentLikesBtn = document.querySelectorAll(".comment-like");
+CommentLikesBtn.forEach((like) => {
+    like.addEventListener("click", function () {
+        let postId = like.getAttribute("data-bs-postCommment");
+        let likeId = like.getAttribute("data-bs-likeComment");
+
+        if (like.style.color === 'red') {
+            like.style.color = 'grey';
+            // axios.delete(`/like/destroy/${likeId}`).then((res) => {
+            //     console.log(res.data);
+            // });
+        } else {
+            like.style.color = 'red'
+            // axios.post("/like", { "id": postId }).then((res) => {
+            //     like.setAttribute("data-bs-like", res.data.id);
+            //     console.log(res.data);
+            // });
+        }
+    })
+});
 
 /********************************************************************************/
 
@@ -194,16 +230,12 @@ commentButton.forEach((btn) => {
                             </div>
                             <div class="col-5 d-flex flex-column p-0 align-items-center justify-content-start">  
                                 <div class="container-fluid">
-                                    <div class="col-12 d-flex justify-content-end">
-                                        <button type="button" class="close border-0 bg-white" data-dismiss="modal" aria-label="Close">
-                                            <h3 aria-hidden="true" class="m-0">&times;</h3>
-                                        </button>
-                                    </div>
+                                    
                                     <!------------------- User's profile --------------------->
                                     <div class="bg-image hover-overlay m-0" data-mdb-ripple-init
                                         data-mdb-ripple-color="light">
                                         <div class="row m-0 p-0">
-                                            <div class="col-9 d-flex align-items-center p-0 m-0">
+                                            <div class="col-10 d-flex align-items-center p-0 m-0">
                                                 <div class="col-2 d-flex pt-3 justify-content-start align-items-center">
                                                     <div class="avatar-container position-relative">
                                                         <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
@@ -211,12 +243,14 @@ commentButton.forEach((btn) => {
                                                             height="50px" alt="Avatar" />
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
-                                                    <div class="d-flex justify-content-between">
-                                                        <p class="mb-0 h6">
-                                                            ${res.data.post.user.name}
-                                                        </p>
-                                                        <a type="button" data-toggle="modal" data-target="">
+
+                                                <div class="d-flex w-100 col-10 justify-content-between align-items-center">
+                                                    <p class="mb-0 h6">
+                                                        ${res.data.post.user.name}
+                                                    </p>
+                                                    
+                                                    <div>
+                                                        <a type="button" data-toggle="modal" data-target="#postOptionsAlert">
                                                             <svg aria-label="More options"
                                                                 class="x1lliihq x1n2onr6 x5n08af" height="24"
                                                                 role="img" viewBox="0 0 24 24" width="24">
@@ -229,6 +263,9 @@ commentButton.forEach((btn) => {
                                                                     fill="black"></circle>
                                                             </svg>
                                                         </a>
+                                                        <button type="button" class="close border-0 bg-white" data-dismiss="modal" aria-label="Close">
+                                                            <h3 aria-hidden="true" class="m-0">&times;</h3>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -278,8 +315,11 @@ commentButton.forEach((btn) => {
                                     <div class="row">
                                         <div class="col-3 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center justify-content-between">
 
-                                            <a type="button" class="post-like" id="like-btn">
-                                                <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
+                                            <a type="button" 
+                                                class="btn-${res.data.post.id} post-like"
+                                                data-bs-post="${res.data.post.id}" 
+                                                id="like-btn-modal">
+                                                <h4><b><i class="fa-regular fa-heart"></i></b></h4>
                                             </a>
 
                                             <a type="button" id="commenr-btn">
@@ -300,7 +340,7 @@ commentButton.forEach((btn) => {
                                     </div>
 
                                     <div>
-                                        <p><i>12:20:30</i></p>
+                                        <p class=" text-secondary"><i>${res.data.posts_time}</i></p>
                                     </div>
                                     <hr>
                                     
@@ -324,6 +364,43 @@ commentButton.forEach((btn) => {
                 </div>
             </div>
             `;
+
+            let postLike = document.getElementById(`${res.data.post.id}`);
+            let postLikeModal = document.querySelector(`.btn-${res.data.post.id}`)
+            console.log(postLike);
+            console.log(postLikeModal);
+
+            res.data.post_like.likes.map(function(x) {
+                postLikeModal.setAttribute("data-bs-like",`${x.id}`);
+
+                if(res.data.logged_user == x.user_id)
+                    postLikeModal.setAttribute("style", "color: red !important");
+                else
+                    postLikeModal.setAttribute("style", "color: black !important"); 
+            })
+
+
+
+            postLikeModal.addEventListener("click", function () {
+                let postId = postLike.getAttribute("data-bs-post");
+                let likeId = postLike.getAttribute("data-bs-like");
+
+                if (postLike.style.color === 'red') {
+                    postLike.style.color = 'black';
+                    postLikeModal.style.color = 'black';
+                    axios.delete(`/like/destroy/${likeId}`).then((res) => {
+                        console.log(res.data);
+                    });
+                } else {
+                    postLike.style.color = 'red'
+                    postLikeModal.style.color = 'red'
+                    axios.post("/like", { "id": postId }).then((res) => {
+                        postLike.setAttribute("data-bs-like", res.data.id);
+                        postLikeModal.setAttribute("data-bs-like", res.data.id);
+                        console.log(res.data);
+                    });
+                }
+            })
 
 
             /******************************* Display All Comments ****************************/
@@ -353,8 +430,8 @@ commentButton.forEach((btn) => {
                                         ${comment.comment_text} 
                                     </p>
     
-                                    <p class="m-0 text-secondary">
-                                        <i>${res.data.comments[0]}</i> 
+                                    <p class="m-0 text-secondary comment-time">
+                                        
                                     </p>
                                 </div>
                                 
@@ -366,9 +443,16 @@ commentButton.forEach((btn) => {
                         </div>
                     </div>
                 `;
-
                 commentsDiv.innerHTML += allComents;
             });
+
+            let commentsTime = res.data.comments;
+            let timeParagraph = document.querySelectorAll(".comment-time");
+            console.log(timeParagraph);
+            timeParagraph.forEach((p, index) => {
+                p.innerHTML = `<i>${commentsTime[index]}</i>`;
+            });
+
 
             /*********************************************************************************/
 
