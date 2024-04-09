@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Like;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class LikeContoller extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::with("posts")->withCount("likes")->get();
-        return view("users.index")->with("users", $users);
+        //
     }
 
     /**
@@ -30,16 +30,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id_post = $request->input("id");
+        $id_user = Auth::id();
+        $like = new Like();
+        $like->user_id = $id_user;
+        $like->post_id = $id_post;
+        $like->save();
+        return response()->json([
+            'message' => 'Comment stored successfully',
+            'id' => $like->id,
+        ]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $username)
+    public function show(string $id)
     {
-        $users = User::where("name", "like", "%$username%")->get();
-        return json_encode($users);
+        //
     }
 
     /**
@@ -63,6 +71,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Like::where('id', $id)->delete();
+        return json_encode($id);
     }
 }

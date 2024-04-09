@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class UserController extends Controller
+class CommentContoller extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = User::with("posts")->withCount("likes")->get();
-        return view("users.index")->with("users", $users);
+        //
     }
 
     /**
@@ -30,16 +30,31 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $id_post = $request->input("id");
+        $id_user = Auth::id();
+        $commentText = $request->input("comment");
+        $comment = new Comment();
+        $comment->user_id = $id_user;
+        $comment->post_id = $id_post;
+        $comment->comment_text = $commentText;
+        $comment->save();
+        
+        return response()->json([
+            'message' => 'Comment stored successfully',
+            "comment" => $comment,
+            "user_name" => $comment -> user -> name,
+            "created_at"=> $comment -> created_at -> format('H:i:s'), 
+        ]);
     }
+
+
 
     /**
      * Display the specified resource.
      */
-    public function show(string $username)
+    public function show(string $id)
     {
-        $users = User::where("name", "like", "%$username%")->get();
-        return json_encode($users);
+        //
     }
 
     /**
@@ -63,6 +78,7 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Comment::where('id', $id)->delete();
+        return json_encode($id);
     }
 }
