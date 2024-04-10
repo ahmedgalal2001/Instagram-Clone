@@ -12,12 +12,12 @@
             <img class="me-2" src="{{ asset('images/home24x24.png') }}" alt="dog">
             <span class="desc">Home</span>
         </a>
-        <a id="offcanvasToggle" class="nav-link d-flex link-navbar align-items-center p-2 " aria-current="page" href="#"
+        <a id="offcanvasToggleSearch" class="nav-link d-flex link-navbar align-items-center p-2 " aria-current="page" href="#"
             data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
             <img class="me-2" src="{{ asset('images/search24x24.png') }}" alt="dog">
             <span class="desc">Search</span>
         </a>
-        <a id="offcanvasToggle" class="nav-link d-flex link-navbar align-items-center p-2 " aria-current="page" href="#"
+        <a id="offcanvasToggleNotify" class="nav-link d-flex link-navbar align-items-center p-2 " aria-current="page" href="#"
             data-bs-toggle="offcanvas" data-bs-target="#notify" aria-controls="offcanvasScrolling">
             <img class="me-2" src="{{ asset('images/heart24x24.png') }}" alt="dog">
             <span class="desc">Notification</span>

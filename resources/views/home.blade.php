@@ -120,7 +120,7 @@
                             <div class="col-md-9">
                                 <div class="d-flex">
                                     <p class="mb-0 h6">
-                                        {{$post->user->name}}
+                                        {{ $post->user->name }}
                                     </p>
                                     <p class="mb-0 h6 text-secondary">
                                         <i>.1h</i>
@@ -141,7 +141,7 @@
                             </a>
                         </div>
                     </div>
-                    <img src="{{ asset('images/posts/' . $post->image_url) }}" class="img-fluid" />
+                    <img src="{{ $post->image_url }}" class="img-fluid" />
                 </div>
                 <div class="card-body">
                     <div class="row">

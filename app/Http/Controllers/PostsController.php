@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +14,6 @@ class PostsController extends Controller
      */
     public function index()
     {
-        
     }
 
     /**
@@ -29,13 +29,33 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        /**
+          // dd($request);
+        // $response = Cloudinary::upload($request->file('file')->getRealPath())->getSecurePath();
+
+        $response = Cloudinary::upload($request->file('file')->getRealPath(), [
+            "resource_type" => "video"
+        ]);
+        // $response = Cloudinary::upload($request->file('file')->getRealPath());
+
+        // $secureUrl = $response->getSecurePath();
+        // $secureUrl = $response->getSecurePath();
+
+        dd($response);
+
+        return back()
+            ->with('success', 'File uploaded successfully');
+         */
+
+
         $validatedData = $request->validate([
             'commit_message' => 'string|max:255', // Assuming commit_message is a string with a maximum length of 255 characters
             'myfile' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-        $image = $request->file('myfile');
-        $imageName = time() . '.' . $image->getClientOriginalExtension(); // Generate a unique image name
-        $image->move(public_path('images/posts'), $imageName);
+        $imageName = Cloudinary::upload($request->file('myfile')->getRealPath())->getSecurePath();
+        // $image = $request->file('myfile');
+        // $imageName = time() . '.' . $image->getClientOriginalExtension(); // Generate a unique image name
+        // $image->move(public_path('images/posts'), $imageName);
         $post = new Post();
         $post->user_id = Auth::id();
         $post->image_url = $imageName;
