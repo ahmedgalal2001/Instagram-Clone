@@ -9,30 +9,72 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function postsIndex()
+    public function postsIndex(Request $request)
     {
-        if (!auth()->user()->is_admin) {
-            $posts = Post::all();
-            return view('admin.posts', ["posts"=>$posts]);
+    if (!auth()->user()->is_admin) {
+        $search = $request->input('search');
+        $selectedAttributes = $request->input('attribute', []);
+
+        $posts = Post::query();
+
+        if ($search && !empty($selectedAttributes)) {
+            foreach ($selectedAttributes as $attribute) {
+                $posts->orWhere($attribute, 'LIKE', "%{$search}%");
+            }
         }
-        return view('home');
+        $posts = $posts->paginate(10);
+        return view('admin.posts', [
+            "posts" => $posts,
+            "search" => $search,
+            "selectedAttributes" => $selectedAttributes,
+        ]);
     }
-    public function commentsIndex()
+    return view('home');
+}
+    public function commentsIndex(Request $request)
     {
-        if (!auth()->user()->is_admin) {
-            $comments = Comment::all();
-            return view('admin.comments', ["comments"=> $comments]);
+    if (!auth()->user()->is_admin) {
+        $search = $request->input('search');
+        $selectedAttributes = $request->input('attribute', []);
+
+        $comments = Comment::query();
+
+        if ($search && !empty($selectedAttributes)) {
+            foreach ($selectedAttributes as $attribute) {
+                $comments->orWhere($attribute, 'LIKE', "%{$search}%");
+            }
         }
-        return view('home');
+        $comments = $comments->paginate(10);
+        return view('admin.comments', [
+            "comments" => $comments,
+            "search" => $search,
+            "selectedAttributes" => $selectedAttributes,
+        ]);
     }
-    public function usersIndex()
+    return view('home');
+}
+
+    public function usersIndex(Request $request)
     {
-        if (!auth()->user()->is_admin) {
-            $users = User::all();
-            
-            return view('admin.users', ["users"=> $users]);
+    if (!auth()->user()->is_admin) {
+        $search = $request->input('search');
+        $selectedAttributes = $request->input('attribute', []);
+
+        $users = User::query();
+
+        if ($search && !empty($selectedAttributes)) {
+            foreach ($selectedAttributes as $attribute) {
+                $users->orWhere($attribute, 'LIKE', "%{$search}%");
+            }
         }
-        return view('home');
+        $users = $users->paginate(10);
+        return view('admin.users', [
+            "users" => $users,
+            "search" => $search,
+            "selectedAttributes" => $selectedAttributes,
+        ]);
+    }
+    return view('home');
     }
 
     public function destroyPost($id)

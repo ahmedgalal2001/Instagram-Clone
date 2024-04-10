@@ -43,6 +43,7 @@ Route::get('/dashboard/users', [AdminController::class, 'usersIndex'])->name('us
 Route::delete("/dashboard/posts/{post}", [AdminController::class, "destroyPost"])->name("posts.destroy");
 Route::delete("/dashboard/comments/{post}", [AdminController::class, "destroyComment"])->name("comments.destroy");
 Route::delete("/dashboard/users/{post}", [AdminController::class, "destroyUser"])->name("users.destroy");
+Route::get("/dashboard/users/{user}", [AdminController::class, "show"])->name("users.show");
 
 Route::get("/emailtest/{email}",[MailController::class,"sendMsg"])->name("mail.sendMsg");
 
