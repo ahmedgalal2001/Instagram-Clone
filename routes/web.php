@@ -23,6 +23,7 @@ use App\Http\Controllers\PostsController;
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/save/{id?}', [ProfileController::class, 'savePosts'])->name('profile.save');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{username}', [UserController::class, 'show'])->name('user.show');
@@ -33,6 +34,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/following/{id}', [ProfileController::class, 'unfollow'])->name('following.delete');
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::get('/home', [HomeController::class, 'index']);
+    Route::get("/followers/{followerName?}",[ProfileController::class,'showFollowers'])->name('show.followers');
+    Route::get("/followings/{followingName?}",[ProfileController::class,'showFollowings'])->name('show.followings');
+    Route::get("/hashtags",[ProfileController::class,'showHashtags'])->name('show.Hashtags');
+    Route::get("/likes",[ProfileController::class,'showLikes'])->name("show.likes");
+
+
 
 });
 
