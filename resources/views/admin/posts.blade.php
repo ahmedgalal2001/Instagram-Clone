@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+<div class="search" style="width: 30%">
 <form action="{{ route('posts.dashboard') }}" method="GET" class="mb-3">
   <div class="input-group mb-3">
       <input type="text" name="search" class="form-control" placeholder="Search Posts" value="{{ $search ?? '' }}">
@@ -21,6 +22,7 @@
     <label class="form-check-label">Caption</label>
   </div>
 </form>
+</div>
 
 <table class="table mt-4" style="text-align: center" border="2px">
   <thead>

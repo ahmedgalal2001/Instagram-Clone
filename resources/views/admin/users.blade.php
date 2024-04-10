@@ -5,14 +5,14 @@
 @endsection
 
 @section('content')
+<div class="search" style="width: 30%">
 <form action="{{ route('users.dashboard') }}" method="GET" class="mb-3">
   <div class="input-group mb-3">
-      <input type="text" name="search" class="form-control" placeholder="Search comments" value="{{ $search ?? '' }}">
+      <input type="text" name="search" class="form-control" placeholder="Search Users" value="{{ $search ?? '' }}">
       <div class="input-group-append">
           <button type="submit" class="btn btn-outline-secondary">Search</button>
       </div>
   </div>
-
   <div class="form-check form-check-inline">
     <input class="form-check-input" type="checkbox" name="attribute[]" value="name" {{ in_array('name', $selectedAttributes) ? 'checked' : '' }}>
     <label class="form-check-label">Name</label>
@@ -29,11 +29,8 @@
     <input class="form-check-input" type="checkbox" name="attribute[]" value="id" {{ in_array('id', $selectedAttributes) ? 'checked' : '' }}>
     <label class="form-check-label">ID</label>
   </div>
-
-  <!-- Add more checkboxes for other attributes -->
-
 </form>
-
+</div>
 <table class="table mt-4" style="text-align: center"  border="2px" >
   <thead>
     <tr>
