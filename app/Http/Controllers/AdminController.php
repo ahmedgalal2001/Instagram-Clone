@@ -95,5 +95,13 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->route("users.dashboard");
     }
+    public function showUser($id)
+    {
+        $user = User::find($id);
+        if (is_null($user)) {
+            return redirect()->route("posts.dashboard");
+        }
+        return view("admin.userDetails", ["user" => $user]);
+    }
 }
 

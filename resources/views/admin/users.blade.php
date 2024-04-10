@@ -52,7 +52,7 @@
         <td>{{ $user->username }}</td>
         <td>{{ $user->email }}</td>
       <td>
-        <a href="" class="btn btn-primary">Show</a>
+        <a href="{{ route('users.showUser', $user->id) }}" class="btn btn-primary">Show</a>
         <form style="display: inline" action="{{ route("users.destroy", $user->id) }}" method="POST">
           @csrf
           @method("DELETE")
