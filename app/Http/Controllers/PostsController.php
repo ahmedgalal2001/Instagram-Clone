@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Carbon;
+use App\Models\Like;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Controller;
 use App\Models\Post;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
@@ -49,7 +53,7 @@ class PostsController extends Controller
 
 
         $validatedData = $request->validate([
-            'commit_message' => 'string|max:255', // Assuming commit_message is a string with a maximum length of 255 characters
+            'commit_message' => 'string|max:500', // Assuming commit_message is a string with a maximum length of 255 characters
             'myfile' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
         $imageName = Cloudinary::upload($request->file('myfile')->getRealPath())->getSecurePath();
@@ -87,6 +91,7 @@ class PostsController extends Controller
     {
         //
     }
+
 
     /**
      * Remove the specified resource from storage.

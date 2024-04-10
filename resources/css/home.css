@@ -4,6 +4,43 @@
     box-shadow: 10px 10px 50px rgba(0, 0, 0, 0.1);
 }
 
+.post-like{
+  color: black;
+}
+
+.post-book-mark{
+  color: black;
+}
+
+.commentBtn{
+  display: none;
+  text-decoration: none;
+}
+
+.main-post-div{
+  border-top:  none;
+  border-left: none ;
+  border-right:none ;
+  border-bottom-left-radius:  0px;
+  border-bottom-right-radius: 0px;
+}
+
+.post-caption p{
+  font-size: 13px;
+}
+
+.user_name_post{
+  font-size: 14px;
+}
+
+.comment-like{
+  color: grey;
+}
+
+.comment-btn{
+  color: black;
+}
+
 .status-avatar{
   border: 3px double rgba(213, 88, 10, 0.688);
 }
@@ -64,6 +101,10 @@
 #submitButton{
     display: none;
     color: #0095F6;
+}
+
+.user-name-btn{
+  height: 0px !important;
 }
 /*************************************** Status Menu *****************************************/
 
@@ -143,8 +184,31 @@
   margin: 0;
 }
 
+/********************************* others likes menu *****************************/
+
+.vertical-menu {
+  width: 200px;
+  height: 150px;
+  overflow-y: auto;
+}
+
+.vertical-menu a {
+  color: black;
+  display: block;
+  padding: 12px;
+  text-decoration: none;
+}
+
+.others-modal{
+  color: black;
+  text-decoration: none;
+}
+
 /********************************************* Kamal **************************************************/
 
+.follow-btn-text{
+  font-size: 13px;
+}
 
 .test {
   border-radius: 50%;
@@ -153,103 +217,93 @@
   margin: 5px 50px 5px 20px;
 }
 
-.sugg-card{
-  height: 40px;
+.sugg-card {
+  height: 70px;
 }
-.suggested{
+
+.suggested {
   display: block;
 }
-ul{
+
+ul {
   list-style: none;
 }
+
 .footer-links {
-padding: 0;
-margin: 0;
-display: inline;
+  padding: 0;
+  margin: 0;
+  display: inline;
 }
 
 .footer-links li {
-list-style: none;
-display: inline;
-margin-right: 10px; 
+  list-style: none;
+  display: inline;
+  margin-right: 10px;
 }
 
 .footer-links a {
-color: #333;
-text-decoration: none;
-}
-.switch{
-color: blue
+  color: #333;
+  text-decoration: none;
 }
 
-
-.avatar-container {
-position: relative;
-display: inline-block;
-
-}
+/* .avatar-container {
+  position: relative;
+  display: inline-block;
+} */
 
 .popup {
-display: none;
-position: absolute;
-background-color: white;
-padding: 20px;
-padding-top: 20px;
-padding-left: 50px;
-z-index: 1;
-max-width: 400px; 
-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
-border-radius: 5px; 
-width: 1000px;
-height: 350px;
-margin-top: 70px
+  display: none;
+  position: absolute;
+  background-color: white;
+  z-index: 1;
+  max-width: 295px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  width: 1000px;
+  height: 350px;
+  margin-top: 340px;
 }
 
-.popup img {
-width: 60px; 
-height: 60px;
-border-radius: 50%;
+/* .popup img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+} */
+
+/* .popup .info .count {
+  font-size: 18px;
+  font-weight: bold;
+} */
+
+/* .popup .info .label {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 5px;
+} */
+
+/* .popup::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  margin-top: -10px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent transparent white;
+} */
+
+.avt-container{
+  height: 60px;
+}
+.avatar-container a {
+  height: 52px;
 }
 
-.popup .info .count {
-font-size: 18px; 
-font-weight: bold;
+.avt-container:hover .popup {
+  display: block;
 }
 
-.popup .info .label {
-font-size: 14px; 
-color: #888; 
-margin-bottom: 5px;
-}
 
-.popup::after {
-content: '';
-position: absolute;
-top: 50%;
-left: 100%;
-margin-top: -10px;
-border-width: 10px;
-border-style: solid;
-border-color: transparent transparent transparent white;
-}
-.avatar-container:hover .popup {
-display: block;
-}
-.followBtn{
-display: block;
-width: 80%; 
-background-color: rgb(0 149 246);
-border: none;
-color: white;
-font-weight: bold;
-border-radius: 5px;
-margin-left: 20px;
-margin-top: 300px;
-}
-.followBtn:hover{
-background-color: rgb(0 180 246)
-}
-
-ul li a:hover{
-color: rgb(0 180 246)
+ul li a:hover {
+  color: rgb(0 180 246)
 }

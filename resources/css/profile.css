@@ -36,16 +36,25 @@
     height: 100%;
 }
 
-.custom-link:link {
-    color: #000;
-    text-decoration: none;
+.custom-link{
+    color: #000 !important;
+    text-decoration: none !important;
 }
-.custom-link:visited {
-    color: #000;
-    text-decoration: none;
-}
+
 
 .modal-body {
     max-height: 300px;
     overflow-y: auto;
+}
+
+
+.avatar-container:hover .profile-details-card{
+
+    display: block !important;
+}
+
+.SaveBack{
+    margin-top: 0px;
+    margin-bottom:0px ;
+    font-size: 25px;
 }
