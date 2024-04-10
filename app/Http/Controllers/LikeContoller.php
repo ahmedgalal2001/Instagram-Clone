@@ -71,7 +71,13 @@ class LikeContoller extends Controller
      */
     public function destroy(string $id)
     {
+        $like = Like::find($id);
         Like::where('id', $id)->delete();
-        return json_encode($id);
+        $user = Like::with('user')->where('post_id', $like->post_id)->get();
+        return response()->json([
+            'message' => 'Comment Deleted successfully',
+            'id' => $id,
+            'user' => $user,
+        ]);
     }
 }

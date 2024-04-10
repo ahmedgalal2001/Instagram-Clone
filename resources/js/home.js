@@ -9,59 +9,84 @@ document.addEventListener("DOMContentLoaded", function () {
     let avatarContainer = document.querySelectorAll(".avatar-container");
     let postsContainer = document.querySelectorAll(".main-post-div");
 
-    avatarImg.forEach(element => {
+    avatarImg.forEach((element) => {
         element.addEventListener("mouseenter", function () {
-            let profileDetailsCard = element.closest('.avatar-container').querySelector(".profile-details-card");
+            let profileDetailsCard = element
+                .closest(".avatar-container")
+                .querySelector(".profile-details-card");
             if (profileDetailsCard) {
                 profileDetailsCard.style.display = "block";
             }
         });
     });
 
-    avatarContainer.forEach(container => {
+    avatarContainer.forEach((container) => {
         container.addEventListener("mouseleave", function () {
-            let profileDetailsCard = container.querySelector(".profile-details-card");
+            let profileDetailsCard = container.querySelector(
+                ".profile-details-card"
+            );
             if (profileDetailsCard) {
                 profileDetailsCard.style.display = "none";
             }
         });
     });
 
-    postsContainer.forEach(container => {
+    postsContainer.forEach((container) => {
         container.addEventListener("mouseleave", function () {
-            let profileDetailsCard = container.querySelector(".profile-details-card");
+            let profileDetailsCard = container.querySelector(
+                ".profile-details-card"
+            );
             if (profileDetailsCard) {
                 profileDetailsCard.style.display = "none";
             }
         });
     });
 });
-
-
 
 /***************** Toggle post a comment btn during typing *******************/
 
-
 document.querySelectorAll(".comment-txt").forEach(function (input) {
-    input.addEventListener('input', function () {
-        let isEmpty = input.value.trim() === '';
-        let submitButton = input.parentElement.nextElementSibling.querySelector(".commentBtn");
-        submitButton.style.display = isEmpty ? 'none' : 'inline-block';
+    input.addEventListener("input", function () {
+        let isEmpty = input.value.trim() === "";
+        let submitButton =
+            input.parentElement.nextElementSibling.querySelector(".commentBtn");
+        submitButton.style.display = isEmpty ? "none" : "inline-block";
     });
 });
 
-
+// let random = 0.0;
 document.querySelectorAll(".commentBtn").forEach(function (button) {
-    button.addEventListener('click', function () {
-        let postId = button.parentElement.previousElementSibling.querySelector(".comment-txt").getAttribute('data-bs-comment');
-        let commentText = button.parentElement.previousElementSibling.querySelector(".comment-txt").value.trim();
+    button.addEventListener("click", function () {
+        let random = 0.0;
+        // console.log(random);
+        let postId = button.parentElement.previousElementSibling
+            .querySelector(".comment-txt")
+            .getAttribute("data-bs-comment");
+        let commentText = button.parentElement.previousElementSibling
+            .querySelector(".comment-txt")
+            .value.trim();
         console.log("postID:", postId);
         console.log("commentText:", commentText);
-        axios.post("/comment", { "id": postId, "comment": commentText }).then((res) => {
-            console.log(res.data);
-            let newCommentDiv = document.createElement('div');
-            newCommentDiv.classList.add('col-md-12', 'mb-0', 'aligh-items-center', 'd-flex');
-            newCommentDiv.innerHTML = `
+        axios
+            .post("/comment", { id: postId, comment: commentText })
+            .then((res) => {
+                random = Math.random();
+                // console.log(random);
+                // console.log(res.data);
+            let commentsNum = document.getElementById(`view-all-comments-${postId}`);
+            // console.log(commentsNum);
+            // console.log(res.data.commentsCount.comments_count);
+            commentsNum.innerText = `View all ${res.data.commentsCount.comments_count} comments`;
+                console.log(res.data.comment.id);
+
+                let newCommentDiv = document.createElement("div");
+                newCommentDiv.classList.add(
+                    "col-md-12",
+                    "mb-0",
+                    "aligh-items-center",
+                    "d-flex"
+                );
+                newCommentDiv.innerHTML = `
               <div class="col-md-12 mb-0 aligh-items-center d-flex">
                   <div class="d-flex col-10 align-items-center">
                           <p>
@@ -71,22 +96,79 @@ document.querySelectorAll(".commentBtn").forEach(function (button) {
                               ${commentText}
                           </p>
                   </div>
-                  <div class="col-2 d-flex align-items-end justify-content-end">
-                      <a type="button" class="comment-like" id="like-btn">
-                          <h6><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h6>
-                      </a>
-                  </div>
+
+                <div class="col-2 d-flex align-items-start justify-content-start">
+                    <a type="button" 
+                    class="comment-like" 
+                    id="${random}"
+                    data-bs-postCommment="${res.data.comment.id}"
+                    data-bs-postId="${res.data.comment.post_id}">
+                        <h6><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h6>
+                    </a>
+                </div>
+
               </div>
           `;
 
-            let postContainer = document.getElementById(`post-${postId}`);
-            let commentsContainer = postContainer.querySelector(".comments-container");
-            commentsContainer.appendChild(newCommentDiv);
+                let postContainer = document.getElementById(`post-${postId}`);
+                let commentsContainer = postContainer.querySelector(
+                    ".comments-container"
+                );
 
-            button.parentElement.previousElementSibling.querySelector(".comment-txt").value = '';
-        }).catch((error) => {
-            console.error('Error:', error);
-        });
+                let noComment = document.getElementById(`No-Comment-${postId}`);
+                if(commentsContainer.appendChild(newCommentDiv)){
+                    if(noComment)
+                        noComment.style.display = "none";
+                } else {
+                    if(noComment)
+                        noComment.style.display = "block";
+                }
+
+                button.parentElement.previousElementSibling.querySelector(
+                    ".comment-txt"
+                ).value = "";
+
+                let commentLike = document.getElementById(`${random}`);
+                console.log(commentLike);
+                commentLike.addEventListener("click", function () {
+                    console.log(random);
+                    let commentId = commentLike.getAttribute(
+                        "data-bs-postCommment"
+                    );
+                    // console.log(commentId);
+                    let postId = commentLike.getAttribute("data-bs-postId");
+                    // console.log(postId);
+                    let commentLikeId = commentLike.getAttribute(
+                        "data-bs-commentLike"
+                    );
+
+                    if (commentLike.style.color === "red") {
+                        commentLike.style.color = "grey";
+                        axios
+                            .delete(`/commentlike/remove/${commentLikeId}`)
+                            .then((res) => {
+                                console.log(res.data);
+                            });
+                    } else {
+                        commentLike.style.color = "red";
+                        axios
+                            .post("/commentlike", {
+                                id: postId,
+                                comment_id: commentId,
+                            })
+                            .then((res) => {
+                                console.log(res.data);
+                                commentLike.setAttribute(
+                                    "data-bs-commentLike",
+                                    res.data.id
+                                );
+                            });
+                    }
+                });
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
     });
 });
 
@@ -119,14 +201,14 @@ document.addEventListener("DOMContentLoaded", function () {
     function leftScroll() {
         scrollImages.scrollBy({
             left: -200,
-            behavior: "smooth"
+            behavior: "smooth",
         });
     }
 
     function rightScroll() {
         scrollImages.scrollBy({
             left: 200,
-            behavior: "smooth"
+            behavior: "smooth",
         });
     }
 
@@ -137,82 +219,123 @@ document.addEventListener("DOMContentLoaded", function () {
 /************************************* Handling likes button ************************************/
 
 let likesBtn = document.querySelectorAll(".post-like");
+console.log(likesBtn);
 likesBtn.forEach((like) => {
     console.log(like);
     like.addEventListener("click", function () {
         let postId = like.getAttribute("data-bs-post");
         let likeId = like.getAttribute("data-bs-like");
-        
-        if (like.style.color === 'red') {
-            like.style.color = 'black';
+
+        if (like.style.color === "red") {
+            like.style.color = "black";
             axios.delete(`/like/destroy/${likeId}`).then((res) => {
                 console.log(res.data);
+
+                let you_like = document.querySelector(`#you-like-${postId}`);
+                let likesDiv = document.querySelector(`#likes-${postId}`);
+                let my_like = document.querySelector(`#you-like-${postId}`);
+                
+                console.log(you_like);
+                if(res.data.user.length > 0)
+                {
+                    if (you_like) you_like.innerHTML = `<b>${res.data.user[0].user.name}</b>`;
+                } else {
+                    if (likesDiv) likesDiv.innerHTML = `<p class="m-1"><b>No Likes</b></p>`;
+                    if (my_like) my_like.style.display = "none";
+                }
+
             });
         } else {
-            like.style.color = 'red'
-            // console.log(document.querySelector(`#likes-${postId}`));
-            // document.querySelector(`#likes-${postId}`).innerHTML = `
-            // <p class="m-1">and</p>                  
-            // <a type="button"  
-            // data-toggle="modal"
-            // data-bs-othersLikesPost = "${postId}"
-            // class = "others-post text-dark text-decoration-none"
-            // data-target="#postOthersLikesAlert">
-            //     <p class="m-1"><b>others</b></p>
-            // </a>
-            // `;
-            axios.post("/like", { "id": postId }).then((res) => {
+            like.style.color = "red";
+            axios.post("/like", { id: postId }).then((res) => {
                 console.log(res.data);
                 like.setAttribute("data-bs-like", res.data.id);
-                // console.log(res.data);
+                let p_like = document.querySelector(`#p-${postId}`);
+                let a_like = document.querySelector(`#a-${postId}`);
+                if (p_like) p_like.style.display = "none";
+                if (a_like) a_like.style.display = "none";
+
+                let div = document.querySelector(`#likes-${postId}`);
+
+                let str = `
+                <p class="m-1" id="you-like-${postId}"><b>
+                        You              
+                </b></p>
+                <p class="m-1">and</p>
+                    <a type="button"  
+                    data-toggle="modal"
+                    data-bs-othersLikesPost = "${postId}"
+                    id = "att-${postId}"
+                    class = "others-post text-dark text-decoration-none"
+                    data-target="#postOthersLikesAlert">
+                        <p class="m-1"><b>others</b></p>
+                    </a>
+                `;
+                div.innerHTML = str;
+                let a_tt = document.querySelector(`#att-${postId}`);
+                a_tt.addEventListener("click", () => {
+                    othersLikesModal(postId);
+                });
             });
         }
-    })
+    });
 });
-
 
 let bookMarkBtn = document.querySelectorAll(".post-book-mark");
 // console.log(bookMarkBtn);
 
 bookMarkBtn.forEach((bookMark) => {
     bookMark.addEventListener("click", function () {
-        if (bookMark.style.color === 'orange') {
-            bookMark.style.color = 'black';
+        let postId = bookMark.getAttribute("data-bs-post");
+        // let book_mark_id = like.getAttribute("data-bs-bookMark");
+        if (bookMark.style.color === "orange") {
+            bookMark.style.color = "black";
+            axios.delete(`/save/destroy/${postId}`).then((res) => {
+                console.log(res.data);
+            });
         } else {
-            bookMark.style.color = 'orange'
+            bookMark.style.color = "orange";
+            axios.post("/save", { id: postId }).then((res) => {
+                console.log(res.data);
+            });
         }
-    })
-})
+    });
+});
 
 /************** Likes for Comment ****************/
 
 let CommentLikesBtn = document.querySelectorAll(".comment-like");
 CommentLikesBtn.forEach((like) => {
     like.addEventListener("click", function () {
-        let postId = like.getAttribute("data-bs-postCommment");
-        let likeId = like.getAttribute("data-bs-likeComment");
+        let commentId = like.getAttribute("data-bs-postCommment");
+        // console.log(commentId);
+        let postId = like.getAttribute("data-bs-postId");
+        // console.log(postId);
+        let commentLikeId = like.getAttribute("data-bs-commentLike");
 
-        if (like.style.color === 'red') {
-            like.style.color = 'grey';
-            // axios.delete(`/like/destroy/${likeId}`).then((res) => {
-            //     console.log(res.data);
-            // });
+        if (like.style.color === "red") {
+            like.style.color = "grey";
+            axios.delete(`/commentlike/remove/${commentLikeId}`).then((res) => {
+                console.log(res.data);
+            });
         } else {
-            like.style.color = 'red'
-            // axios.post("/like", { "id": postId }).then((res) => {
-            //     like.setAttribute("data-bs-like", res.data.id);
-            //     console.log(res.data);
-            // });
+            like.style.color = "red";
+            axios
+                .post("/commentlike", { id: postId, comment_id: commentId })
+                .then((res) => {
+                    console.log(res.data);
+                    like.setAttribute("data-bs-commentLike", res.data.id);
+                });
         }
-    })
+    });
 });
 
 /********************************************************************************/
 
-let modalDiv = document.querySelector("#commentsModal")
+let modalDiv = document.querySelector("#commentsModal");
 let commentButton = document.querySelectorAll(".comment-btn");
 commentButton.forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener("click", () => {
         let postId = btn.getAttribute("data-bs-commentBtn");
         axios.get(`/post/${postId}`).then((res) => {
             console.log(res.data);
@@ -246,7 +369,10 @@ commentButton.forEach((btn) => {
 
                                                 <div class="d-flex w-100 col-10 justify-content-between align-items-center">
                                                     <p class="mb-0 h6">
-                                                        ${res.data.post.user.name}
+                                                        ${
+                                                            res.data.post.user
+                                                                .name
+                                                        }
                                                     </p>
                                                     
                                                     <div>
@@ -282,11 +408,18 @@ commentButton.forEach((btn) => {
                                         <a type="button"> 
                                         <p class="m-1">
                                         <b>
-                                            ${res.data.like_user ? res.data.like_user.user.name : "No Likes"}
+                                            ${
+                                                res.data.like_user
+                                                    ? res.data.like_user.user
+                                                          .name
+                                                    : "No Likes"
+                                            }
                                         </b>
                                         </p>
                                         </a>
-                                        ${res.data.like_user ? `
+                                        ${
+                                            res.data.like_user
+                                                ? `
                                         <p class="m-1">and</p>
 
                                         <a type="button"  
@@ -297,15 +430,17 @@ commentButton.forEach((btn) => {
                                             <p class="m-1"><b>others</b></p>
                                         </a>
                                         
-                                        ` : ""}
+                                        `
+                                                : ""
+                                        }
                                         
                                     </div>
                                     <div class="d-flex flex-column modal-comments">
                                         <div class="p-1 ">
-                                            ${res.data.allComments.length == 0 ? 
-                                                `<p class="text-center">No Comments</p>`
-                                                :
-                                                `<div class="comments-modal-container">
+                                            ${
+                                                res.data.allComments.length == 0
+                                                    ? `<p class="text-center">No Comments</p>`
+                                                    : `<div class="comments-modal-container">
                                                 
                                                 </div>`
                                             }
@@ -316,8 +451,12 @@ commentButton.forEach((btn) => {
                                         <div class="col-3 col-lg-3 col-md-6 col-sm-6 d-flex align-items-center justify-content-between">
 
                                             <a type="button" 
-                                                class="btn-${res.data.post.id} post-like"
-                                                data-bs-post="${res.data.post.id}" 
+                                                class="btn-${
+                                                    res.data.post.id
+                                                } post-like"
+                                                data-bs-post="${
+                                                    res.data.post.id
+                                                }" 
                                                 id="like-btn-modal">
                                                 <h4><b><i class="fa-regular fa-heart"></i></b></h4>
                                             </a>
@@ -335,7 +474,9 @@ commentButton.forEach((btn) => {
                                         <div class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
                                             <a 
                                             type="button" 
-                                            class="bookmark-btn-${res.data.post.id}" 
+                                            class="bookmark-btn-${
+                                                res.data.post.id
+                                            }" 
                                             id="book-mark-btn">
                                                 <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
                                             </a>
@@ -343,7 +484,9 @@ commentButton.forEach((btn) => {
                                     </div>
 
                                     <div>
-                                        <p class=" text-secondary"><i>${res.data.posts_time}</i></p>
+                                        <p class=" text-secondary"><i>${
+                                            res.data.posts_time
+                                        }</i></p>
                                     </div>
                                     <hr>
                                     
@@ -370,69 +513,80 @@ commentButton.forEach((btn) => {
 
             /************************* Modal with post likes btn *************************/
             let postLike = document.getElementById(`${res.data.post.id}`);
-            let postLikeModal = document.querySelector(`.btn-${res.data.post.id}`)
+            let postLikeModal = document.querySelector(
+                `.btn-${res.data.post.id}`
+            );
             console.log(postLike);
             console.log(postLikeModal);
 
-            res.data.post_like.likes.map(function(x) {
-                postLikeModal.setAttribute("data-bs-like",`${x.id}`);
+            res.data.post_like.likes.map(function (x) {
+                postLikeModal.setAttribute("data-bs-like", `${x.id}`);
 
-                if(res.data.logged_user == x.user_id)
-                    postLikeModal.setAttribute("style", "color: red !important");
+                if (res.data.logged_user == x.user_id)
+                    postLikeModal.setAttribute(
+                        "style",
+                        "color: red !important"
+                    );
                 else
-                    postLikeModal.setAttribute("style", "color: black !important"); 
-            })
-
-
+                    postLikeModal.setAttribute(
+                        "style",
+                        "color: black !important"
+                    );
+            });
 
             postLikeModal.addEventListener("click", function () {
                 let postId = postLike.getAttribute("data-bs-post");
                 let likeId = postLike.getAttribute("data-bs-like");
 
-                if (postLike.style.color === 'red') {
-                    postLike.style.color = 'black';
-                    postLikeModal.style.color = 'black';
+                if (postLike.style.color === "red") {
+                    postLike.style.color = "black";
+                    postLikeModal.style.color = "black";
                     axios.delete(`/like/destroy/${likeId}`).then((res) => {
                         console.log(res.data);
                     });
                 } else {
-                    postLike.style.color = 'red'
-                    postLikeModal.style.color = 'red'
-                    axios.post("/like", { "id": postId }).then((res) => {
+                    postLike.style.color = "red";
+                    postLikeModal.style.color = "red";
+                    axios.post("/like", { id: postId }).then((res) => {
                         postLike.setAttribute("data-bs-like", res.data.id);
                         postLikeModal.setAttribute("data-bs-like", res.data.id);
                         console.log(res.data);
                     });
                 }
-            })
+            });
             /******************************* Save btn post with modal *******************************/
 
-            let bookMarkBtnModal = document.querySelector(`.bookmark-btn-${res.data.post.id}`);
-            let bookMarkBtnPost = document.querySelector(`#book-mark-btn-${res.data.post.id}`)
+            let bookMarkBtnModal = document.querySelector(
+                `.bookmark-btn-${res.data.post.id}`
+            );
+            let bookMarkBtnPost = document.querySelector(
+                `#book-mark-btn-${res.data.post.id}`
+            );
             // console.log(bookMarkBtnModal);
             // console.log(bookMarkBtnPost);
 
             bookMarkBtn.forEach((bookMark) => {
                 bookMark.addEventListener("click", function () {
-                    if (bookMark.style.color === 'orange') {
-                        bookMark.style.color = 'black';
+                    if (bookMark.style.color === "orange") {
+                        bookMark.style.color = "black";
                     } else {
-                        bookMark.style.color = 'orange'
+                        bookMark.style.color = "orange";
                     }
-                })
-            })
+                });
+            });
 
             /****************************************************************************************/
 
-
             /******************************* Display All Comments ****************************/
 
-            let commentsDiv = document.querySelector(".comments-modal-container");
+            let commentsDiv = document.querySelector(
+                ".comments-modal-container"
+            );
             console.log(commentsDiv);
             let allComentsData = res.data.allComments;
             console.log(allComentsData);
 
-            allComentsData.forEach((comment)=>{          
+            allComentsData.forEach((comment) => {
                 let allComents = `
                     <div class="col-md-12 mb-0 aligh-items-center d-flex">
                         <div class="d-flex col-10 align-items-center p-0">   
@@ -475,15 +629,15 @@ commentButton.forEach((btn) => {
                 p.innerHTML = `<i>${commentsTime[index]}</i>`;
             });
 
-
             /*********************************************************************************/
 
-
-            let othersModalMainDiv = document.getElementById("postOthersLikesAlert");
+            let othersModalMainDiv = document.getElementById(
+                "postOthersLikesAlert"
+            );
             let othersModal = document.querySelectorAll(".others-modal");
-            othersModal.forEach((btn)=>{
-              btn.addEventListener('click',()=>{
-                othersModalMainDiv.innerHTML = `
+            othersModal.forEach((btn) => {
+                btn.addEventListener("click", () => {
+                    othersModalMainDiv.innerHTML = `
                   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md" role="document">
                       <div class="modal-content">
                           <div class="d-flex align-items-center">
@@ -506,9 +660,9 @@ commentButton.forEach((btn) => {
                   </div>
                   `;
 
-                  let likes_div = document.querySelector('.vertical-menu');
-                  likes.forEach((myLike) => {
-                      let str = `
+                    let likes_div = document.querySelector(".vertical-menu");
+                    likes.forEach((myLike) => {
+                        let str = `
                       <div class="row w-100 d-flex align-items-center justify-content-between mb-2">
                           <div class="col-9 d-flex align-items-center px-4">
                               <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
@@ -525,90 +679,96 @@ commentButton.forEach((btn) => {
                           </div>
                       </div>
                     `;
-                      likes_div.innerHTML += str;
-                  });
-              })
-            })
+                        likes_div.innerHTML += str;
+                    });
+                });
+            });
         }); // axios end
     });
 });
 
+/******************************** Main posts others btn for likes **********************************/
 
-/******************************** Main posts others btn forr likes **********************************/
+function othersLikesModal(postId) {
+    axios.get(`/post/${postId}`).then((res) => {
+        console.log(res.data);
+        let likes = res.data.likes;
 
+        othersModalMainDiv.innerHTML = `
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md" role="document">
+            <div class="modal-content">
+                <div class="d-flex align-items-center">
+                    <div class="col-11 d-flex align-items-center justify-content-center">
+                        <p class="m-0"><b>Likes</b></p>
+                    </div>
+                    <button type="button" class="col-1 close other-close-btn border-0 bg-white m-0" data-dismiss="modal" aria-label="Close">
+                        <h1 aria-hidden="true" class="m-0">&times;</h1>
+                    </button>
+                </div>
+                <hr class="m-0">
+                <div class="modal-body p-0 d-flex justify-content-center flex-column">
+                    <h6 class="text-secondary m-4"><b>${res.data.post.user.name}</b>. can see the total number of people who liked this post.</h6>
+
+                    <div class="vertical-menu w-100 m-0">      
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        `;
+
+        let other_close_btn = document.querySelector(".other-close-btn");
+        let others_likes_modal = document.querySelector(".others-likes-modal");
+        other_close_btn.addEventListener("click", function () {
+            // console.log(others_likes_modal);
+            others_likes_modal.classList.remove("show");
+            others_likes_modal.setAttribute("aria-hidden", "true");
+            others_likes_modal.setAttribute("style", "display: none");
+        });
+
+        others_likes_modal.classList.toggle("show");
+        others_likes_modal.setAttribute(
+            "aria-hidden",
+            others_likes_modal.classList.contains("show") ? "false" : "true"
+        );
+        others_likes_modal.setAttribute(
+            "style",
+            others_likes_modal.classList.contains("show")
+                ? "display: block"
+                : "display: none"
+        );
+
+        let likes_div = document.querySelector(".vertical-menu");
+        likes.forEach((myLike) => {
+            let str = `
+            <div class="row w-100 d-flex align-items-center justify-content-between mb-2">
+                <div class="col-9 d-flex align-items-center px-4">
+                    <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                    class="rounded-circle avatar bg-dark" width="45px"
+                    height="45px" alt="Avatar"/>
+                    <a type="button">
+                    <b>${myLike.user.name}</b>
+                    </a>
+                </div>
+                <div class="col-3 d-flex justify-content-end">
+                <button class="btn btn-primary m-0 w-100">
+                    <b>follow</b>
+                </button>
+                </div>
+            </div>
+        `;
+            likes_div.innerHTML += str;
+        });
+    });
+}
 
 let othersModalMainDiv = document.getElementById("postOthersLikesAlert");
 // console.log(othersModalMainDiv);
 let othersButton = document.querySelectorAll(".others-post");
 // console.log(othersButton);
 othersButton.forEach((btn) => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener("click", () => {
         let postId = btn.getAttribute("data-bs-othersLikesPost");
-        axios.get(`/post/${postId}`).then((res) => {
-        console.log(res.data);
-        let likes = res.data.likes;
-
-        othersModalMainDiv.innerHTML = `
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-md" role="document">
-                <div class="modal-content">
-                    <div class="d-flex align-items-center">
-                        <div class="col-11 d-flex align-items-center justify-content-center">
-                            <p class="m-0"><b>Likes</b></p>
-                        </div>
-                        <button type="button" class="col-1 close other-close-btn border-0 bg-white m-0" data-dismiss="modal" aria-label="Close">
-                            <h1 aria-hidden="true" class="m-0">&times;</h1>
-                        </button>
-                    </div>
-                    <hr class="m-0">
-                    <div class="modal-body p-0 d-flex justify-content-center flex-column">
-                        <h6 class="text-secondary m-4"><b>${res.data.post.user.name}</b>. can see the total number of people who liked this post.</h6>
-
-                        <div class="vertical-menu w-100 m-0">      
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            `;
-
-          let other_close_btn = document.querySelector(".other-close-btn");
-          let others_likes_modal = document.querySelector(".others-likes-modal")
-          other_close_btn.addEventListener('click', function() {
-            // console.log(others_likes_modal);
-            others_likes_modal.classList.remove('show');
-            others_likes_modal.setAttribute('aria-hidden', 'true');
-            others_likes_modal.setAttribute('style', 'display: none');
-
-        });
-
-        
-            others_likes_modal.classList.toggle('show');
-            others_likes_modal.setAttribute('aria-hidden', others_likes_modal.classList.contains('show') ? 'false' : 'true');
-            others_likes_modal.setAttribute('style', others_likes_modal.classList.contains('show') ? 'display: block' : 'display: none');
-
-
-            let likes_div = document.querySelector('.vertical-menu');
-            likes.forEach((myLike) => {
-                let str = `
-                <div class="row w-100 d-flex align-items-center justify-content-between mb-2">
-                    <div class="col-9 d-flex align-items-center px-4">
-                        <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
-                        class="rounded-circle avatar bg-dark" width="45px"
-                        height="45px" alt="Avatar"/>
-                        <a type="button">
-                        <b>${myLike.user.name}</b>
-                        </a>
-                    </div>
-                    <div class="col-3 d-flex justify-content-end">
-                    <button class="btn btn-primary m-0 w-100">
-                        <b>follow</b>
-                    </button>
-                    </div>
-                </div>
-            `;
-                likes_div.innerHTML += str;
-            });
-        })
-    })
-
+        othersLikesModal(postId);
+    });
 });

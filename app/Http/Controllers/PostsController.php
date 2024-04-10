@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SaveUserPost;
 use Illuminate\Support\Carbon;
 use App\Models\Like;
+use App\Models\CommentLikes;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
@@ -63,6 +65,8 @@ class PostsController extends Controller
 
             $logged_user = Auth::id();
 
+            $allLikes = CommentLikes::all();
+
             
             $comments = $post->comments->map(function($comment) {
                 $timestamp = $comment->created_at;
@@ -114,6 +118,7 @@ class PostsController extends Controller
                 'posts_time' => $posts_time($post->created_at),
                 'post_like'=> $post_like,
                 'logged_user'=> $logged_user,
+                'allLikes' => $allLikes,
             ]);
         } catch(\Exception $e){
             return response()->json([
@@ -122,11 +127,26 @@ class PostsController extends Controller
         }
     }
     
-    // public function addToFavourite(Request $request)
-    // {
-    //     $post = Post::find($request->input("id"));
+    public function addToFavourite(Request $request)
+    {
+        try{
+            $id_post = $request->input("id");
+            $id_user = Auth::id();
+            $book_mark = new SaveUserPost();
+            $book_mark->user_id = $id_user;
+            $book_mark->post_id = $id_post;
+            $book_mark->save();
 
-    // }
+            return response()->json([
+                'message' => 'Post stored successfully',
+            ]);
+        } catch(\Exception $e){
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ]);
+        }
+
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -149,6 +169,11 @@ class PostsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user_id = Auth::id();
+        $savedPost = SaveUserPost::where('post_id', $id)->where('user_id', $user_id)->delete();
+        return response()->json([
+            "message" => "Deleted successfully",
+            'savedPost'=> $savedPost,
+        ]);
     }
 }

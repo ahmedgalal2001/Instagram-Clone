@@ -182,7 +182,12 @@
 
                         </div>
                         <div class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
-                            <a type="button" 
+                            <a type="button"
+                            @foreach($post->savedposts as $mark)
+                                @if (Auth::id() == $mark->id)
+                                    style="color:orange !important;"
+                                @endif
+                            @endforeach
                             id="book-mark-btn-{{ $post->id }}"
                             data-bs-post="{{ $post->id }}"
                             class="post-book-mark"
@@ -190,6 +195,7 @@
                                 <h4><b><i class="fa-regular fa-bookmark"></i></b></h4>
                             </a>
                         </div>
+                        
                     </div>
                     <div class="mt-1 d-flex align-items-start post-caption" id="{{ $post->id }}">
                         <p>
@@ -206,23 +212,30 @@
                         <p class="m-1 mx-0">Liked by</p>
                         @if (count($allLikes) <= 0)
                             <p class="m-1 mx-2" id="p-{{ $post->id }}"><b>No Likes</b></p>
+                            <div class="d-flex" id="likes-{{ $post->id }}">
+                               
+                            </div>
                         @else
-                            <a type="button">
-                                <p class="m-1"><b>
+                            <a type="button" id="a-{{$post->id}}">
+                                <p class="m-1" id="you-like-{{ $post->id }}">
+                                    <b>
+                                        @php
+                                            $foundUser = $post->likes[0]->user->name;
+                                            $flag = 0;
+                                        @endphp
                                         @foreach ($post->likes as $like)
-                                            @if ($post->id == $like->post_id)
-                                                @php
-                                                    $foundUser = explode(' ', $like->user->name)[0];
-                                                @endphp
                                                 @if (Auth::id() == $like->user_id )
                                                     You
-                                                @else
-                                                    {{ $foundUser }}
-                                                @endif
-                                            @endif 
-                                            @break
+                                                    @php
+                                                        $flag = 1;
+                                                    @endphp
+                                                @endif 
                                         @endforeach
-                                </b></p>
+                                        @if ($flag == 0)
+                                            {{ $foundUser }}
+                                        @endif
+                                    </b>
+                                </p>
                             </a>
                             <div class="d-flex" id="likes-{{ $post->id }}">
                                 <p class="m-1">and</p>
@@ -243,7 +256,7 @@
                         data-toggle="modal"
                         data-bs-commentBtn = "{{ $post->id }}"
                         data-target="#commentsModal">
-                            <p class="text-secondary m-0">View all {{ $post->comments->count() }} comments</p>
+                            <p class="text-secondary m-0" id="view-all-comments-{{ $post->id }}">View all {{ $post->comments->count() }} comments</p>
                         </a>
                         @if (count($post->comments) > 0)
                             <div id="post-{{ $post->id }}">
@@ -262,24 +275,29 @@
                                                 </div>
 
 
-                                                <div class="col-2 d-flex align-items-start justify-content-end m-1">
-                                                    <a 
-                                                    {{-- style="color:red !important;" --}}
-                                                    data-bs-likeComment="{{ $like->id }}"
-                                                    type="button" 
-                                                    class="comment-like" 
-                                                    id="like-btn"
-                                                    data-bs-postCommment="{{ $post->comments[0]->id }}" id="like-btn">
-                                                        <h6><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h6>
-                                                    </a>
-                                                </div>
+                                                <a type="button" class="comment-like"
+                                                        @foreach ($comments as $comment_like)
+                                                            @if (Auth::id() == $comment_like->user_id && $post->id == $comment_like->post_id && $comment->id == $comment_like->comment_id)
+                                                                    data-bs-commentLike="{{ $comment_like->id }}"
+                                                                    style="color:red !important;"
+                                                            @endif
+                                                        @endforeach
+                                                    data-bs-postCommment="{{ $comment->id }}"
+                                                    data-bs-postId="{{ $post->id }}">
+                                                    <h6><b><i class="fa-regular fa-heart"></i></b></h6>
+                                                </a>
+
                                             </div>
                                         @endif
                                     @endforeach
                                 </div>
                             </div>
                         @else
-                            <h4><b>No Comments</b></h4>
+                            <h4 id="No-Comment-{{ $post->id }}"><b>No Comments</b></h4>
+                            <div id="post-{{ $post->id }}">
+                                <div class="comments-container">
+                                </div>
+                            </div>
                         @endif
                     </div>
                     <div class="row">
@@ -295,7 +313,7 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+            @endforeach
     </div>
     <!-------------------------------------------- End of Posts side ------------------------------------------->
 
@@ -310,7 +328,7 @@
                     </a>
                 </div>
                 <div class="col-md-9 d-flex flex-column align-items-center justify-content-center">
-                        <h6 class="card-title mb-0">{{ $post->user->name }}</h6>
+                        <h6 class="card-title mb-0">Mohamed</h6>
                         <p class="card-text mb-2"><small class="text-muted">Suggested For You</small></p>
                 </div>
             </div>
@@ -350,7 +368,8 @@
                                                     <div class="col-11 mx-3">
                                                         <div class="d-flex">
                                                             <p class="mb-0 h6">
-                                                                {{ $post->user->name }}
+                                                                {{-- {{ $post->user->name }} --}}
+                                                                Mohamed
                                                             </p>
                                                         </div>
                                                     </div>
@@ -359,7 +378,7 @@
                                             <div class="row d-flex justify-content-between">
                                                 <div class="col-4 d-flex flex-column align-items-center">
                                                     <p class="m-0">
-                                                        {{ $users->where('id', $post->user->id)->first()->posts_count }}
+                                                        {{-- {{ $users->where('id', $post->user->id)->first()->posts_count }} --}}
                                                     </p>
                                                     <p class="m-0">Posts</p>
                                                 </div>

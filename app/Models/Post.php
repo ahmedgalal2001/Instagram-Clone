@@ -29,4 +29,9 @@ class Post extends Model
     {
         return $this->belongsToMany(Hashtag::class, 'post_hashtags');
     }
+
+    public function savedposts()
+    {
+        return $this->belongsToMany(User::class, 'save_posts');
+    }
 }

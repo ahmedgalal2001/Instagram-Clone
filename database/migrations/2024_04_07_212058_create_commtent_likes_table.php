@@ -12,13 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('commtent_likes', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('comment_id');
             $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
-            $table->primary(['post_id', 'user_id' , "comment_id"]);
+            $table->unique(['post_id', 'user_id' , "comment_id"]);
             $table->timestamps();
         });
     }
