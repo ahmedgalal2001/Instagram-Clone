@@ -37,9 +37,12 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::get('/posts/dashboard', [AdminController::class, 'postsIndex'])->name('posts.dashboard')->middleware('auth');
+Route::get('/dashboard/posts', [AdminController::class, 'postsIndex'])->name('posts.dashboard')->middleware('auth');
 Route::get('/dashboard/comments', [AdminController::class, 'commentsIndex'])->name('comments.dashboard')->middleware('auth');
-Route::get('/dashboard/users', [AdminController::class, 'ahmed'])->name('users.dashboard')->middleware('auth');
+Route::get('/dashboard/users', [AdminController::class, 'usersIndex'])->name('users.dashboard')->middleware('auth');
+Route::delete("/dashboard/posts/{post}", [AdminController::class, "destroyPost"])->name("posts.destroy");
+Route::delete("/dashboard/comments/{post}", [AdminController::class, "destroyComment"])->name("comments.destroy");
+Route::delete("/dashboard/users/{post}", [AdminController::class, "destroyUser"])->name("users.destroy");
 
 Route::get("/emailtest/{email}",[MailController::class,"sendMsg"])->name("mail.sendMsg");
 

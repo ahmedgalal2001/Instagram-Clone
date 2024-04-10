@@ -25,7 +25,7 @@
         <td>{{ $user->email }}</td>
       <td>
         <a href="" class="btn btn-primary">Show</a>
-        <form style="display: inline" action="" method="POST">
+        <form style="display: inline" action="{{ route("users.destroy", $user->id) }}" method="POST">
           @csrf
           @method("DELETE")
           <button type="submit" class="btn btn-danger">Delete</button>

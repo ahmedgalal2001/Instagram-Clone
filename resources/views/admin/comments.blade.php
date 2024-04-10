@@ -24,7 +24,7 @@
         <td>{{ $comment->created_at }}</td>
       <td>
         <a href="" class="btn btn-primary">Show</a>
-        <form style="display: inline" action="" method="POST">
+        <form style="display: inline" action="{{ route("comments.destroy", $comment->id) }}" method="POST">
           @csrf
           @method("DELETE")
           <button type="submit" class="btn btn-danger">Delete</button>

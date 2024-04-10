@@ -10,7 +10,7 @@
   <thead>
     <tr>
         <th scope="col">Post ID</th>
-        <th scope="col">Owner</th>
+        <th scope="col">Owner ID</th>
       <th scope="col">Caption</th>
       <th scope="col">Image</th>
       <th scope="col" width="250px">Actions</th>
@@ -25,7 +25,7 @@
         <td>{{ $post->iamge }}</td>
       <td>
         <a href="" class="btn btn-primary">Show</a>
-        <form style="display: inline" action="" method="POST">
+        <form style="display: inline" action="{{ route("posts.destroy", $post->id) }}" method="POST">
           @csrf
           @method("DELETE")
           <button type="submit" class="btn btn-danger">Delete</button>

@@ -29,8 +29,29 @@ class AdminController extends Controller
     {
         if (!auth()->user()->is_admin) {
             $users = User::all();
+            
             return view('admin.users', ["users"=> $users]);
         }
         return view('home');
     }
+
+    public function destroyPost($id)
+    {
+        $post = Post::find($id);
+        $post->delete();
+        return redirect()->route("posts.dashboard");
+    }
+    public function destroyComment($id)
+    {
+        $comment = Comment::find($id);
+        $comment->delete();
+        return redirect()->route("comments.dashboard");
+    }
+    public function destroyUser($id)
+    {
+        $user = User::find($id);
+        $user->delete();
+        return redirect()->route("users.dashboard");
+    }
 }
+
