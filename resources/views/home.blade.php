@@ -310,7 +310,9 @@
                     </a>
                 </div>
                 <div class="col-md-9 d-flex flex-column align-items-center justify-content-center">
-                        <h6 class="card-title mb-0">{{ $post->user->name }}</h6>
+                        <h6 class="card-title mb-0">
+                            {{-- {{ $post->user->name }} --}}
+                        </h6>
                         <p class="card-text mb-2"><small class="text-muted">Suggested For You</small></p>
                 </div>
             </div>
@@ -350,7 +352,7 @@
                                                     <div class="col-11 mx-3">
                                                         <div class="d-flex">
                                                             <p class="mb-0 h6">
-                                                                {{ $post->user->name }}
+                                                                {{-- {{ $post->user->name }} --}}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -359,7 +361,7 @@
                                             <div class="row d-flex justify-content-between">
                                                 <div class="col-4 d-flex flex-column align-items-center">
                                                     <p class="m-0">
-                                                        {{ $users->where('id', $post->user->id)->first()->posts_count }}
+                                                        {{-- {{ $users->where('id', $post->user->id)->first()->posts_count }} --}}
                                                     </p>
                                                     <p class="m-0">Posts</p>
                                                 </div>
