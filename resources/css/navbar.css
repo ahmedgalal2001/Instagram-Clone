@@ -7,7 +7,7 @@
     color: #000 !important;
 }
 
-.offcanvas-start {
+.custom-offcanvas-start {
     left: 150px !important;
     transform: translateX(0px) !important;
     transition: transform 0.3s ease-in-out !important;
@@ -88,6 +88,11 @@
     transform: translateX(2%);
 }
 
+#helper-list {
+    max-height: 200px; /* Set a maximum height for the list */
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
 @media (min-width: 300px) and (max-width: 768px) {
     .navbar {
         width: 100%;
@@ -117,5 +122,8 @@
     }
     .more {
         display: none !important;
+    }
+    .custom-offcanvas-start {
+        left: 0px !important;
     }
 }

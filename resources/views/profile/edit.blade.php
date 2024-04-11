@@ -2,6 +2,7 @@
 @section('title', 'Edit')
 @section('body')
     @vite(['resources/css/edit-profile.css'])
+    
     {{-- we here will put the navbar with col 3 max --}}
     <div class="col-10">
         {{-- we here will put the navbar with col 3 max --}}

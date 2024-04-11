@@ -9,6 +9,8 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\LikeContoller;
 use App\Http\Controllers\CommentContoller;
+use App\Http\Controllers\Hashtag;
+use App\Http\Controllers\HashtagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,10 +38,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/following/{id}', [ProfileController::class, 'unfollow'])->name('following.delete');
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::get('/home', [HomeController::class, 'index']);
-    Route::get("/followers/{followerName?}",[ProfileController::class,'showFollowers'])->name('show.followers');
-    Route::get("/followings/{followingName?}",[ProfileController::class,'showFollowings'])->name('show.followings');
-    Route::get("/hashtags",[ProfileController::class,'showHashtags'])->name('show.Hashtags');
-    Route::get("/likes",[ProfileController::class,'showLikes'])->name("show.likes");
+    Route::get("/followers/{followerName?}", [ProfileController::class, 'showFollowers'])->name('show.followers');
+    Route::get("/followings/{followingName?}", [ProfileController::class, 'showFollowings'])->name('show.followings');
+    Route::get("/hashtags", [ProfileController::class, 'showHashtags'])->name('show.Hashtags');
+    // to get hashtag fillter
+    Route::get("/hashtags/filter/{id}", [HashtagController::class, 'filter'])->name('hashtag.filter');
+    // to get hashtag fillter
+
+    Route::get("/likes", [ProfileController::class, 'showLikes'])->name("show.likes");
 
 
 
