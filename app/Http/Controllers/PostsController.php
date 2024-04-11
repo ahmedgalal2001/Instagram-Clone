@@ -35,38 +35,44 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'commit_message' => 'string|max:500', // Assuming commit_message is a string with a maximum length of 500 characters
-            'myfile' => 'required|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:20480' // Adjusted to accept image and video file formats with increased max size
-        ]);
-        $response = Cloudinary::upload($request->file('myfile')->getRealPath(), [
-            "resource_type" => "auto" // Assuming Cloudinary auto-detects the resource type
-        ]);
-        $fileExtension = $request->file('myfile')->getClientOriginalExtension();
-        $isVideo = in_array($fileExtension, ['mp4', 'mov', 'avi']);
-        $post = new Post();
-        $post->user_id = Auth::id();
-        $post->image_url = $response->getSecurePath(); // Adjusted to get the secure URL
-        $post->video = $isVideo ? 1 : 0; // Set video attribute based on the file type
-        $post->caption = $validatedData['commit_message'];
-        $post->save();
-        $commitMessage = $validatedData['commit_message'];
-        $pattern = "/#[a-zA-Z0-9_]+/";
-        preg_match_all($pattern, $commitMessage, $matches);
-        $hashtags = $matches[0];
-        $hashtags = array_map(function ($tag) {
-            return substr($tag, 1);
-        }, $hashtags);
-        //  add hashtage and relation
-        $hashtags = array_unique($hashtags);
-        foreach ($hashtags as $tag) {
-            $existingHashtag = Hashtag::where('tag', $tag)->first();
-            if (!$existingHashtag) {
-                $existingHashtag = Hashtag::create(['tag' => $tag]);
+        try {
+            $validatedData = $request->validate([
+                'commit_message' => 'string|max:500', // Assuming commit_message is a string with a maximum length of 500 characters
+                'myfile' => 'required|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:20480' // Adjusted to accept image and video file formats with increased max size
+            ]);
+            $response = Cloudinary::upload($request->file('myfile')->getRealPath(), [
+                "resource_type" => "auto" // Assuming Cloudinary auto-detects the resource type
+            ]);
+            $fileExtension = $request->file('myfile')->getClientOriginalExtension();
+            $isVideo = in_array($fileExtension, ['mp4', 'mov', 'avi']);
+            $post = new Post();
+            $post->user_id = Auth::id();
+            $post->image_url = $response->getSecurePath(); // Adjusted to get the secure URL
+            $post->video = $isVideo ? 1 : 0; // Set video attribute based on the file type
+            $post->caption = $validatedData['commit_message'];
+            $post->save();
+            $commitMessage = $validatedData['commit_message'];
+            $pattern = "/#[a-zA-Z0-9_]+/";
+            preg_match_all($pattern, $commitMessage, $matches);
+            $hashtags = $matches[0];
+            $hashtags = array_map(function ($tag) {
+                return substr($tag, 1);
+            }, $hashtags);
+            //  add hashtage and relation
+            $hashtags = array_unique($hashtags);
+            foreach ($hashtags as $tag) {
+                $existingHashtag = Hashtag::where('tag', $tag)->first();
+                if (!$existingHashtag) {
+                    $existingHashtag = Hashtag::create(['tag' => $tag]);
+                }
+                $post->hashtags()->attach($existingHashtag->id);
             }
-            $post->hashtags()->attach($existingHashtag->id);
+            return response()->json(["msg" => "success"]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ]);
         }
-        return redirect()->action([HomeController::class, 'index']);
     }
 
     /**

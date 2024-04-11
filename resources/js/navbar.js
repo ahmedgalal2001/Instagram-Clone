@@ -152,11 +152,12 @@ myfile.addEventListener('change', function (event) {
 });
 
 // search and print list of users
-search_username.input = () => {
+search_username.oninput = () => {
     users.innerHTML = "";
     let username = search_username.value;
     console.log(username);
     axios.get(`/users/${username}`).then((res) => {
+        console.log(res.data);
         res.data.forEach(user => {
             let elementUser = `
     <div class="user-profile">
