@@ -41,6 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::get("/followings/{followingName?}",[ProfileController::class,'showFollowings'])->name('show.followings');
     Route::get("/hashtags",[ProfileController::class,'showHashtags'])->name('show.Hashtags');
     Route::get("/likes",[ProfileController::class,'showLikes'])->name("show.likes");
+    Route::post('/profile/edit', [editProfileController::class, 'update'])->name('profile.update');
+    Route::post('/profile/changephoto', [editProfileController::class, 'changephoto'])->name('profile.changephoto');
+    Route::post('/profile/removeimage', [editProfileController::class, 'removeImage'])->name('profile.removeimage');
 
 
 
