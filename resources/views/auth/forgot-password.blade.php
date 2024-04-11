@@ -18,7 +18,7 @@
                             <p>Enter your email, phone, or username and we'll send you a link to get back into your account.
                             </p>
                             <div class="text-center">
-                                <form method="POST" action="{{ route('register') }}">
+                                <form method="POST" action="{{ route('password.email') }}">
                                     @csrf
                                     <div class="mb-3">
                                         <input type="email" name="email" class="form-control rounded-0 bg-light"

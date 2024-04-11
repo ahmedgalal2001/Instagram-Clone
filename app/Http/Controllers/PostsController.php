@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Carbon;
+use App\Models\Like;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Controller;
 use App\Models\Post;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +18,6 @@ class PostsController extends Controller
      */
     public function index()
     {
-        
     }
 
     /**
@@ -29,13 +33,33 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
+        /**
+          // dd($request);
+        // $response = Cloudinary::upload($request->file('file')->getRealPath())->getSecurePath();
+
+        $response = Cloudinary::upload($request->file('file')->getRealPath(), [
+            "resource_type" => "video"
+        ]);
+        // $response = Cloudinary::upload($request->file('file')->getRealPath());
+
+        // $secureUrl = $response->getSecurePath();
+        // $secureUrl = $response->getSecurePath();
+
+        dd($response);
+
+        return back()
+            ->with('success', 'File uploaded successfully');
+         */
+
+
         $validatedData = $request->validate([
-            'commit_message' => 'string|max:255', // Assuming commit_message is a string with a maximum length of 255 characters
+            'commit_message' => 'string|max:500', // Assuming commit_message is a string with a maximum length of 255 characters
             'myfile' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-        $image = $request->file('myfile');
-        $imageName = time() . '.' . $image->getClientOriginalExtension(); // Generate a unique image name
-        $image->move(public_path('images/posts'), $imageName);
+        $imageName = Cloudinary::upload($request->file('myfile')->getRealPath())->getSecurePath();
+        // $image = $request->file('myfile');
+        // $imageName = time() . '.' . $image->getClientOriginalExtension(); // Generate a unique image name
+        // $image->move(public_path('images/posts'), $imageName);
         $post = new Post();
         $post->user_id = Auth::id();
         $post->image_url = $imageName;
@@ -49,9 +73,79 @@ class PostsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try{
+
+            $post = Post::with("user")->find($id);
+            $like_user = Like::where('post_id', $id)->with('post')->with('user')->first();
+            $like = Like::where('post_id', $id)->with('post')->with('user')->get();
+            $post_like = Post::with("likes")->find($id);
+
+            $logged_user = Auth::id();
+
+
+            $comments = $post->comments->map(function($comment) {
+                $timestamp = $comment->created_at;
+                $now = Carbon::now();
+
+                $diffInMinutes = $timestamp->diffInMinutes($now);
+                $diffInHours = $timestamp->diffInHours($now);
+
+                if ($diffInMinutes < 60)
+                {
+                    return $diffInMinutes . ' minutes ago';
+                }
+                elseif ($diffInHours < 24)
+                {
+                    return $diffInHours . ' hours ago';
+                } else {
+                    return $timestamp->format('j M Y');
+                }
+            });
+
+
+
+            $posts_time = function($timestamp) {
+                $now = Carbon::now();
+
+                $diffInMinutes = $timestamp->diffInMinutes($now);
+                $diffInHours = $timestamp->diffInHours($now);
+
+                if ($diffInMinutes < 60) {
+                    return $diffInMinutes . ' minutes ago';
+                } elseif ($diffInHours < 24) {
+                    return $diffInHours . ' hours ago';
+                } else {
+                    return $timestamp->format('j M Y');
+                }
+            };
+
+            $userComment = $post->comments->map(function($comment) {
+                return $comment->user;
+            });
+
+            return response()->json([
+                'post' => $post,
+                'likes' => $like,
+                'like_user' => $like_user,
+                'comments'=> $comments,
+                'userComment' => $userComment,
+                'allComments'=> $post->comments,
+                'posts_time' => $posts_time($post->created_at),
+                'post_like'=> $post_like,
+                'logged_user'=> $logged_user,
+            ]);
+        } catch(\Exception $e){
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ]);
+        }
     }
 
+    // public function addToFavourite(Request $request)
+    // {
+    //     $post = Post::find($request->input("id"));
+
+    // }
     /**
      * Show the form for editing the specified resource.
      */
@@ -67,6 +161,7 @@ class PostsController extends Controller
     {
         //
     }
+
 
     /**
      * Remove the specified resource from storage.

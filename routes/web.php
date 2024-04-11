@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\LikeContoller;
+use App\Http\Controllers\CommentContoller;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,7 @@ use App\Http\Controllers\PostsController;
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/save/{id?}', [ProfileController::class, 'savePosts'])->name('profile.save');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{username}', [UserController::class, 'show'])->name('user.show');
@@ -33,12 +36,24 @@ Route::middleware('auth')->group(function () {
     Route::delete('/following/{id}', [ProfileController::class, 'unfollow'])->name('following.delete');
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::get('/home', [HomeController::class, 'index']);
+    Route::get("/followers/{followerName?}",[ProfileController::class,'showFollowers'])->name('show.followers');
+    Route::get("/followings/{followingName?}",[ProfileController::class,'showFollowings'])->name('show.followings');
+    Route::get("/hashtags",[ProfileController::class,'showHashtags'])->name('show.Hashtags');
+    Route::get("/likes",[ProfileController::class,'showLikes'])->name("show.likes");
+
+
+
+    Route::post('/like', [LikeContoller::class, 'store'])->name("like.store");
+    Route::delete('/like/destroy/{id}', [LikeContoller::class, 'destroy'])->name("like.destroy");
+    Route::post('/comment', [CommentContoller::class, 'store'])->name("comment.store");
+    Route::delete('/comment/destroy/{id}', [LikeContoller::class, 'destroy'])->name("comment.destroy");
+    Route::get('/post/{id}', [PostsController::class, 'show'])->name("post.show");
+    // Route::post('/save',[PostsController::class, 'addToFavourite'])->name('save.addtofavourite');
 
 });
 
 
-Route::get("/emailtest/{email}",[MailController::class,"sendMsg"])->name("mail.sendMsg");
+require __DIR__ . '/auth.php';
+
 
 Route::fallback(fn () => 'Route not found');
-
-require __DIR__ . '/auth.php';
