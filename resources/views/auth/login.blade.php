@@ -8,8 +8,12 @@
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-4">
             <div class="border p-5">
-                <div class="text-center mb-5 ">
-                    <h1>Instagram</h1>
+                <div class="text-center">
+                    <a href="{{ route('login') }}">
+                        <img class="img-fluid w-50"
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png"
+                            alt="">
+                    </a>
                 </div>
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
@@ -21,6 +25,10 @@
                         <p class="alert alert-danger">{{ $message }}</p>
                     @enderror
                     <div class="mb-3 ">
+                    @error('email')
+                        <p class="text-danger mb-1 text-start">{{ $message }}</p>
+                    @enderror
+                    <div class="mb-1 ">
                         <input type="password" name="password" class=" form-control" id="exampleInputPassword1"
                             placeholder="password">
                     </div>
@@ -28,6 +36,10 @@
                         <p class="alert alert-danger">{{ $message }}</p>
                     @enderror
                     <div class=" mb-3">
+                    @error('password')
+                        <p class="text-danger mb-1 text-start">{{ $message }}</p>
+                    @enderror
+                    <div class=" mb-1">
                         <button type="submit" class="btn lightblue w-100 text-light">Login</button>
                     </div>
                     <div>

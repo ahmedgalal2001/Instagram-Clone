@@ -29,6 +29,8 @@
         </a>
         <a class="nav-link d-flex align-items-center link-navbar p-2 " aria-current="page"
             href="{{ route('profile.index') }}">
+        <a class="nav-link d-flex align-items-center link-navbar p-2 " aria-current="page"
+            href="{{ route('profile.index') }}">
             <img width="24px" height="24px"
                 src="https://img.freepik.com/free-photo/portrait-american-black-person-looking-up_23-2148749586.jpg"
                 class=" rounded-circle me-2 my-profile" alt="">
@@ -37,6 +39,8 @@
     </div>
     <div class="side-thrid desc">
         <div class="dropup dropup-center">
+            <a class="nav-link p-2  dropdown-toggle"id="dropdownMenuButton" data-bs-toggle="dropdown" href="#"
+                aria-expanded="false">
             <a class="nav-link p-2  dropdown-toggle"id="dropdownMenuButton" data-bs-toggle="dropdown" href="#"
                 aria-expanded="false">
                 <img class="me-2" src="{{ asset('images/menu24x24.png') }}" alt="dog">

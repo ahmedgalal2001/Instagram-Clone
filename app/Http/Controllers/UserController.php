@@ -30,8 +30,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $requestData = $request->all();
+        $filename = time().$request->file('photo')->getClientOriginalName();
+        $path = $request->file('photo')->storeAs('image',$filename,'public');
+        $requestData["photo"] = '/storage/'.$path;
+        User::create($requestData);
     }
+    
 
     /**
      * Display the specified resource.

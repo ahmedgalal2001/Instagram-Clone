@@ -9,3 +9,8 @@
 .gray {
     background-color: #EFEFEF !important;
 }
+
+.btn2{
+    border: none;
+    background-color: white;
+}
