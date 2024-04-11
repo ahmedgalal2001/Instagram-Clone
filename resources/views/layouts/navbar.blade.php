@@ -3,9 +3,7 @@
 <nav class="navbar flex-column align-items-start">
     <div class="side-one p-2 desc">
         <a class="navbar-brand text-center" href="/">
-            <img class="img-fluid"
-                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png"
-                alt="">
+            <span>Instagram</span>
         </a>
     </div>
     <div class="side-two flex-grow-1">
@@ -14,21 +12,23 @@
             <img class="me-2" src="{{ asset('images/home24x24.png') }}" alt="dog">
             <span class="desc">Home</span>
         </a>
-        <a id="offcanvasToggleSearch" class="nav-link d-flex link-navbar align-items-center p-2 " aria-current="page" href="#"
-            data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling">
+        <a id="offcanvasToggleSearch" class="nav-link d-flex link-navbar align-items-center p-2 " aria-current="page"
+            href="#" data-bs-toggle="offcanvas" data-bs-target="#search" aria-controls="offcanvasScrolling">
             <img class="me-2" src="{{ asset('images/search24x24.png') }}" alt="dog">
             <span class="desc">Search</span>
         </a>
-        <a id="offcanvasToggleNotify" class="nav-link d-flex link-navbar align-items-center p-2 " aria-current="page" href="#"
-            data-bs-toggle="offcanvas" data-bs-target="#notify" aria-controls="offcanvasScrolling">
+        <a id="offcanvasToggleNotify" class="nav-link d-flex link-navbar align-items-center p-2 " aria-current="page"
+            href="#" data-bs-toggle="offcanvas" data-bs-target="#notify" aria-controls="offcanvasScrolling">
             <img class="me-2" src="{{ asset('images/heart24x24.png') }}" alt="dog">
             <span class="desc">Notification</span>
         </a>
         <a class="nav-link d-flex align-items-center link-navbar p-2 " data-bs-toggle="modal"
-            data-bs-target="#staticBackdrop" aria-current="page" href="#">
+            data-bs-target="#create-post" aria-current="page" href="#">
             <img class="me-2" src="{{ asset('images/tab24x24.png') }}" alt="dog">
             <span class="desc">Create</span>
         </a>
+        <a class="nav-link d-flex align-items-center link-navbar p-2 " aria-current="page"
+            href="{{ route('profile.index') }}">
         <a class="nav-link d-flex align-items-center link-navbar p-2 " aria-current="page"
             href="{{ route('profile.index') }}">
             <img width="24px" height="24px"
@@ -39,6 +39,8 @@
     </div>
     <div class="side-thrid desc">
         <div class="dropup dropup-center">
+            <a class="nav-link p-2  dropdown-toggle"id="dropdownMenuButton" data-bs-toggle="dropdown" href="#"
+                aria-expanded="false">
             <a class="nav-link p-2  dropdown-toggle"id="dropdownMenuButton" data-bs-toggle="dropdown" href="#"
                 aria-expanded="false">
                 <img class="me-2" src="{{ asset('images/menu24x24.png') }}" alt="dog">
@@ -61,10 +63,15 @@
 
 
 {{-- modal search --}}
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-    id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+<div class="offcanvas offcanvas-start custom-offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false"
+    tabindex="-1" id="search" aria-labelledby="offcanvasScrollingLabel">
     <div class="offcanvas-header d-flex flex-column">
-        <h2 class="text-start w-100 mb-4">Search</h2>
+        <div class="d-flex justify-between mb-4 w-100">
+            <button type="button" class="btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 class="text-center w-100  flex-grow-1">Search</h2>
+        </div>
         <div class="offcanvas-title w-100" id="offcanvasScrollingLabel">
             <div class="input-group flex-nowrap">
                 <span class="input-group-text" id="addon-wrapping">
@@ -86,10 +93,15 @@
 {{-- Notification --}}
 
 
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="notify"
-    aria-labelledby="offcanvasScrollingLabel">
+<div class="offcanvas offcanvas-start custom-offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false"
+    tabindex="-1" id="notify" aria-labelledby="offcanvasScrollingLabel">
     <div class="offcanvas-header d-flex flex-column">
-        <h2 class="text-start w-100 mb-2">Notification</h2>
+        <div class="d-flex justify-between mb-4 w-100">
+            <button type="button" class="btn" data-bs-dismiss="offcanvas" aria-label="Close">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <h2 class="text-center w-100  flex-grow-1">Notification</h2>
+        </div>
     </div>
     <div class="offcanvas-body">
         <div id="users">
@@ -99,7 +111,7 @@
 
 
 {{-- create posts --}}
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+<div class="modal fade" id="create-post" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" id="modal-create-post" role="document">
         <div class="modal-content modal-content-navbar">
@@ -108,7 +120,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div id="upload-img" class="modal-body">
-                <form id="uploadForm" action="{{ route('posts.store') }}" method="POST"
+                <form id="uploadForm"  action="{{ route('posts.store') }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div id="first-view" class="flex-column align-items-center">
@@ -136,7 +148,7 @@
 
                     <div id="sceond-view">
                         <div class="row g-0">
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 p-3">
+                            <div id="videoContainer" class="col-12 col-sm-12 col-md-12 col-lg-6 p-3">
                                 <img id="img-post" class="w-100" alt="Selected Image">
                             </div>
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6 d-flex">
@@ -148,8 +160,10 @@
                                             class=" rounded-circle me-2 my-profile" alt="">
                                         <span>{{ Auth::user()->name }}</span>
                                     </a>
-                                    <textarea class="form-control flex-sm-grow-1 custome-text-area" name="commit_message" rows="3"
+                                    <textarea id="caption" class="form-control flex-sm-grow-1 custome-text-area" name="commit_message" rows="3"
                                         placeholder="Write a caption..."></textarea>
+                                    <ul id="helper-list" class="list-group scrollable-list">
+                                    </ul>
                                     <button type="submit" class="btn-navbar btn mt-2">Create Post</button>
                                 </div>
                             </div>

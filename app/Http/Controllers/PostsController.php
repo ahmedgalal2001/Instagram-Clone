@@ -6,7 +6,9 @@ use Illuminate\Support\Carbon;
 use App\Models\Like;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Controller;
+use App\Models\Hashtag;
 use App\Models\Post;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,38 +35,37 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        /**
-          // dd($request);
-        // $response = Cloudinary::upload($request->file('file')->getRealPath())->getSecurePath();
-
-        $response = Cloudinary::upload($request->file('file')->getRealPath(), [
-            "resource_type" => "video"
-        ]);
-        // $response = Cloudinary::upload($request->file('file')->getRealPath());
-
-        // $secureUrl = $response->getSecurePath();
-        // $secureUrl = $response->getSecurePath();
-
-        dd($response);
-
-        return back()
-            ->with('success', 'File uploaded successfully');
-         */
-
-
         $validatedData = $request->validate([
-            'commit_message' => 'string|max:500', // Assuming commit_message is a string with a maximum length of 255 characters
-            'myfile' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'commit_message' => 'string|max:500', // Assuming commit_message is a string with a maximum length of 500 characters
+            'myfile' => 'required|mimes:jpeg,png,jpg,gif,mp4,mov,avi|max:20480' // Adjusted to accept image and video file formats with increased max size
         ]);
-        $imageName = Cloudinary::upload($request->file('myfile')->getRealPath())->getSecurePath();
-        // $image = $request->file('myfile');
-        // $imageName = time() . '.' . $image->getClientOriginalExtension(); // Generate a unique image name
-        // $image->move(public_path('images/posts'), $imageName);
+        $response = Cloudinary::upload($request->file('myfile')->getRealPath(), [
+            "resource_type" => "auto" // Assuming Cloudinary auto-detects the resource type
+        ]);
+        $fileExtension = $request->file('myfile')->getClientOriginalExtension();
+        $isVideo = in_array($fileExtension, ['mp4', 'mov', 'avi']);
         $post = new Post();
         $post->user_id = Auth::id();
-        $post->image_url = $imageName;
+        $post->image_url = $response->getSecurePath(); // Adjusted to get the secure URL
+        $post->video = $isVideo ? 1 : 0; // Set video attribute based on the file type
         $post->caption = $validatedData['commit_message'];
         $post->save();
+        $commitMessage = $validatedData['commit_message'];
+        $pattern = "/#[a-zA-Z0-9_]+/";
+        preg_match_all($pattern, $commitMessage, $matches);
+        $hashtags = $matches[0];
+        $hashtags = array_map(function ($tag) {
+            return substr($tag, 1);
+        }, $hashtags);
+        //  add hashtage and relation
+        $hashtags = array_unique($hashtags);
+        foreach ($hashtags as $tag) {
+            $existingHashtag = Hashtag::where('tag', $tag)->first();
+            if (!$existingHashtag) {
+                $existingHashtag = Hashtag::create(['tag' => $tag]);
+            }
+            $post->hashtags()->attach($existingHashtag->id);
+        }
         return redirect()->action([HomeController::class, 'index']);
     }
 
@@ -73,7 +74,7 @@ class PostsController extends Controller
      */
     public function show(string $id)
     {
-        try{
+        try {
 
             $post = Post::with("user")->find($id);
             $like_user = Like::where('post_id', $id)->with('post')->with('user')->first();
@@ -83,19 +84,16 @@ class PostsController extends Controller
             $logged_user = Auth::id();
 
 
-            $comments = $post->comments->map(function($comment) {
+            $comments = $post->comments->map(function ($comment) {
                 $timestamp = $comment->created_at;
                 $now = Carbon::now();
 
                 $diffInMinutes = $timestamp->diffInMinutes($now);
                 $diffInHours = $timestamp->diffInHours($now);
 
-                if ($diffInMinutes < 60)
-                {
+                if ($diffInMinutes < 60) {
                     return $diffInMinutes . ' minutes ago';
-                }
-                elseif ($diffInHours < 24)
-                {
+                } elseif ($diffInHours < 24) {
                     return $diffInHours . ' hours ago';
                 } else {
                     return $timestamp->format('j M Y');
@@ -104,7 +102,7 @@ class PostsController extends Controller
 
 
 
-            $posts_time = function($timestamp) {
+            $posts_time = function ($timestamp) {
                 $now = Carbon::now();
 
                 $diffInMinutes = $timestamp->diffInMinutes($now);
@@ -119,7 +117,7 @@ class PostsController extends Controller
                 }
             };
 
-            $userComment = $post->comments->map(function($comment) {
+            $userComment = $post->comments->map(function ($comment) {
                 return $comment->user;
             });
 
@@ -127,16 +125,16 @@ class PostsController extends Controller
                 'post' => $post,
                 'likes' => $like,
                 'like_user' => $like_user,
-                'comments'=> $comments,
+                'comments' => $comments,
                 'userComment' => $userComment,
-                'allComments'=> $post->comments,
+                'allComments' => $post->comments,
                 'posts_time' => $posts_time($post->created_at),
-                'post_like'=> $post_like,
-                'logged_user'=> $logged_user,
+                'post_like' => $post_like,
+                'logged_user' => $logged_user,
             ]);
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
-                'error'=> $e->getMessage(),
+                'error' => $e->getMessage(),
             ]);
         }
     }

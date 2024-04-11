@@ -10,6 +10,8 @@ use App\Http\Controllers\MailController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\LikeContoller;
 use App\Http\Controllers\CommentContoller;
+use App\Http\Controllers\Hashtag;
+use App\Http\Controllers\HashtagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +46,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/edit', [editProfileController::class, 'update'])->name('profile.update');
     Route::post('/profile/changephoto', [editProfileController::class, 'changephoto'])->name('profile.changephoto');
     Route::post('/profile/removeimage', [editProfileController::class, 'removeImage'])->name('profile.removeimage');
+ // to get hashtag fillter
+    Route::get("/hashtags/filter/{id}", [HashtagController::class, 'filter'])->name('hashtag.filter');
+    // to get hashtag fillter
 
+    Route::get("/likes", [ProfileController::class, 'showLikes'])->name("show.likes");
 
 
     Route::post('/like', [LikeContoller::class, 'store'])->name("like.store");
