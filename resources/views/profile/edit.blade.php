@@ -2,6 +2,7 @@
 @section('title', 'Edit')
 @section('body')
     @vite(['resources/css/edit-profile.css'])
+    @vite(['resources/js/editprofile.js'])
     {{-- we here will put the navbar with col 3 max --}}
     <div class="col-10">
         {{-- we here will put the navbar with col 3 max --}}
@@ -44,22 +45,18 @@
                             <div class="card-body d-flex justify-content-between">
                                 <div>
                                     <img class="rounded-circle " id="profile-pic" width="50px" height="50px"
-                                        src="{{ asset('images/galal.jpg') }}" alt="gloo">
-                                    <span class="mx-2 "><strong>Karim Desouki's</strong></span>
+                                        src="{{ asset('images/profile/' . auth()->user()->image) }}" alt="gloo">
+                                    <span class="mx-2 "><strong>{{ auth()->user()->username }}</strong></span>
                                 </div>
                                 <!-- Button trigger modal -->
-                                <form action="" method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    {{-- @method("PUT") --}}
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                        data-bs-target="#staticBackdropghrabawy" id="ghrabaawy">
-                                        Change photo
-                                    </button>
-                                </form>
+                                {{-- ------------Form--------------------- --}}
 
-                                {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdropghrabawy" id="ghrabaawy">
+                                {{-- ------------------------Pic-------------------------------- --}}
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" name="image"
+                                    data-bs-target="#staticBackdropghrabawy" id="ghrabaawy">
                                     Change photo
-                                    </button> --}}
+                                </button>
+                                {{-- -------------------------------Form------------------------- --}}
                                 <!-- Modal -->
                                 <div class="modal fade " id="staticBackdropghrabawy" data-bs-backdrop="static"
                                     data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
@@ -71,56 +68,70 @@
                                                     Profile photo</h1>
                                             </div>
                                             <div class="modal-body text-light d-flex flex-column align-item-center">
-                                                <div class="upload-btn-wrapper text-center">
-                                                    <button class="btn-navbar btn">Select form computer</button>
-                                                    <input class="upload-img-navbar" type="file" id="chgphoto"
-                                                        name="myfile" />
-                                                </div>
+                                                <form id="form-photo-profile" action="{{ route('profile.changephoto') }}"
+                                                    method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="text-center">
+                                                        <button class="btn-navbar btn">Select form computer</button>
+                                                        <input class="upload-img-navbar" type="file" id="chgphoto"
+                                                            name="chgphoto" />
+                                                    </div>
+                                                </form>
                                             </div>
                                             <hr>
                                             <div class="text-center">
-                                                <a type="button" class="btn text-danger w-100">remove current photo</a>
+                                                <form id="form-photo-profile" action="{{ route('profile.removeimage') }}"
+                                                    method="POST" enctype="multipart/form-data">
+                                                    @csrf
+                                                    <div class="upload-btn-wrapper text-center">
+                                                        <button class="btn2  text-danger" type="submit" >Remove profile
+                                                            image</button>
+                                                    </div>
+                                                </form>
                                             </div>
                                             <hr>
                                             <div class=" text-center ">
                                                 <button type="button" class="btn text-dark mb-2 w-100"
                                                     data-bs-dismiss="modal">Close</button>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="col-12">
-                            <form>
+                            {{-- --------------------form------------------------ --}}
+                            <form action="{{ route('profile.edit') }}" method="POST">
+                                @csrf
+                                {{-- ----------------Website-------------- --}}
                                 <div class="form-group ">
                                     <label for="formGroupExampleInput" class="mt-3 h5">Website</label>
                                     <input type="text" class="form-control mt-3" id="formGroupExampleInput"
-                                        placeholder="Website" disabled>
+                                        name="website" placeholder="Website" value="{{ auth()->user()->website }}" disabled>
                                     <p class="text-muted mt-1 small">Editing your links is only available on mobile.
-                                        Visit
-                                        the
-                                        Instagram app and
-                                        edit your profile to change the websites in your bio.</p>
+                                        Visit the Instagram app and edit your profile to change the websites in your bio.
+                                    </p>
                                 </div>
+                                {{-- -----------------------Bio------------------- --}}
                                 <div class="form-group">
                                     <label class="mt-3 h5"for="formGroupExampleInput2">Bio</label>
                                     <input type="text" class="form-control mt-1" id="formGroupExampleInput2"
-                                        placeholder="Bio">
+                                        name="bio" placeholder="Bio" value="{{ auth()->user()->bio }}">
                                 </div>
+                                {{-- --------------Gender--------------------- --}}
                                 <div class="form-group">
                                     <label class="mt-3 h5"for="inputState">Gender</label>
-                                    <select id="inputState" class="form-control mt-1">
-                                        <option selected>Male</option>
-                                        <option>Female</option>
-                                        <option>Custom</option>
+                                    <select id="inputState" class="form-control mt-1" name="gender">
+                                        <option value="Male" {{ auth()->user()->gender == 'Male' ? 'selected' : '' }}>
+                                            Male</option>
+                                        <option value="Female" {{ auth()->user()->gender == 'Female' ? 'selected' : '' }}>
+                                            Female</option>
+                                        <option value="Custom" {{ auth()->user()->gender == 'Custom' ? 'selected' : '' }}>
+                                            Custom</option>
                                     </select>
                                     <p class="text-muted mt-1 small">This won’t be part of your public profile.
                                     </p>
                                 </div>
-
                                 <div class="row align-items-center">
                                     <h5>Show account suggestions on profiles
                                     </h5>
@@ -146,7 +157,7 @@
                         <div class="d-flex justify-content-end flex-row ">
                             <button type="submit" class="btn btn-primary mt-3 w-50">Submit</button>
                         </div>
-
+                        {{-- -------end form---------- --}}
                         </form>
 
                     </div>

@@ -3,7 +3,9 @@
 <nav class="navbar flex-column align-items-start">
     <div class="side-one p-2 desc">
         <a class="navbar-brand text-center" href="/">
-            <span >Instagram</span>
+            <img class="img-fluid"
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Instagram_logo.svg/800px-Instagram_logo.svg.png"
+                alt="">
         </a>
     </div>
     <div class="side-two flex-grow-1">
@@ -22,12 +24,13 @@
             <img class="me-2" src="{{ asset('images/heart24x24.png') }}" alt="dog">
             <span class="desc">Notification</span>
         </a>
-        <a class="nav-link d-flex align-items-center link-navbar p-2 " data-bs-toggle="modal" data-bs-target="#staticBackdrop"
-            aria-current="page" href="#">
+        <a class="nav-link d-flex align-items-center link-navbar p-2 " data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop" aria-current="page" href="#">
             <img class="me-2" src="{{ asset('images/tab24x24.png') }}" alt="dog">
             <span class="desc">Create</span>
         </a>
-        <a class="nav-link d-flex align-items-center link-navbar p-2 " aria-current="page" href="{{ route('profile.index') }}">
+        <a class="nav-link d-flex align-items-center link-navbar p-2 " aria-current="page"
+            href="{{ route('profile.index') }}">
             <img width="24px" height="24px"
                 src="https://img.freepik.com/free-photo/portrait-american-black-person-looking-up_23-2148749586.jpg"
                 class=" rounded-circle me-2 my-profile" alt="">
@@ -36,8 +39,8 @@
     </div>
     <div class="side-thrid desc">
         <div class="dropup dropup-center">
-            <a class="nav-link p-2  dropdown-toggle"id="dropdownMenuButton"
-                data-bs-toggle="dropdown" href="#" aria-expanded="false">
+            <a class="nav-link p-2  dropdown-toggle"id="dropdownMenuButton" data-bs-toggle="dropdown" href="#"
+                aria-expanded="false">
                 <img class="me-2" src="{{ asset('images/menu24x24.png') }}" alt="dog">
                 <span>More</span>
             </a>
@@ -83,8 +86,8 @@
 {{-- Notification --}}
 
 
-<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
-    id="notify" aria-labelledby="offcanvasScrollingLabel">
+<div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="notify"
+    aria-labelledby="offcanvasScrollingLabel">
     <div class="offcanvas-header d-flex flex-column">
         <h2 class="text-start w-100 mb-2">Notification</h2>
     </div>

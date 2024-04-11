@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\editProfileController;
 use App\Http\Controllers\followerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
