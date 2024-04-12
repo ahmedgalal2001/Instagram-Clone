@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,8 +43,7 @@ class AuthenticatedSessionController extends Controller
                 return redirect()->intended(RouteServiceProvider::HOME);
             }
         }
-            // return redirect()->route('verify.sendMsg', ['email' => $user->email]);
-            return back()->withErrors(['email' => 'The User Not Found.']);
+            return redirect()->route('verify.sendMsg', ['email' => $user->email]);
 
         } else {
             return back()->withErrors(['email' => 'The User Not Found.']);
