@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -36,10 +37,16 @@ class AuthenticatedSessionController extends Controller
                 $request->authenticate();
 
                 $request->session()->regenerate();
-
+                if($user->is_admin == 1){
+                    return redirect()->intended(RouteServiceProvider::ADMIN);
+                }
+                else{
                 return redirect()->intended(RouteServiceProvider::HOME);
             }
-            return redirect()->route('verify.sendMsg', ['email' => $user->email]);
+        }
+            // return redirect()->route('verify.sendMsg', ['email' => $user->email]);
+            return back()->withErrors(['email' => 'The User Not Found.']);
+
         } else {
             return back()->withErrors(['email' => 'The User Not Found.']);
         }
