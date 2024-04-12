@@ -33,7 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/save/{id?}', [ProfileController::class, 'savePosts'])->name('profile.save');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/users/{username}', [UserController::class, 'show'])->name('user.show');
+    Route::get('/users/{username?}', [UserController::class, 'show'])->name('user.show');
     Route::post('/posts', [PostsController::class, "store"])->name("posts.store");
     Route::post('/follow', [ProfileController::class, 'add'])->name('follow.add');
     Route::get('/post/{id}', [ProfileController::class, 'showModelPost'])->name('Post.show');
