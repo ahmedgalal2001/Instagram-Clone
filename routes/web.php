@@ -22,6 +22,7 @@ use App\Http\Controllers\AdminController;
 
 
 Route::middleware('auth')->group(function () {
+    Route::middleware('user')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -34,16 +35,32 @@ Route::middleware('auth')->group(function () {
     Route::delete('/following/{id}', [ProfileController::class, 'unfollow'])->name('following.delete');
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::get('/home', [HomeController::class, 'index']);
+    });
+    Route::middleware('admin')->group(function () {
+        Route::get('/dashboard/posts', [AdminController::class, 'postsIndex'])->name('posts.dashboard');
+        Route::get('/dashboard/comments', [AdminController::class, 'commentsIndex'])->name('comments.dashboard');
+        Route::get('/dashboard/users', [AdminController::class, 'usersIndex'])->name('users.dashboard');
+        Route::delete("/dashboard/posts/{post}", [AdminController::class, "destroyPost"])->name("posts.destroy");
+        Route::delete("/dashboard/comments/{post}", [AdminController::class, "destroyComment"])->name("comments.destroy");
+        Route::delete("/dashboard/users/{post}", [AdminController::class, "destroyUser"])->name("users.destroy");
+        Route::get("/dashboard/users/{user}", [AdminController::class, "showUser"])->name("users.showUser");
+    });
+    
+    
 
 });
 
-Route::get('/dashboard/posts', [AdminController::class, 'postsIndex'])->name('posts.dashboard')->middleware('auth');
-Route::get('/dashboard/comments', [AdminController::class, 'commentsIndex'])->name('comments.dashboard')->middleware('auth');
-Route::get('/dashboard/users', [AdminController::class, 'usersIndex'])->name('users.dashboard')->middleware('auth');
-Route::delete("/dashboard/posts/{post}", [AdminController::class, "destroyPost"])->name("posts.destroy");
-Route::delete("/dashboard/comments/{post}", [AdminController::class, "destroyComment"])->name("comments.destroy");
-Route::delete("/dashboard/users/{post}", [AdminController::class, "destroyUser"])->name("users.destroy");
-Route::get("/dashboard/users/{user}", [AdminController::class, "showUser"])->name("users.showUser");
+Route::middleware('admin')->group(function () {
+    Route::get('/dashboard/posts', [AdminController::class, 'postsIndex'])->name('posts.dashboard');
+    Route::get('/dashboard/comments', [AdminController::class, 'commentsIndex'])->name('comments.dashboard');
+    Route::get('/dashboard/users', [AdminController::class, 'usersIndex'])->name('users.dashboard');
+    Route::delete("/dashboard/posts/{post}", [AdminController::class, "destroyPost"])->name("posts.destroy");
+    Route::delete("/dashboard/comments/{post}", [AdminController::class, "destroyComment"])->name("comments.destroy");
+    Route::delete("/dashboard/users/{post}", [AdminController::class, "destroyUser"])->name("users.destroy");
+    Route::get("/dashboard/users/{user}", [AdminController::class, "showUser"])->name("users.showUser");
+});
+
+
 
 Route::get("/emailtest/{email}",[MailController::class,"sendMsg"])->name("mail.sendMsg");
 

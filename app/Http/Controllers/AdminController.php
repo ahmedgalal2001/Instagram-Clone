@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function postsIndex(Request $request)
     {
-    if (!auth()->user()->is_admin) {
+    // if (auth()->user()->is_admin) {
         $search = $request->input('search');
         $selectedAttributes = $request->input('attribute', []);
 
@@ -28,12 +28,12 @@ class AdminController extends Controller
             "search" => $search,
             "selectedAttributes" => $selectedAttributes,
         ]);
-    }
-    return view('home');
+    // }
+    // return view('home');
 }
     public function commentsIndex(Request $request)
     {
-    if (!auth()->user()->is_admin) {
+    // if (auth()->user()->is_admin) {
         $search = $request->input('search');
         $selectedAttributes = $request->input('attribute', []);
 
@@ -50,13 +50,13 @@ class AdminController extends Controller
             "search" => $search,
             "selectedAttributes" => $selectedAttributes,
         ]);
-    }
-    return view('home');
+    // }
+    // return view('home');
 }
 
     public function usersIndex(Request $request)
     {
-    if (!auth()->user()->is_admin) {
+    // if (auth()->user()->is_admin) {
         $search = $request->input('search');
         $selectedAttributes = $request->input('attribute', []);
 
@@ -73,8 +73,8 @@ class AdminController extends Controller
             "search" => $search,
             "selectedAttributes" => $selectedAttributes,
         ]);
-    }
-    return view('home');
+    // }
+    // return view('home');
     }
 
     public function destroyPost($id)
