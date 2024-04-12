@@ -25,16 +25,11 @@
     <input class="form-check-input" type="checkbox" name="attribute[]" value="email" {{ in_array('email', $selectedAttributes) ? 'checked' : '' }}>
     <label class="form-check-label">Email</label>
   </div>
-  <div class="form-check form-check-inline">
-    <input class="form-check-input" type="checkbox" name="attribute[]" value="id" {{ in_array('id', $selectedAttributes) ? 'checked' : '' }}>
-    <label class="form-check-label">ID</label>
-  </div>
 </form>
 </div>
 <table class="table mt-4" style="text-align: center"  border="2px" >
   <thead>
     <tr>
-        <th scope="col">User ID</th>
         <th scope="col">Name</th>
       <th scope="col">userName</th>
       <th scope="col">Email</th>
@@ -44,7 +39,6 @@
   <tbody>
     @foreach ($users as $user)
     <tr>
-        <td>{{ $user->id }}</td>
         <td>{{ $user->name }}</td>
         <td>{{ $user->username }}</td>
         <td>{{ $user->email }}</td>

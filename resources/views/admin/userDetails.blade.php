@@ -7,57 +7,42 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-4">
-            <div class="card text-bg-primary mt-4 " style="max-width: 25rem;">
-                <div class="card-header">Full Name</div>
-                <div class="card-body">
-                    <h5 class="card-title">{{$user->name}}</h5>
-                </div>
-            </div>
-            <div class="card text-bg-primary mt-4" style="max-width: 25rem;">
-                <div class="card-header">Email</div>
-                <div class="card-body">
-                    <h5 class="card-title">{{$user->email}}</h5>
-                </div>
-            </div>
-        </div>
-        <div class="col-4">
-            <div class="card text-bg-success mt-4" style="max-width: 25rem;">
-                <div class="card-header">User_Name</div>
-                <div class="card-body">
-                    <h5 class="card-title">{{$user->username}}</h5>
-                </div>
-            </div>
-        <div class="card text-bg-success mb-3 mt-4 " style="max-width: 25rem;">
-            <div class="card-header">Gender</div>
-            <div class="card-body">
-        <h5 class="card-title">{{$user->gender}}</h5>
-    </div>
-</div>
-</div>
-<div class="col-4">
-
-    <div class="card text-bg-secondary mb-3 mt-4 " style="max-width: 25rem;">
-        <div class="card-header">Bio</div>
-        <div class="card-body">
-            <h5 class="card-title">{{$user->bio}}</h5>
-        </div>
-    </div>
-    <div class="card text-bg-secondary mb-3 mt-4 " style="max-width: 25rem;">
-        <div class="card-header">On Instagram Since:</div>
-        <div class="card-body">
-            <h5 class="card-title">{{$user->created_at}}</h5>
-        </div>
-    </div>
+        <table class="table mt-4" style="text-align: center"  border="2px" >
+            <thead>
+              <tr>
+                  <th scope="col">User ID</th>
+                  <th scope="col">Name</th>
+                <th scope="col">userName</th>
+                <th scope="col">Email</th>
+                <th scope="col">Bio</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Creation</th>
+                <th scope="col" width="250px">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{-- @foreach ($users as $user) --}}
+              <tr>
+                  <td>{{ $user->id }}</td>
+                  <td>{{ $user->name }}</td>
+                  <td>{{ $user->username }}</td>
+                  <td>{{ $user->email }}</td>
+                  <td>{{ $user->bio }}</td>
+                  <td>{{ $user->gender }}</td>
+                  <td>{{ $user->created_at}}</td>
+                <td>
+                  <a href="{{ route('users.showUser', $user->id) }}" class="btn btn-primary">Show</a>
+                  <form style="display: inline" action="{{ route("users.destroy", $user->id) }}" method="POST">
+                    @csrf
+                    @method("DELETE")
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                  </form>
+                </td>
+              </tr>
+              {{-- @endforeach --}}
+            </tbody>
+          </table>
 </div>
 </div>
 </div>
-{{-- @isset($post->image)
-    <div class="card text-bg-success mb-3" style="max-width: 18rem;">
-        <div class="card-header">Image</div>
-        <div class="card-body">
-        <img src="{{Storage::disk('public')->url($post->image)}}" alt="alt">
-      </div>
-    </div>
-  @endisset --}}
 @endsection
