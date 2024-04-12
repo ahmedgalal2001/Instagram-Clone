@@ -45,7 +45,7 @@
                             <div class="card-body d-flex justify-content-between">
                                 <div>
                                     <img class="rounded-circle " id="profile-pic" width="50px" height="50px"
-                                        src="{{ asset('images/profile/' . auth()->user()->image) }}" alt="gloo">
+                                        src="{{ auth()->user()->image }}" alt="gloo">
                                     <span class="mx-2 "><strong>{{ auth()->user()->username }}</strong></span>
                                 </div>
                                 <!-- Button trigger modal -->
@@ -84,7 +84,7 @@
                                                     method="POST" enctype="multipart/form-data">
                                                     @csrf
                                                     <div class="upload-btn-wrapper text-center">
-                                                        <button class="btn2  text-danger" type="submit" >Remove profile
+                                                        <button class="btn2  text-danger" type="submit">Remove profile
                                                             image</button>
                                                     </div>
                                                 </form>
@@ -107,7 +107,8 @@
                                 <div class="form-group ">
                                     <label for="formGroupExampleInput" class="mt-3 h5">Website</label>
                                     <input type="text" class="form-control mt-3" id="formGroupExampleInput"
-                                        name="website" placeholder="Website" value="{{ auth()->user()->website }}" disabled>
+                                        name="website" placeholder="Website" value="{{ auth()->user()->website }}"
+                                        disabled>
                                     <p class="text-muted mt-1 small">Editing your links is only available on mobile.
                                         Visit the Instagram app and edit your profile to change the websites in your bio.
                                     </p>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,11 +29,11 @@ class editProfileController extends Controller
         $validatedData = $request->validate([
             'chgphoto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
-        $image = $request->file('chgphoto');
-        $imageName = time() . '.' . $image->getClientOriginalExtension(); // Generate a unique image name
-        $image->move(public_path('images/profile'), $imageName);
+        $response = Cloudinary::upload($request->file('chgphoto')->getRealPath(), [
+            "resource_type" => "auto" // Assuming Cloudinary auto-detects the resource type
+        ]);
         $user = User::where('id', auth()->user()->id)->first();
-        $user->image = $imageName;
+        $user->image =  $response->getSecurePath();
         $user->save();
         return redirect()->action([ProfileController::class, 'edit']);
     }
@@ -76,13 +77,12 @@ class editProfileController extends Controller
         return redirect()->route('profile.edit')->with('success', 'Profile updated successfully');
     }
 
-    
-    public function removeImage(){
+
+    public function removeImage()
+    {
         $user = User::where('id', auth()->user()->id)->first();
         $user->image = "default_pic.webp";
         $user->save();
-        return redirect()->action([ProfileController::class, 'edit']);      
-         
- 
-} 
-  }
+        return redirect()->action([ProfileController::class, 'edit']);
+    }
+}

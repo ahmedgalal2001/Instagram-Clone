@@ -31,20 +31,25 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $requestData = $request->all();
-        $filename = time().$request->file('photo')->getClientOriginalName();
-        $path = $request->file('photo')->storeAs('image',$filename,'public');
-        $requestData["photo"] = '/storage/'.$path;
+        $filename = time() . $request->file('photo')->getClientOriginalName();
+        $path = $request->file('photo')->storeAs('image', $filename, 'public');
+        $requestData["photo"] = '/storage/' . $path;
         User::create($requestData);
     }
-    
+
 
     /**
      * Display the specified resource.
      */
-    public function show(string $username)
+    public function show(string $username = null)
     {
-        $users = User::where("name", "like", "%$username%")->get();
-        return json_encode($users);
+        if ($username) {
+            $users = User::where("name", "like", "%$username%")->get();
+            return json_encode($users);
+        } else {
+            $user = User::where("id", Auth::id())->first();
+            return json_encode($user);
+        }
     }
 
     /**

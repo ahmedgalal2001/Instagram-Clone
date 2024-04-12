@@ -10,9 +10,12 @@ let modal_create_post = document.querySelector("#modal-create-post");
 let create_post = document.querySelector("#create-post");
 let caption = document.getElementById("caption");
 var form = document.getElementById("uploadForm");
+let btn_upload_file = document.querySelector("#btn-upload-file");
 var helperList = document.getElementById('helper-list');
 sceond_view.style.display = "none";
 first_view.style.display = "flex";
+btn_upload_file.style.display = "none";
+
 
 
 create_post.addEventListener('hidden.bs.modal', () => {
@@ -31,17 +34,15 @@ form.addEventListener("submit", function (event) {
     event.preventDefault();
     let file = form.myfile.files[0];
     let caption = form.commit_message.value;
-    console.log(file, caption);
     let formData = new FormData();
     formData.append('myfile', file);
     formData.append('commit_message', caption);
     modal_create_post.classList.remove("modal-xl");
-    form.innerHTML = `
-    <div class="text-center">
-         <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-        </div>
-    </div>
+    btn_upload_file.style.display = "none";
+    sceond_view.innerHTML = `
+    <div class="d-flex justify-content-center">
+    <div class='spinner'></div>
+</div>
     `;
     // Send data to server using Axios
     axios.post('/posts', formData, {
@@ -52,9 +53,9 @@ form.addEventListener("submit", function (event) {
         .then(function (response) {
             setTimeout(() => { window.location.reload() }, 1500);
             modal_create_post.classList.remove("modal-xl");
-            form.innerHTML = `
+            sceond_view.innerHTML = `
             <div class="d-flex justify-content-center">
-            <img src="https://static.cdninstagram.com/rsrc.php/v3/yb/r/sHkePOqEDPz.gif" class="img-fluid" alt="...">
+            <img src="https://static.cdninstagram.com/rsrc.php/v3/yb/r/sHkePOqEDPz.gif"  class="img-fluid" alt="...">
             </div>
             `;
         })
@@ -69,13 +70,11 @@ form.addEventListener("submit", function (event) {
 // helper list to apprea hashtage
 caption.oninput = function () {
     var inputText = caption.value.split(" ").pop();
-    console.log(inputText); // Split by spaces and get the last element
     if (inputText.includes("#")) {
         var hashtags = inputText.match(/#[a-zA-Z0-9_]+/g) || [];
         if (hashtags.length > 0) {
             hashtags.map(function (tag) {
                 let tagName = tag.substring(1);
-                console.log(tagName);
                 selectHashtag(tagName);
                 return tagName;
             });
@@ -116,7 +115,6 @@ function hideHelperList() {
 function selectHashtag(tag) {
     axios.get(`/hashtags/filter/${tag}`)
         .then((res) => {
-            console.log(res.data.hashtages);
             if (res.data.hashtages.length > 0)
                 showHelperList(res.data.hashtages);
             else hideHelperList();
@@ -130,6 +128,7 @@ function selectHashtag(tag) {
 
 myfile.addEventListener('change', function (event) {
     first_view.style.display = "none";
+    btn_upload_file.style.display = "inline-block";
     sceond_view.style.display = "block";
     var selectedFile = event.target.files[0];
     var fileExtension = selectedFile.name.split('.').pop().toLowerCase();
@@ -155,32 +154,85 @@ myfile.addEventListener('change', function (event) {
 search_username.oninput = () => {
     users.innerHTML = "";
     let username = search_username.value;
-    console.log(username);
     axios.get(`/users/${username}`).then((res) => {
-        console.log(res.data);
-        res.data.forEach(user => {
-            let elementUser = `
+        if (res.data.length > 0)
+            res.data.forEach(user => {
+                let elementUser = `
     <div class="user-profile">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="/profile">
             <img width="48px" height="48px"
-                src="https://img.freepik.com/free-photo/portrait-american-black-person-looking-up_23-2148749586.jpg"
+                src="${user.image}"
                 class="rounded-circle me-2 img-profile" alt="">
             <div class="user-info">
-                <span class="user-email">${user.name}</span>
-                <!-- Add more user information here if needed -->
+            <span class="user-username">${user.username}</span>
+            <span class="user-name">${user.name}</span>
             </div>
         </a>
     </div>
 `;
-            users.insertAdjacentHTML("beforeend", elementUser);
-        });
+                users.insertAdjacentHTML("beforeend", elementUser);
+            });
     });
 }
-
-// when i click about body will close automaicaly
-document.addEventListener('click', function (e) {
-    var offcanvas = document.querySelector('.offcanvas.show');
-    if (offcanvas && !offcanvas.contains(e.target)) {
-        offcanvas.classList.remove('show');
-    }
+$(document).ready(function () {
+    $('.links-navbar').click(function () {
+        $('.links-navbar').each(function () {
+            var $currentLink = $(this);
+            var defaultImgSrc = $currentLink.data("img-src-default");
+            var $img = $currentLink.find("img");
+            $img.attr("src", defaultImgSrc);
+        });
+        var imgSrc = $(this).data('img-src');
+        $(this).find("img").attr("src", imgSrc);
+        var $span = $(this).find("span");
+        $span.css("font-weight", "bold");
+    });
+    $(document).on('click', function (e) {
+        var $modal = $('.modal.show');
+        var $offcanvas = $('.offcanvas.show');
+        if (!$modal.is(e.target) && $modal.has(e.target).length === 0 &&
+            !$offcanvas.is(e.target) && $offcanvas.has(e.target).length === 0) {
+            $modal.modal('hide');
+            $offcanvas.offcanvas('hide');
+        }
+        helperLinkeRouter();
+    });
+    $('#notify').on('hidden.bs.offcanvas', function () {
+        helperLinkOff("offcanvasToggleNotify");
+    });
+    $('#search').on('hidden.bs.offcanvas', function () {
+        helperLinkOff("offcanvasToggleSearch");
+    });
+    $('#create-post').on('hidden.bs.modal', function () {
+        helperLinkOff("modalCreate");
+    });
+    helperLinkeRouter();
 });
+
+function helperLinkeRouter() {
+    var currentRoute = window.location.pathname;
+    let str = "";
+    if (currentRoute.includes("/profile")) {
+        str = "profile-navbar";
+    }
+    else if (currentRoute.includes("/")) {
+        str = "home-navbar";
+    }
+    helperLinkOn(str);
+}
+
+function helperLinkOn(str) {
+    var $currentLink = $(`#${str}`);
+    var imgSrc = $currentLink.data('img-src');
+    $currentLink.find("img").attr("src", imgSrc);
+    var $span = $currentLink.find("span");
+    $span.css("font-weight", "bold");
+}
+function helperLinkOff(str) {
+    var $currentLink = $(`#${str}`);
+    var defaultImgSrc = $currentLink.data("img-src-default");
+    var $img = $currentLink.find("img");
+    $img.attr("src", defaultImgSrc);
+    var $span = $currentLink.find("span");
+    $span.css("font-weight", "normal");
+}
