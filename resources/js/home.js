@@ -92,7 +92,8 @@ document.querySelectorAll(".commentBtn").forEach(function (button) {
               <div class="col-md-12 mb-0 aligh-items-center d-flex">
                   <div class="d-flex col-10 align-items-center">
                           <p>
-                              <a type="button">
+                              <a 
+                              type="button">
                                   <b>${res.data.user_name}</b>
                               </a>
                               ${commentText}
@@ -394,123 +395,130 @@ commentButton.forEach((btn) => {
                 <div class="modal-content p-0">
                         
                     <div class="modal-body m-0 p-0">
+                    <div class="container-fluid">
                         <div class="row p-0">
                             <div class="col-7 d-flex p-0 m-0">
-                                <img src="${res.data.post.image_url}" class="img-fluid" />
+                                <img src="${res.data.post.image_url}" class="w-100 img-fluid" />
                             </div>
-                            <div class="col-5 d-flex flex-column p-0 align-items-center justify-content-start">  
-                                <div class="container-fluid">
-                                    
+                            <div class="col-5 d-flex flex-column px-1 align-items-center justify-content-between">  
+
                                     <!------------------- User's profile --------------------->
-                                    <div class="bg-image hover-overlay m-0" data-mdb-ripple-init
-                                        data-mdb-ripple-color="light">
-                                        <div class="row m-0 p-0">
-                                            <div class="col-10 d-flex align-items-center p-0 m-0">
-                                                <div class="col-2 d-flex pt-3 justify-content-start align-items-center">
-                                                    <div class="avatar-container position-relative">
-                                                        <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
-                                                            class="rounded-circle mb-3 avatar" width="50px"
-                                                            height="50px" alt="Avatar" />
+                                            <div class="col-12 col-lg-12 col-md-12 col-sm-12 d-flex flex-column align-items-center p-0 m-0">
+                                                <div class="row w-100">
+                                                    <div class="col-2 d-flex pt-3 justify-content-start align-items-center">
+                                                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                                                class="rounded-circle mb-3 avatar" width="50px"
+                                                                height="50px" alt="Avatar" />
+                                                    </div>
+
+                                                    <div class="d-flex col-10 justify-content-between align-items-center">
+                                                    <a 
+                                                    href="${'/profile/' + res.data.post.user.id}" 
+                                                    type="button"
+                                                    class=" text-decoration-none text-dark">
+                                                        <b>
+                                                            <p class="mb-0 h6">
+                                                                ${
+                                                                    res.data.post.user
+                                                                        .name
+                                                                }
+                                                            </p>
+                                                        </b>
+                                                    </a>
+                                                        
+                                                        <div>
+                                                            <button type="button" class="close border-0 bg-white" data-dismiss="modal" aria-label="Close">
+                                                                <h3 aria-hidden="true" class="m-0">&times;</h3>
+                                                            </button>
+                                                        </div>
                                                     </div>
                                                 </div>
-
-                                                <div class="d-flex w-100 col-10 justify-content-between align-items-center">
-                                                    <p class="mb-0 h6">
-                                                        ${
-                                                            res.data.post.user
-                                                                .name
-                                                        }
-                                                    </p>
-                                                    
-                                                    <div>
-                                                        <button type="button" class="close border-0 bg-white" data-dismiss="modal" aria-label="Close">
-                                                            <h3 aria-hidden="true" class="m-0">&times;</h3>
-                                                        </button>
+                                                <div class="col-12">
+                                                    <hr class="mt-0">
+                                                    <div class="d-flex flex-column modal-comments">
+                                                        <div class="p-1 modal-all-comments-display">
+                                                            ${
+                                                                res.data.allComments.length == 0
+                                                                    ? `<p class="text-center">No Comments</p>`
+                                                                    : `<div class="comments-modal-container">
+                                                                
+                                                                </div>`
+                                                            }
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
 
                                     <!-------------------------------------------------------->
-                                    <hr class="mt-0">
+                                    
                                     <!----------------------------- Icons ---------------------->
-                                    <div class="d-flex flex-column modal-comments">
-                                        <div class="p-1 modal-all-comments-display">
-                                            ${
-                                                res.data.allComments.length == 0
-                                                    ? `<p class="text-center">No Comments</p>`
-                                                    : `<div class="comments-modal-container">
-                                                
-                                                </div>`
-                                            }
-                                        </div>
-                                    </div>
-                                    <hr class="write-comment-modal">
-                                    <div class="row p-0 m-0 w-100">
-                                        <div class="col-3 col-lg-3 col-md-3 col-sm-3 d-flex align-items-center justify-content-between">
+                                    <div class="col-12">
+                                        <hr>
+                                        <div class="row p-0 m-0 w-100">
+                                            <div class="col-3 col-lg-3 col-md-3 col-sm-3 d-flex align-items-center justify-content-between">
 
-                                            <a type="button" 
-                                                class="btn-${
+                                                <a type="button" 
+                                                    class="btn-${
+                                                        res.data.post.id
+                                                    } post-like"
+                                                    data-bs-post="${
+                                                        res.data.post.id
+                                                    }" 
+                                                    id="like-btn-modal">
+                                                    <h4><b><i class="fa-regular fa-heart"></i></b></h4>
+                                                </a>
+
+                                                <a type="button" id="commenr-btn">
+                                                    <h4><b><i class="fa-regular fa-comment"></i></b></h4>
+                                                </a>
+
+                                                <a type="button">
+                                                    <h4><b><i class="far fa-paper-plane"></i></b></h4>
+                                                </a>
+
+
+                                            </div>
+                                            <div class="col-9 col-lg-9 col-md-9 col-sm-9 d-flex align-items-center justify-content-end">
+                                                <a 
+                                                type="button" 
+                                                class="bookmark-btn-${
                                                     res.data.post.id
-                                                } post-like"
-                                                data-bs-post="${
-                                                    res.data.post.id
-                                                }" 
-                                                id="like-btn-modal">
-                                                <h4><b><i class="fa-regular fa-heart"></i></b></h4>
-                                            </a>
-
-                                            <a type="button" id="commenr-btn">
-                                                <h4><b><i class="fa-regular fa-comment"></i></b></h4>
-                                            </a>
-
-                                            <a type="button">
-                                                <h4><b><i class="far fa-paper-plane"></i></b></h4>
-                                            </a>
-
-
+                                                } post-book-mark" 
+                                                id="book-mark-btn">
+                                                    <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div class="col-9 col-lg-9 col-md-9 col-sm-9 d-flex align-items-center justify-content-end">
-                                            <a 
-                                            type="button" 
-                                            class="bookmark-btn-${
-                                                res.data.post.id
-                                            } post-book-mark" 
-                                            id="book-mark-btn">
-                                                <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
+
+                                        <div class="d-flex">
+                                            <p class="m-1 mx-0" id="likes_modal_count-${postId}">${res.data.all_likes_count} Likes</p>
+                        
+                                        <div class="others-modal-liked-users-${postId}">
+                                            <a type="button"  
+                                            data-toggle="modal"
+                                            data-bs-othersLikes = "${res.data.post.id}"
+                                            class = "others-modal"
+                                            data-target="#postOthersLikesAlert">
+                                                <p class="m-1"><b></b></p>
                                             </a>
                                         </div>
-                                    </div>
 
-                                    <div class="d-flex">
-                                        <p class="m-1 mx-0" id="likes_modal_count-${postId}">${res.data.all_likes_count} Likes</p>
-                    
-                                    <div class="others-modal-liked-users-${postId}">
-                                        <a type="button"  
-                                        data-toggle="modal"
-                                        data-bs-othersLikes = "${res.data.post.id}"
-                                        class = "others-modal"
-                                        data-target="#postOthersLikesAlert">
-                                            <p class="m-1"><b></b></p>
-                                        </a>
-                                    </div>
+                                            
+                                        </div>
 
-                                        
-                                    </div>
-
- 
-                                    <div>
-                                        <p class=" text-secondary"><i>${
-                                            res.data.posts_time
-                                        }</i></p>
+    
+                                        <div>
+                                            <p class=" text-secondary"><i>${
+                                                res.data.posts_time
+                                            }</i></p>
+                                        </div>
                                     </div>
                                     <!---------------------------------------------------------->
-                                    
 
-                                </div>
+                                
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -711,7 +719,10 @@ commentButton.forEach((btn) => {
     
                                 <div>
                                     <p class="m-0">
-                                        <a type="button">
+                                        <a 
+                                        href="${'/profile/' + res.data.post.user.id}" 
+                                        class=" text-decoration-none text-dark"
+                                        type="button">
                                             <b>${comment.user.name}</b>
                                         </a>
                                         ${comment.comment_text} 
