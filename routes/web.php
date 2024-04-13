@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/profile/removeimage', [editProfileController::class, 'removeImage'])->name('profile.removeimage');
  // to get hashtag fillter
     Route::get("/hashtags/filter/{id}", [HashtagController::class, 'filter'])->name('hashtag.filter');
+    Route::get("/hashtags/{tag}", [HashtagController::class, 'index'])->name('hashtag.index');
     // to get hashtag fillter
 
     Route::get("/likes", [ProfileController::class, 'showLikes'])->name("show.likes");

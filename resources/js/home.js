@@ -93,6 +93,8 @@ document.querySelectorAll(".commentBtn").forEach(function (button) {
                   <div class="d-flex col-10 align-items-center">
                           <p>
                               <a 
+                              href="${'/profile/' + res.data.comment.user_id}" 
+                              class="text-decoration-none text-dark user-name-btn"
                               type="button">
                                   <b>${res.data.user_name}</b>
                               </a>
@@ -299,11 +301,11 @@ likesBtn.forEach((like) => {
                 let commentLikesDiv = document.querySelector(`#likes-${postId}`);
                 let commentDetails = `
                 <div class="likess othersContent-${postId}">
-                    <a type="button" id="a-${postId}">
+
                         <p class="m-1" id="you-like-${postId}">
                             <b>You</b>
                         </p>
-                    </a>
+                   
                         <p class="m-1">and</p>
                         <a type="button"  
                         data-toggle="modal"
@@ -397,16 +399,16 @@ commentButton.forEach((btn) => {
                     <div class="modal-body m-0 p-0">
                     <div class="container-fluid">
                         <div class="row p-0">
-                            <div class="col-7 d-flex p-0 m-0">
+                            <div class="col-7 col-lg-7 col-md-12 col-sm-12 d-flex p-0 m-0">
                                 <img src="${res.data.post.image_url}" class="w-100 img-fluid" />
                             </div>
-                            <div class="col-5 d-flex flex-column px-1 align-items-center justify-content-between">  
+                            <div class="col-5 col-lg-5 col-md-12 col-sm-12 d-flex flex-column px-1 align-items-center justify-content-between">  
 
                                     <!------------------- User's profile --------------------->
                                             <div class="col-12 col-lg-12 col-md-12 col-sm-12 d-flex flex-column align-items-center p-0 m-0">
                                                 <div class="row w-100">
                                                     <div class="col-2 d-flex pt-3 justify-content-start align-items-center">
-                                                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                                            <img src="${res.data.post.user.image}"
                                                                 class="rounded-circle mb-3 avatar" width="50px"
                                                                 height="50px" alt="Avatar" />
                                                     </div>
@@ -491,7 +493,7 @@ commentButton.forEach((btn) => {
                                         </div>
 
                                         <div class="d-flex">
-                                            <p class="m-1 mx-0" id="likes_modal_count-${postId}">${res.data.all_likes_count} Likes</p>
+                                            <p class="m-1 mx-3" id="likes_modal_count-${postId}">${res.data.all_likes_count} Likes</p>
                         
                                         <div class="others-modal-liked-users-${postId}">
                                             <a type="button"  
@@ -507,7 +509,7 @@ commentButton.forEach((btn) => {
                                         </div>
 
     
-                                        <div>
+                                        <div class="px-3">
                                             <p class=" text-secondary"><i>${
                                                 res.data.posts_time
                                             }</i></p>
@@ -711,7 +713,7 @@ commentButton.forEach((btn) => {
                         <div class="d-flex col-10 align-items-center p-0 comments-modal">   
                                 <div class="col-2 d-flex pt-2 justify-content-start align-items-center">
                                     <div class="avatar-container position-relative">
-                                        <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                        <img src="${comment.user.image}"
                                             class="rounded-circle mb-3 avatar" width="50px"
                                             height="50px" alt="Avatar" />
                                     </div>
@@ -720,7 +722,7 @@ commentButton.forEach((btn) => {
                                 <div>
                                     <p class="m-0">
                                         <a 
-                                        href="${'/profile/' + res.data.post.user.id}" 
+                                        href="${'/profile/' + comment.user.id}" 
                                         class=" text-decoration-none text-dark"
                                         type="button">
                                             <b>${comment.user.name}</b>
@@ -1150,14 +1152,11 @@ function othersLikesModal(postId) {
                     <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
                     class="rounded-circle avatar bg-dark" width="45px"
                     height="45px" alt="Avatar"/>
-                    <a type="button">
+                    <a 
+                    href="${'/profile/' + myLike.user.id}"
+                    type="button">
                     <b>${myLike.user.name}</b>
                     </a>
-                </div>
-                <div class="col-3 d-flex justify-content-end">
-                <button class="btn btn-primary m-0 w-100">
-                    <b>follow</b>
-                </button>
                 </div>
             </div>
         `;
@@ -1215,17 +1214,14 @@ function commentLikesModalDiv(commentsLikesUsersArr){
                         likesContainer.innerHTML += `
                         <div class="row w-100 d-flex align-items-center justify-content-between m-0 mb-2">
                             <div class="col-9 d-flex align-items-center">
-                                <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                <img src="${user.user.image}"
                                 class="rounded-circle avatar bg-dark" width="40px"
                                 height="40px" alt="Avatar"/>
-                                <a type="button" class="w-100" >
+                                <a 
+                                href="${'/profile/' + user.user.id}"
+                                type="button" class="w-100" >
                                     <b>${userName}</b>
                                 </a>
-                            </div>
-                            <div class="col-3 d-flex justify-content-end">
-                                <button class="btn btn-primary follow-use-btn m-0 w-100">
-                                    <b>follow</b>
-                                </button>
                             </div>
                         </div>
                         `;
@@ -1233,3 +1229,57 @@ function commentLikesModalDiv(commentsLikesUsersArr){
         }
         });
 }
+
+
+/********************************* Follow ********************************/
+
+let followBtns = document.querySelectorAll(".follow-btn");
+
+followBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+        let userId = btn.getAttribute("data-bs-follow");
+        let followType = btn.getAttribute("data-bs-type");
+        console.log(btn);
+        let userSuggestId = document.getElementById(`follow-btn-suggest-${userId}`);
+        let postUserId = document.getElementById(`follow-btn-${userId}`);
+        
+        if(followType == 'follow'){
+            axios.post("/follow", { user_id : userId }).then((res) => {
+                // console.log(res.data);
+                if (userSuggestId) {
+                    userSuggestId.innerHTML = `Unfollow`;
+                    userSuggestId.setAttribute("data-bs-type", "unfollow");
+                    if(userSuggestId.classList.contains("btn-primary")) userSuggestId.classList.remove("btn-primary");
+                    userSuggestId.classList.add("btn-secondary")
+                }
+
+
+                if (postUserId) {
+                    postUserId.innerHTML = `Unfollow`;
+                    postUserId.setAttribute("data-bs-type", "unfollow");
+                    if(postUserId.classList.contains("btn-primary")) postUserId.classList.remove("btn-primary");
+                    postUserId.classList.add("btn-secondary")
+                }
+
+            });
+        } else if(followType == 'unfollow') {
+            axios.delete(`/following/${userId}`).then((res) => {
+                // console.log(res.data);
+                if (userSuggestId) {
+                    userSuggestId.innerHTML = `<i class="fa-solid fa-user-plus"></i> follow`;
+                    userSuggestId.setAttribute("data-bs-type", "follow");
+                    if(userSuggestId.classList.contains("btn-secondary")) userSuggestId.classList.remove("btn-secondary");
+                    userSuggestId.classList.add("btn-primary")
+                }
+
+                if (postUserId) {
+                    postUserId.innerHTML = `<i class="fa-solid fa-user-plus"></i> follow`;
+                    postUserId.setAttribute("data-bs-type", "follow");
+                    if(postUserId.classList.contains("btn-secondary")) postUserId.classList.remove("btn-secondary");
+                    postUserId.classList.add("btn-primary")
+                }
+
+            })
+        }
+    })
+})

@@ -19,7 +19,9 @@
                 {{-- @for ($i = 0; $i < 15; $i++) --}}
                 @foreach ($suggestedUsers as $suggestedUser)
                     <div class="d-flex flex-column align-items-center m-2">
-                        <a type="button">
+                        <a 
+                        href="{{ url('profile/' . $suggestedUser->id) }}" 
+                        type="button">
                             <img src="{{ $suggestedUser->image }}"
                                 class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar" />
                         </a>
@@ -34,7 +36,7 @@
         </div>
 
         <!------- Posts side -------->
-        @foreach ($posts as $post)
+        @foreach ($followingPosts as $post)
             <div class="card w-50 col-sm-12 col-lg-6 mt-0 mb-0 main-post-div">
                 <div class="bg-image hover-overlay" data-mdb-ripple-init data-mdb-ripple-color="light">
                     <div class="row m-0">
@@ -73,20 +75,10 @@
                                                     <i>.{{ $posts_time($post->created_at) }}</i>
                                                 </p>
                                             </div>
-                                            <p class="m-0 mt-2 text-secondary fs-6 h6"><i>Original audio</i></p>
+                                            <p class="m-0 mt-2 text-secondary fs-6 h6"><i>{{ Str::limit($post->user->bio, 20) }}</i></p>
                                         </div>
 
-                                    <div class="d-flex align-items-center justify-content-end">
-                                        <a type="button" data-toggle="modal" data-target="#postOptionsAlert">
-                                            <svg aria-label="More options" class="x1lliihq x1n2onr6 x5n08af" height="24"
-                                                role="img" viewBox="0 0 24 24" width="24">
-                                                <title>More options</title>
-                                                <circle cx="12" cy="12" r="1.5" fill="black"></circle>
-                                                <circle cx="6" cy="12" r="1.5" fill="black"></circle>
-                                                <circle cx="18" cy="12" r="1.5" fill="black"></circle>
-                                            </svg>
-                                        </a>
-                                    </div>
+                                    
 
                                     <div class="profile-details-card position-absolute p-0 mt-5">
                                         <!-- Profile details content goes here -->
@@ -147,7 +139,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="row mt-3">
-                                                    <div class="col-6">
+                                                    <div class="col-6 flex-grow-1">
                                                         <a
                                                         type="button"
                                                         href="{{ url('profile/' . $post->user->id) }}" 
@@ -156,12 +148,28 @@
                                                             View Profile
                                                         </a>
                                                     </div>
-                                                    <div class="col-6">
-                                                        <button class="btn btn-primary w-100">
-                                                            <i class="fa-solid fa-user-plus"></i>
-                                                            follow
-                                                        </button>
-                                                    </div>
+                                                    @if ($post->user->id != Auth::id())
+                                                    
+                                                        <div class="col-6">
+                                                            @if ($post->user->followers->contains(Auth::id()))
+                                                                <button
+                                                                type="button"
+                                                                id="follow-btn-{{ $post->user->id }}"
+                                                                data-bs-follow = "{{ $post->user->id }}"
+                                                                data-bs-type="unfollow"
+                                                                class="btn btn-secondary w-100 follow-btn">
+                                                                    Unfollow
+                                                                </button>
+                                                            @else
+                                                                <button
+                                                                type="button"
+                                                                id="follow-btn-{{ $post->user->id }}"
+                                                                data-bs-follow = "{{ $post->user->id }}"
+                                                                data-bs-type="follow"
+                                                                class="btn btn-primary w-100 follow-btn"><i class="fa-solid fa-user-plus"></i>follow</button>
+                                                            @endif
+                                                        </div>
+                                                    @endif
                                                 </div>
                                             </div>
                                         </div>
@@ -176,7 +184,7 @@
                     @if ($post->video == 0)
                         <img src="{{ $post->image_url }}" class="img-fluid" />
                     @else
-                        <video controls src="{{ $post->image_url }}" class="img-fluid"></video>
+                        <video controls autoplay src="{{ $post->image_url }}" class="img-fluid"></video>
                     @endif
                 </div>
                 <div class="card-body">
@@ -223,16 +231,19 @@
                     </div>
                     <div class="mt-1 d-flex align-items-start post-caption" id="{{ $post->id }}">
                         <p>
-                            <a type="button">
+                            <a 
+                            href="{{ url('profile/' . $post->user->id) }}" 
+                            class="text-decoration-none text-dark user-name-btn"
+                            type="button">
                                 <b>{{ $post->user->name }}</b>
                             </a>
                             @php
-                                $words = explode(' ', $post->caption); // Split the caption into an array of words
+                                $words = explode(' ', $post->caption);
                             @endphp
 
                             @foreach($words as $word)
                                 @if (Str::startsWith($word, '#'))
-                                    <a href="{{ url('/search?q=' . urlencode($word)) }}" class=" text-decoration-none text-secondary">{{ $word }}</a>
+                                    <a href="{{ url('/hashtags/' . Str::replace("#","",$word)) }}" class=" text-decoration-none text-secondary">{{ $word }}</a>
                                 @else
                                     {{ $word }}
                                 @endif
@@ -250,7 +261,7 @@
                                
                             </div>
                         @else
-                            <a type="button" id="a-{{$post->id}}">
+
                                 <p class="m-1" id="you-like-blade-{{ $post->id }}">
                                     <b>
                                         @php
@@ -270,7 +281,6 @@
                                         @endif
                                     </b>
                                 </p>
-                            </a>
                             <div class="likess othersContent-{{ $post->id }}" id="likes-{{ $post->id }}">
                                 <p class="m-1">and</p>
                                 <a type="button"  
@@ -300,7 +310,10 @@
                                             <div class="col-md-12 mb-0 aligh-items-center d-flex justify-content-between user-comment-{{ $comment->id }}">
                                                 <div class="d-flex col-10 align-items-center">
                                                         <p>
-                                                            <a type="button">
+                                                            <a 
+                                                            href="{{ url('profile/' . $post->user->id) }}" 
+                                                            class="text-decoration-none text-dark user-name-btn"
+                                                            type="button">
                                                                 <b>{{ $comment->user->name }}</b>
                                                             </a>
                                                             {{ $comment->comment_text }}
@@ -359,8 +372,14 @@
         <div class="card mb-3">
             <div class="row g-0">
                 <div class="col-md-3 d-flex">
-                    <a href="#">
-                        <img class="img-fluid rounded-circle test" src="{{ $post->user->image }}" alt="dog">
+                    <a 
+                    href="{{ url('profile/' . $loggedInUser->id) }}" 
+                    href="#">
+                        @if ($loggedInUser->image == null)
+                            <img class="img-fluid rounded-circle test" src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="ahmed" id="avatar-image">
+                        @else
+                            <img class="img-fluid rounded-circle test" src="{{ $loggedInUser->image }}" alt="dog">
+                        @endif
                     </a>
                 </div>
                 <div class="col-md-9 d-flex flex-column align-items-center justify-content-center">
@@ -376,109 +395,135 @@
         
         <div class="card mb-3 pb-3 pt-3">
             @foreach ($suggestedUsers as $suggestedUser)
-                <div class="row g-0">
-                    <div class="col-md-4 w-100 d-flex">
-                        <div class="avt-container m-1 d-flex align-items-center rounded-circle">
-                            <div class="avatar-container position-relative">
-                                <a type="button" class="avatar-link rounded-circle m-1">
-                                <img src="{{ $suggestedUser->image }}"
-                                        class="rounded-circle mb-3 avatar" width="50px"
-                                        height="50px" alt="Avatar" />
+                @if ($suggestedUser->id != Auth::id() && !$followingsIds->contains($suggestedUser->id))
+            
+                    <div class="row g-0">
+                        <div class="col-md-4 w-100 d-flex">
+                            <div class="avt-container m-1 d-flex align-items-center rounded-circle">
+                                <div class="avatar-container position-relative">
+                                    <a type="button" class="avatar-link rounded-circle m-1">
+                                    <img src="{{ $suggestedUser->image }}"
+                                            class="rounded-circle mb-3 avatar" width="50px"
+                                            height="50px" alt="Avatar" />
+                                        </a>
+                                </div>
+                                <div class="popup p-0" id="popup">
+                                    
+
+                                    <!-- Profile details content goes here -->
+                                        <div class="card w-100 px-1 pt-0 details-card">
+                                            <div class="bg-image hover-overlay" data-mdb-ripple-init
+                                                data-mdb-ripple-color="light">
+                                                <div class="row m-0 p-0">
+                                                    <div class="col-9 d-flex align-items-center p-0">
+                                                        <div class="col-3 d-flex pt-3 justify-content-center align-items-center">
+                                                            <div class="avatar-container position-relative">
+                                                                <img src="{{ $suggestedUser->image }}"
+                                                                    class="rounded-circle mb-3 avatar" width="50px"
+                                                                    height="50px" alt="Avatar" />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-11 mx-3">
+                                                            <div class="d-flex">
+                                                                <a
+                                                                href="{{ url('profile/' . $suggestedUser->id) }}" 
+                                                                type="button" 
+                                                                class="text-decoration-none text-dark">
+                                                                    <p class="mb-0 h6">
+                                                                        {{ $suggestedUser->name }}
+                                                                    </p>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row d-flex justify-content-between">
+                                                    <div class="col-4 d-flex flex-column align-items-center">
+                                                        <p class="m-0">
+                                                            {{ $suggestedUser->posts_count }}
+                                                        </p>
+                                                        <p class="m-0">Posts</p>
+                                                    </div>
+        
+                                                    <div class="col-4 d-flex flex-column align-items-center">
+                                                        <p class="m-0">1M</p>
+                                                        <p class="m-0">followers</p>
+                                                    </div>
+        
+                                                    <div class="col-4 d-flex flex-column align-items-center">
+                                                        <p class="m-0">50k</p>
+                                                        <p class="m-0">following</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row d-flex justify-content-between">
+                                                    <div class="col-4">
+                                                        <img src="{{ asset('images/dog.jpg') }}"
+                                                            class="w-100 h-100 profile-post-hover">
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <img src="{{ asset('images/dog.jpg') }}"
+                                                            class="w-100 h-100 profile-post-hover">
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <img src="{{ asset('images/dog.jpg') }}"
+                                                            class="w-100 h-100 profile-post-hover">
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-3">
+                                                    <div class="col-6 mt-4">
+                                                        <a 
+                                                        href="{{ url('profile/' . $suggestedUser->id) }}" 
+                                                        type="button" 
+                                                        class="btn btn-primary m-0 h-100 w-100">
+                                                            <i class="fa-solid fa-user"></i>
+                                                            Profile
+                                                        </a>
+                                                    </div>
+                                                    @if ($suggestedUser->id != Auth::id())
+                                                        <div class="col-6 mt-4">
+                                                            @if ($suggestedUser->followers->contains(Auth::id()))
+                                                                <button
+                                                                type="button"
+                                                                id="follow-btn-suggest-{{ $suggestedUser->id }}"
+                                                                data-bs-follow = "{{ $suggestedUser->id }}"
+                                                                data-bs-type="unfollow"
+                                                                class="btn btn-secondary w-100 follow-btn">
+                                                                    Unfollow
+                                                                </button>
+                                                            @else
+                                                                <button
+                                                                type="button"
+                                                                id="follow-btn-suggest-{{ $suggestedUser->id }}"
+                                                                data-bs-follow = "{{ $suggestedUser->id }}"
+                                                                data-bs-type="follow"
+                                                                class="btn btn-primary w-100 follow-btn"><i class="fa-solid fa-user-plus"></i>follow</button>
+                                                            @endif
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <!---------- End of details card ----------->
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-md-12 d-flex col-lg-12">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <a
+                                    href="{{ url('profile/' . $suggestedUser->id) }}" 
+                                    type="button" 
+                                    class="text-decoration-none text-dark">
+                                        <h6 class="card-title mb-0">{{ $suggestedUser->name }}</h6>
                                     </a>
                                 </div>
-                                {{-- <img class="img-fluid rounded-circle test" src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="ahmed" id="avatar-image"> --}}
-                            <div class="popup p-0" id="popup">
-                                
-
-                                <!-- Profile details content goes here -->
-                                    <div class="card w-100 px-1 pt-0 details-card">
-                                        <div class="bg-image hover-overlay" data-mdb-ripple-init
-                                            data-mdb-ripple-color="light">
-                                            <div class="row m-0 p-0">
-                                                <div class="col-9 d-flex align-items-center p-0">
-                                                    <div class="col-3 d-flex pt-3 justify-content-center align-items-center">
-                                                        <div class="avatar-container position-relative">
-                                                            <img src="{{ $suggestedUser->image }}"
-                                                                class="rounded-circle mb-3 avatar" width="50px"
-                                                                height="50px" alt="Avatar" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-11 mx-3">
-                                                        <div class="d-flex">
-                                                            <p class="mb-0 h6">
-                                                               {{ $suggestedUser->name }}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row d-flex justify-content-between">
-                                                <div class="col-4 d-flex flex-column align-items-center">
-                                                    <p class="m-0">
-                                                        {{ $suggestedUser->posts_count }}
-                                                    </p>
-                                                    <p class="m-0">Posts</p>
-                                                </div>
-    
-                                                <div class="col-4 d-flex flex-column align-items-center">
-                                                    <p class="m-0">1M</p>
-                                                    <p class="m-0">followers</p>
-                                                </div>
-    
-                                                <div class="col-4 d-flex flex-column align-items-center">
-                                                    <p class="m-0">50k</p>
-                                                    <p class="m-0">following</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="row d-flex justify-content-between">
-                                                <div class="col-4">
-                                                    <img src="{{ asset('images/dog.jpg') }}"
-                                                        class="w-100 h-100 profile-post-hover">
-                                                </div>
-                                                <div class="col-4">
-                                                    <img src="{{ asset('images/dog.jpg') }}"
-                                                        class="w-100 h-100 profile-post-hover">
-                                                </div>
-                                                <div class="col-4">
-                                                    <img src="{{ asset('images/dog.jpg') }}"
-                                                        class="w-100 h-100 profile-post-hover">
-                                                </div>
-                                            </div>
-                                            <div class="row mt-3">
-                                                <div class="col-6 mt-4">
-                                                    <button class="btn btn-primary w-100 follow-btn-text">
-                                                        <i class="fa-solid fa-user"></i>
-                                                        View Profile
-                                                    </button>
-                                                </div>
-                                                <div class="col-6 mt-4">
-                                                    <button class="btn btn-primary w-100 follow-btn-text">
-                                                        <i class="fa-solid fa-user-plus"></i>
-                                                        follow
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <!---------- End of details card ----------->
-                            </div>
-
-
-
-                        </div>
-                        <div class="col-md-9">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="card-title mb-0">{{ $suggestedUser->name }}</h6>
-                                <button class="btn btn-sm text-primary">Follow</button>
-                            </div>
-                            <div>
-                                <p class="card-text mb-2"><small class="text-muted">Suggested For You</small></p>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
                 @endforeach
             <div class="row">
                 <div class="col-12 mt-5 w-100 d-flex px-5">
@@ -500,23 +545,6 @@
         {{-- ------------------------------------------------------------- --}}
     </div>
         <!-------------------- post options Modal ------------------>
-        <div class="modal fade" id="postOptionsAlert" tabindex="-1" role="dialog" aria-labelledby="postOptionsAlert"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header d-flex justify-content-center">
-                        <h4><a type="button" class="w-100 text-decoration-none text-danger"
-                            data-dismiss="modal">Unfollow</a></h4>
-                    </div>
-                    <div class="modal-body d-flex justify-content-center">
-                        <h4><a type="button" class="w-100 text-decoration-none text-secondary" data-dismiss="modal">Go To post</a></h4>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                        <h4><a type="button" class="w-100 text-decoration-none text-secondary"
-                            data-dismiss="modal">Cancel</a></h4>
-                    </div>
-
-        </div>
     </div>
 </div>
 <!------------------- End of post options modal --------------------->

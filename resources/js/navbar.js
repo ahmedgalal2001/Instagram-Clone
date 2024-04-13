@@ -159,7 +159,7 @@ search_username.oninput = () => {
             res.data.forEach(user => {
                 let elementUser = `
     <div class="user-profile">
-        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="/profile">
+        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="${'/profile/' + user.id}">
             <img width="48px" height="48px"
                 src="${user.image}"
                 class="rounded-circle me-2 img-profile" alt="">

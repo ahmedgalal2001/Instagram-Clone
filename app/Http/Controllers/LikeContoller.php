@@ -37,6 +37,7 @@ class LikeContoller extends Controller
         $like->post_id = $id_post;
         $like->save();
 
+        $user = Like::with('user')->where('post_id', $like->post_id)->get();
         $all_likes = Like::where('post_id', $id_post)->count();
         return response()->json([
             'message' => 'Comment stored successfully',
