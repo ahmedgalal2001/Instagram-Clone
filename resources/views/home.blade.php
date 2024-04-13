@@ -16,17 +16,17 @@
                 <i class="fas fa-angle-left"></i>
             </button>
             <div class="scroll-images d-flex align-items-start">
-                @for ($i = 0; $i < 15; $i++)
+                {{-- @for ($i = 0; $i < 15; $i++) --}}
                 @foreach ($suggestedUsers as $suggestedUser)
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
-                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                            <img src="{{ $suggestedUser->image }}"
                                 class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar" />
                         </a>
                         <p>{{ Str::limit($suggestedUser->name, 10) }}</p>
                     </div>
                 @endforeach
-                @endfor
+                {{-- @endfor --}}
             </div>
             <button class="right">
                 <i class="fas fa-angle-right"></i>
@@ -41,11 +41,14 @@
                         <div class="col-md-12 d-flex align-items-center p-0">
                             <div class="col-12 d-flex pt-3 px-0 p-0 justify-content-start align-items-center">
                                 <div class="avatar-container col-12 d-flex position-relative mb-2 mx-0">
-                                    <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                    <img src="{{ $post->user->image }}"
                                         class="rounded-circle avatar" width="50px" height="50px" alt="Avatar" />
                                         <div class="w-100 d-flex flex-column justify-content-center px-2">
                                             <div class="d-flex align-ite">
-                                                <a type="button" class="text-decoration-none text-dark user-name-btn">
+                                                <a 
+                                                href="{{ url('profile/' . $post->user->id) }}" 
+                                                type="button" 
+                                                class="text-decoration-none text-dark user-name-btn">
                                                     <p class="m-0 user_name_post">
                                                         <b>{{ $post->user->name }}</b>
                                                     </p>
@@ -95,7 +98,7 @@
                                                         <div
                                                             class="col-3 d-flex pt-3 justify-content-center align-items-center">
                                                             <div class="avatar-container position-relative">
-                                                                <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                                                <img src="{{ $post->user->image }}"
                                                                     class="rounded-circle mb-3 avatar" width="50px"
                                                                     height="50px" alt="Avatar" />
                                                             </div>
@@ -145,10 +148,13 @@
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6">
-                                                        <button class="btn btn-primary w-100">
+                                                        <a
+                                                        type="button"
+                                                        href="{{ url('profile/' . $post->user->id) }}" 
+                                                        class="btn btn-primary w-100 h-100">
                                                             <i class="fa-solid fa-user"></i>
                                                             View Profile
-                                                        </button>
+                                                        </a>
                                                     </div>
                                                     <div class="col-6">
                                                         <button class="btn btn-primary w-100">
@@ -220,7 +226,17 @@
                             <a type="button">
                                 <b>{{ $post->user->name }}</b>
                             </a>
-                            {{ $post->caption }}
+                            @php
+                                $words = explode(' ', $post->caption); // Split the caption into an array of words
+                            @endphp
+
+                            @foreach($words as $word)
+                                @if (Str::startsWith($word, '#'))
+                                    <a href="{{ url('/search?q=' . urlencode($word)) }}" class=" text-decoration-none text-secondary">{{ $word }}</a>
+                                @else
+                                    {{ $word }}
+                                @endif
+                            @endforeach
                         </p>
                     </div>
                     <div class="d-flex" id="main-likes-container-{{ $post->id }}">
@@ -344,7 +360,7 @@
             <div class="row g-0">
                 <div class="col-md-3 d-flex">
                     <a href="#">
-                        <img class="img-fluid rounded-circle test" src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="dog">
+                        <img class="img-fluid rounded-circle test" src="{{ $post->user->image }}" alt="dog">
                     </a>
                 </div>
                 <div class="col-md-9 d-flex flex-column align-items-center justify-content-center">
@@ -365,7 +381,7 @@
                         <div class="avt-container m-1 d-flex align-items-center rounded-circle">
                             <div class="avatar-container position-relative">
                                 <a type="button" class="avatar-link rounded-circle m-1">
-                                <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                <img src="{{ $suggestedUser->image }}"
                                         class="rounded-circle mb-3 avatar" width="50px"
                                         height="50px" alt="Avatar" />
                                     </a>
@@ -382,7 +398,7 @@
                                                 <div class="col-9 d-flex align-items-center p-0">
                                                     <div class="col-3 d-flex pt-3 justify-content-center align-items-center">
                                                         <div class="avatar-container position-relative">
-                                                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
+                                                            <img src="{{ $suggestedUser->image }}"
                                                                 class="rounded-circle mb-3 avatar" width="50px"
                                                                 height="50px" alt="Avatar" />
                                                         </div>
