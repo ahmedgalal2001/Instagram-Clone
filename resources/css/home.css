@@ -246,10 +246,6 @@ ul {
   text-decoration: none;
 }
 
-/* .avatar-container {
-  position: relative;
-  display: inline-block;
-} */
 
 .popup {
   display: none;
@@ -263,34 +259,6 @@ ul {
   height: 350px;
   margin-top: 340px;
 }
-
-/* .popup img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-} */
-
-/* .popup .info .count {
-  font-size: 18px;
-  font-weight: bold;
-} */
-
-/* .popup .info .label {
-  font-size: 14px;
-  color: #888;
-  margin-bottom: 5px;
-} */
-
-/* .popup::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 100%;
-  margin-top: -10px;
-  border-width: 10px;
-  border-style: solid;
-  border-color: transparent transparent transparent white;
-} */
 
 .avt-container{
   height: 60px;
@@ -307,3 +275,75 @@ ul {
 ul li a:hover {
   color: rgb(0 180 246)
 }
+
+/********************************** modal z index ************************************/
+
+#postOthersLikesAlert{
+  z-index: 10000 !important;
+}
+
+.allCommentLikesUsers {
+  display: none;
+  position: absolute;
+  background-color: white;
+  z-index: 1;
+  max-width: 350px;
+  border: 1px solid rgb(212, 212, 212);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  width: 350px; 
+  height: 300px;
+  max-height: 500px; 
+  /* margin-top: 20px;  */
+  padding: 10px;
+}
+
+.allCommentLikesUsers a {
+  color: grey;
+  margin-left: 2px;
+  text-decoration: none !important;
+}
+
+.allCommentLikesUsers:hover{
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.commentLikedBy:hover + .allCommentLikesUsers {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+
+.write-comment-modal{
+  margin-top: 100px !important;
+}
+
+.comment-delete{
+  display: none;
+}
+
+.comments-modal:hover .comment-delete{
+  display: flex;
+}
+
+
+/* .and-others{
+  display: none;
+}
+
+.and-other{
+  display: none;
+} */
+
+.likess{
+  display: flex;
+}
+
+.follow-use-btn{
+  font-size: 12px;
+  text-decoration: none;
+}
+
+/*********************** Alert Message *******************/

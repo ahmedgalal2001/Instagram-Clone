@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SaveUserPost;
 use Illuminate\Support\Carbon;
 use App\Models\Like;
+use App\Models\Comment;
+use App\Models\CommentLikes;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Controller;
 use App\Models\Hashtag;
@@ -86,11 +89,34 @@ class PostsController extends Controller
             $like_user = Like::where('post_id', $id)->with('post')->with('user')->first();
             $like = Like::where('post_id', $id)->with('post')->with('user')->get();
             $post_like = Post::with("likes")->find($id);
+            $post_comment_id = Post::with("comments")->find($id);
+            $saved_posts = Post::with("savedposts")->find($id);
 
             $logged_user = Auth::id();
 
+            $allCommentLikes = CommentLikes::all();
+            $CommentLikeUser = CommentLikes::where('user_id', Auth::id())->get();
+            $all_likes = Like::where('post_id', $id)->count();
 
-            $comments = $post->comments->map(function ($comment) {
+            $allCommentLikesUsers = Comment::with('commentlikes.user')->get();
+
+            $final = $allCommentLikesUsers->map(function ($comment) {
+                return [
+                    'comment_id' => $comment->id,
+                    'likes' => $comment->commentlikes->map(function ($like) {
+                        return [
+                            'user' => $like->user,
+                        ];
+                    }),
+                ];
+            });
+
+
+
+            
+
+            
+            $comments = $post->comments->map(function($comment) {
                 $timestamp = $comment->created_at;
                 $now = Carbon::now();
 
@@ -135,8 +161,15 @@ class PostsController extends Controller
                 'userComment' => $userComment,
                 'allComments' => $post->comments,
                 'posts_time' => $posts_time($post->created_at),
-                'post_like' => $post_like,
-                'logged_user' => $logged_user,
+                'post_like'=> $post_like,
+                'logged_user'=> $logged_user,
+                'allCommentLikes' => $allCommentLikes,
+                'saved_posts' => $saved_posts,
+                'post_comment_id'=> $post_comment_id,
+                'CommentLikeUser' => $CommentLikeUser,
+                'allCommentLikesUsers' => $allCommentLikesUsers,
+                'final' => $final,
+                'all_likes_count' => $all_likes,
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -144,12 +177,27 @@ class PostsController extends Controller
             ]);
         }
     }
+    
+    public function addToFavourite(Request $request)
+    {
+        try{
+            $id_post = $request->input("id");
+            $id_user = Auth::id();
+            $book_mark = new SaveUserPost();
+            $book_mark->user_id = $id_user;
+            $book_mark->post_id = $id_post;
+            $book_mark->save();
 
-    // public function addToFavourite(Request $request)
-    // {
-    //     $post = Post::find($request->input("id"));
+            return response()->json([
+                'message' => 'Post stored successfully',
+            ]);
+        } catch(\Exception $e){
+            return response()->json([
+                'error'=> $e->getMessage(),
+            ]);
+        }
 
-    // }
+    }
     /**
      * Show the form for editing the specified resource.
      */
@@ -172,6 +220,11 @@ class PostsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user_id = Auth::id();
+        $savedPost = SaveUserPost::where('post_id', $id)->where('user_id', $user_id)->delete();
+        return response()->json([
+            "message" => "Deleted successfully",
+            'savedPost'=> $savedPost,
+        ]);
     }
 }

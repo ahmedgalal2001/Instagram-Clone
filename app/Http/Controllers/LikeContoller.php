@@ -36,9 +36,13 @@ class LikeContoller extends Controller
         $like->user_id = $id_user;
         $like->post_id = $id_post;
         $like->save();
+
+        $all_likes = Like::where('post_id', $id_post)->count();
         return response()->json([
             'message' => 'Comment stored successfully',
             'id' => $like->id,
+            'Likes' => $all_likes,
+            'post_id' => $id_post,
         ]);
     }
 
@@ -71,7 +75,18 @@ class LikeContoller extends Controller
      */
     public function destroy(string $id)
     {
+        $like = Like::find($id);
         Like::where('id', $id)->delete();
-        return json_encode($id);
+        $user = Like::with('user')->where('post_id', $like->post_id)->get();
+        
+        $postLikes = Like::where('post_id', $like->post_id)->get();
+        $totalLikes = $postLikes->count();
+
+        return response()->json([
+            'message' => 'Comment Deleted successfully',
+            'id' => $id,
+            'user' => $user,
+            'totalLikes' => $totalLikes,
+        ]);
     }
 }

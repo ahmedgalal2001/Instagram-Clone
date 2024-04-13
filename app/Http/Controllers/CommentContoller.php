@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Post;
+use App\Models\CommentLikes;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -38,12 +40,14 @@ class CommentContoller extends Controller
         $comment->post_id = $id_post;
         $comment->comment_text = $commentText;
         $comment->save();
+        $commentsCount = Post::withCount('comments')->where('id' , $id_post)->first();
         
         return response()->json([
             'message' => 'Comment stored successfully',
             "comment" => $comment,
             "user_name" => $comment -> user -> name,
             "created_at"=> $comment -> created_at -> format('H:i:s'), 
+            "commentsCount" => $commentsCount,
         ]);
     }
 
@@ -72,6 +76,70 @@ class CommentContoller extends Controller
     {
         //
     }
+
+    /**
+     * Add new comment like
+     */
+    public function add(Request $request)
+    {
+        $id_post = $request->input("id");
+        $id_user = Auth::id();
+        $comment_id = $request->input("comment_id");
+        $like = new CommentLikes();
+        $like->user_id = $id_user;
+        $like->post_id = $id_post;
+        $like->comment_id = $comment_id;
+        $like->save();
+
+        $allCommentLikesUsers = Comment::with('commentlikes.user')->get();
+
+        $final = $allCommentLikesUsers->map(function ($comment) {
+            return [
+                'comment_id' => $comment->id,
+                'likes' => $comment->commentlikes->map(function ($like) {
+                    return [
+                        'user' => $like->user,
+                    ];
+                }),
+            ];
+        });
+
+
+        return response()->json([
+            'message' => 'Comment stored successfully',
+            'id' => $like->id,
+            'allCommentLikesUsers' => $allCommentLikesUsers,
+            'final' => $final,
+            
+        ]);   
+    }
+
+    /**
+     * Destroy comment like
+     */
+    public function remove(string $id)
+    {
+        CommentLikes::where('id', $id)->delete();
+        $allCommentLikesUsers = Comment::with('commentlikes.user')->get();
+
+        $final = $allCommentLikesUsers->map(function ($comment) {
+            return [
+                'comment_id' => $comment->id,
+                'likes' => $comment->commentlikes->map(function ($like) {
+                    return [
+                        'user' => $like->user,
+                    ];
+                }),
+            ];
+        });
+        return response()->json([
+            'message' => 'Comment Deleted successfully',
+            'id' => $id,
+            'allCommentLikesUsers' => $allCommentLikesUsers,
+            'final' => $final,
+        ]);  
+    }
+
 
     /**
      * Remove the specified resource from storage.
