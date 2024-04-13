@@ -2,17 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\User;
 use App\Models\Hashtag;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class HashtagController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(string $tag)
     {
-        //
+        
+        $tagPosts = Post::whereHas('hashtags',function ($query)use($tag){
+            $query->where('tag', $tag);
+        })->with('hashtags')->get();
+        //dd($tagPosts);
+
+        $id = $tag;
+       return view('hashtag.index')->with('tagPosts', $tagPosts)->with('tagName', $id);
     }
 
     /**

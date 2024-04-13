@@ -14,19 +14,27 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // $following = User::with("following")->get();
-        // $following->where(Auth::id() == "following_id")->get();
         $comments = CommentLikes::all();
         $posts = Post::with("user")->with("likes")->with('savedposts')->with('user')->get();
         $users = User::withCount('posts')->with('savedposts')->get();
         $loggedInUser = Auth::user();
         $suggestedUsers = User::withCount('posts')->with('savedposts')->take(8)->get();
 
+        $userWithFollowers = User::with('followers')->find(Auth::id());
+        $userWithFollowings = User::with('following')->find(Auth::id());
+        $followingsId = $userWithFollowings->following->pluck('id');
+        
+        $followingsId[] = Auth::id();
+
+        $followingPosts = Post::whereIn('user_id' , $followingsId)->latest()->get();
+
         // dd($users);
         return view("home")->with('posts', $posts)
                             ->with('users', $users)
                             ->with('comments', $comments)
                             ->with('suggestedUsers', $suggestedUsers)
-                            ->with('loggedInUser', $loggedInUser);
+                            ->with('loggedInUser', $loggedInUser)
+                            ->with('followingsIds', $followingsId)
+                            ->with('followingPosts' , $followingPosts);
     }
 }
