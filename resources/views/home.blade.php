@@ -17,13 +17,15 @@
             </button>
             <div class="scroll-images d-flex align-items-start">
                 @for ($i = 0; $i < 15; $i++)
+                @foreach ($suggestedUsers as $suggestedUser)
                     <div class="d-flex flex-column align-items-center m-2">
                         <a type="button">
                             <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
                                 class="rounded-circle status-avatar" width="65px" height="65px" alt="Avatar" />
                         </a>
-                        <p>mohamed</p>
+                        <p>{{ Str::limit($suggestedUser->name, 10) }}</p>
                     </div>
+                @endforeach
                 @endfor
             </div>
             <button class="right">
@@ -48,8 +50,24 @@
                                                         <b>{{ $post->user->name }}</b>
                                                     </p>
                                                 </a>
+                                                @php
+                                                    $posts_time = function($timestamp) {
+                                                        $now = \Carbon\Carbon::now();
+                                                        
+                                                        $diffInMinutes = $timestamp->diffInMinutes($now);
+                                                        $diffInHours = $timestamp->diffInHours($now);
+                                                    
+                                                        if ($diffInMinutes < 60) {
+                                                            return $diffInMinutes . ' minutes ago';
+                                                        } elseif ($diffInHours < 24) {
+                                                            return $diffInHours . ' hours ago';
+                                                        } else {
+                                                            return $timestamp->format('j M Y'); 
+                                                        }
+                                                    };
+                                                @endphp
                                                 <p class="m-0 h6 text-secondary user_name_post">
-                                                    <i>.{{ $post->created_at->format('g:i:s A') }}</i>
+                                                    <i>.{{ $posts_time($post->created_at) }}</i>
                                                 </p>
                                             </div>
                                             <p class="m-0 mt-2 text-secondary fs-6 h6"><i>Original audio</i></p>
@@ -163,7 +181,7 @@
                                 data-bs-like="{{ $like->id }}"
                                 @endif 
                                 @endforeach
-                                data-bs-post="{{ $post->id }}" id="{{ $post->id }}">
+                                data-bs-post="{{ $post->id }}" id="postLike-{{ $post->id }}">
                                 <h4><b><i class="fa-regular fa-heart"></i></b></h4>
                             </a>
 
@@ -205,19 +223,19 @@
                             {{ $post->caption }}
                         </p>
                     </div>
-                    <div class="d-flex">
+                    <div class="d-flex" id="main-likes-container-{{ $post->id }}">
                         @php
                             $allLikes = $post->likes;
                         @endphp
-                        <p class="m-1 mx-0">Liked by</p>
+                        <p class="m-1 mx-0 likes-count-{{ $post->id }}">{{ count($allLikes) }} Likes</p>
                         @if (count($allLikes) <= 0)
-                            <p class="m-1 mx-2" id="p-{{ $post->id }}"><b>No Likes</b></p>
-                            <div class="d-flex" id="likes-{{ $post->id }}">
+                            {{-- <p class="m-1 mx-2" id="p-{{ $post->id }}"><b>No Likes</b></p> --}}
+                            <div class="likess" id="likes-{{ $post->id }}">
                                
                             </div>
                         @else
                             <a type="button" id="a-{{$post->id}}">
-                                <p class="m-1" id="you-like-{{ $post->id }}">
+                                <p class="m-1" id="you-like-blade-{{ $post->id }}">
                                     <b>
                                         @php
                                             $foundUser = $post->likes[0]->user->name;
@@ -237,7 +255,7 @@
                                     </b>
                                 </p>
                             </a>
-                            <div class="d-flex" id="likes-{{ $post->id }}">
+                            <div class="likess othersContent-{{ $post->id }}" id="likes-{{ $post->id }}">
                                 <p class="m-1">and</p>
                                 <a type="button"  
                                 data-toggle="modal"
@@ -263,7 +281,7 @@
                                 <div class="comments-container">
                                     @foreach ($post->comments as $comment)
                                         @if ($post->id == $comment->post_id && $comment->user_id == Auth::id())  
-                                            <div class="col-md-12 mb-0 aligh-items-center d-flex">
+                                            <div class="col-md-12 mb-0 aligh-items-center d-flex justify-content-between user-comment-{{ $comment->id }}">
                                                 <div class="d-flex col-10 align-items-center">
                                                         <p>
                                                             <a type="button">
@@ -275,7 +293,9 @@
                                                 </div>
 
 
-                                                <a type="button" class="comment-like"
+                                                <a type="button" 
+                                                    class="comment-like m-2"
+                                                    id="comment-like-{{ $comment->id }}"
                                                         @foreach ($comments as $comment_like)
                                                             @if (Auth::id() == $comment_like->user_id && $post->id == $comment_like->post_id && $comment->id == $comment_like->comment_id)
                                                                     data-bs-commentLike="{{ $comment_like->id }}"
@@ -328,7 +348,7 @@
                     </a>
                 </div>
                 <div class="col-md-9 d-flex flex-column align-items-center justify-content-center">
-                        <h6 class="card-title mb-0">Mohamed</h6>
+                        <h6 class="card-title mb-0">{{ $loggedInUser->name }}</h6>
                         <p class="card-text mb-2"><small class="text-muted">Suggested For You</small></p>
                 </div>
             </div>
@@ -337,8 +357,9 @@
             <h6 class="suggested">Suggested for you</h6>
             <button class="btn btn-sm">See All</button>
         </div>
+        
         <div class="card mb-3 pb-3 pt-3">
-            @for ($i = 0; $i < 7; $i++)
+            @foreach ($suggestedUsers as $suggestedUser)
                 <div class="row g-0">
                     <div class="col-md-4 w-100 d-flex">
                         <div class="avt-container m-1 d-flex align-items-center rounded-circle">
@@ -352,6 +373,7 @@
                                 {{-- <img class="img-fluid rounded-circle test" src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png" alt="ahmed" id="avatar-image"> --}}
                             <div class="popup p-0" id="popup">
                                 
+
                                 <!-- Profile details content goes here -->
                                     <div class="card w-100 px-1 pt-0 details-card">
                                         <div class="bg-image hover-overlay" data-mdb-ripple-init
@@ -368,8 +390,7 @@
                                                     <div class="col-11 mx-3">
                                                         <div class="d-flex">
                                                             <p class="mb-0 h6">
-                                                                {{-- {{ $post->user->name }} --}}
-                                                                Mohamed
+                                                               {{ $suggestedUser->name }}
                                                             </p>
                                                         </div>
                                                     </div>
@@ -378,7 +399,7 @@
                                             <div class="row d-flex justify-content-between">
                                                 <div class="col-4 d-flex flex-column align-items-center">
                                                     <p class="m-0">
-                                                        {{-- {{ $users->where('id', $post->user->id)->first()->posts_count }} --}}
+                                                        {{ $suggestedUser->posts_count }}
                                                     </p>
                                                     <p class="m-0">Posts</p>
                                                 </div>
@@ -433,7 +454,7 @@
                         </div>
                         <div class="col-md-9">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h6 class="card-title mb-0">Ahmed Kamal</h6>
+                                <h6 class="card-title mb-0">{{ $suggestedUser->name }}</h6>
                                 <button class="btn btn-sm text-primary">Follow</button>
                             </div>
                             <div>
@@ -442,7 +463,7 @@
                         </div>
                     </div>
                 </div>
-            @endfor
+                @endforeach
             <div class="row">
                 <div class="col-12 mt-5 w-100 d-flex px-5">
                     <ul class="footer-links">
@@ -460,7 +481,6 @@
             </div>
         </div>
     </div>
-    
         {{-- ------------------------------------------------------------- --}}
     </div>
         <!-------------------- post options Modal ------------------>
@@ -477,10 +497,6 @@
                     </div>
                     <div class="modal-footer d-flex justify-content-center">
                         <h4><a type="button" class="w-100 text-decoration-none text-secondary"
-                            data-dismiss="modal">About This Account</a></h4>
-                    </div>
-                    <div class="modal-footer d-flex justify-content-center">
-                        <h4><a type="button" class="w-100 text-decoration-none text-secondary"
                             data-dismiss="modal">Cancel</a></h4>
                     </div>
 
@@ -490,7 +506,7 @@
         <!------------------- End of post options modal --------------------->
 
         <!-------------------- post likes others Modal ------------------>
-        <div class="modal fade z-20 others-likes-modal" id="postOthersLikesAlert" tabindex="-1" role="dialog" aria-labelledby="postOthersLikesAlert"
+        <div class="modal fade others-likes-modal" id="postOthersLikesAlert" tabindex="-1" role="dialog" aria-labelledby="postOthersLikesAlert"
             aria-hidden="true">
             
         </div>
@@ -498,7 +514,7 @@
 
         <!------------------------- Comments Modal -------------------------->
         {{-- <div id="comment-modal"> --}}
-            <div class="modal fade bg-none z-0" id="commentsModal" tabindex="-1" role="dialog"
+            <div class="modal fade bg-none" id="commentsModal" tabindex="-1" role="dialog"
             aria-labelledby="commentsModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-xl h-100" role="document">
                 <div class="modal-content">
@@ -624,13 +640,5 @@
 
 
     <!---------------------------------------------------------- For the modal ---------------------------------------------------------------->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
+    
 @endsection

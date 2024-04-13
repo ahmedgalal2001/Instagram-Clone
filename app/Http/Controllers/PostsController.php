@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SaveUserPost;
 use Illuminate\Support\Carbon;
 use App\Models\Like;
+use App\Models\Comment;
 use App\Models\CommentLikes;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Controller;
@@ -62,10 +63,31 @@ class PostsController extends Controller
             $like_user = Like::where('post_id', $id)->with('post')->with('user')->first();
             $like = Like::where('post_id', $id)->with('post')->with('user')->get();
             $post_like = Post::with("likes")->find($id);
+            $post_comment_id = Post::with("comments")->find($id);
+            $saved_posts = Post::with("savedposts")->find($id);
 
             $logged_user = Auth::id();
 
-            $allLikes = CommentLikes::all();
+            $allCommentLikes = CommentLikes::all();
+            $CommentLikeUser = CommentLikes::where('user_id', Auth::id())->get();
+            $all_likes = Like::where('post_id', $id)->count();
+
+            $allCommentLikesUsers = Comment::with('commentlikes.user')->get();
+
+            $final = $allCommentLikesUsers->map(function ($comment) {
+                return [
+                    'comment_id' => $comment->id,
+                    'likes' => $comment->commentlikes->map(function ($like) {
+                        return [
+                            'user' => $like->user,
+                        ];
+                    }),
+                ];
+            });
+
+
+
+            
 
             
             $comments = $post->comments->map(function($comment) {
@@ -118,7 +140,13 @@ class PostsController extends Controller
                 'posts_time' => $posts_time($post->created_at),
                 'post_like'=> $post_like,
                 'logged_user'=> $logged_user,
-                'allLikes' => $allLikes,
+                'allCommentLikes' => $allCommentLikes,
+                'saved_posts' => $saved_posts,
+                'post_comment_id'=> $post_comment_id,
+                'CommentLikeUser' => $CommentLikeUser,
+                'allCommentLikesUsers' => $allCommentLikesUsers,
+                'final' => $final,
+                'all_likes_count' => $all_likes,
             ]);
         } catch(\Exception $e){
             return response()->json([

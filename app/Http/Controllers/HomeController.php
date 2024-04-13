@@ -17,9 +17,16 @@ class HomeController extends Controller
         // $following = User::with("following")->get();
         // $following->where(Auth::id() == "following_id")->get();
         $comments = CommentLikes::all();
-        $posts = Post::with("user")->with("likes")->with('savedposts')->get();
+        $posts = Post::with("user")->with("likes")->with('savedposts')->with('user')->get();
         $users = User::withCount('posts')->with('savedposts')->get();
+        $loggedInUser = Auth::user();
+        $suggestedUsers = User::withCount('posts')->with('savedposts')->take(8)->get();
+
         // dd($users);
-        return view("home")->with('posts', $posts)->with('users', $users)->with('comments', $comments);
+        return view("home")->with('posts', $posts)
+                            ->with('users', $users)
+                            ->with('comments', $comments)
+                            ->with('suggestedUsers', $suggestedUsers)
+                            ->with('loggedInUser', $loggedInUser);
     }
 }

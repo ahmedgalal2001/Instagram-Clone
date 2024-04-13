@@ -39,7 +39,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/like', [LikeContoller::class, 'store'])->name("like.store");
     Route::delete('/like/destroy/{id}', [LikeContoller::class, 'destroy'])->name("like.destroy");
     Route::post('/comment', [CommentContoller::class, 'store'])->name("comment.store");
-    Route::delete('/comment/destroy/{id}', [LikeContoller::class, 'destroy'])->name("comment.destroy");
+    Route::delete('/comment/destroy/{id}', [CommentContoller::class, 'destroy'])->name("comment.destroy");
     Route::get('/post/{id}', [PostsController::class, 'show'])->name("post.show");
     Route::post('/save',[PostsController::class, 'addToFavourite'])->name('save.addtofavourite');
     Route::delete('/save/destroy/{id}', [PostsController::class, 'destroy'])->name("save.destroy");

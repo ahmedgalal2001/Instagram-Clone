@@ -90,9 +90,26 @@ class CommentContoller extends Controller
         $like->post_id = $id_post;
         $like->comment_id = $comment_id;
         $like->save();
+
+        $allCommentLikesUsers = Comment::with('commentlikes.user')->get();
+
+        $final = $allCommentLikesUsers->map(function ($comment) {
+            return [
+                'comment_id' => $comment->id,
+                'likes' => $comment->commentlikes->map(function ($like) {
+                    return [
+                        'user' => $like->user,
+                    ];
+                }),
+            ];
+        });
+
+
         return response()->json([
             'message' => 'Comment stored successfully',
             'id' => $like->id,
+            'allCommentLikesUsers' => $allCommentLikesUsers,
+            'final' => $final,
             
         ]);   
     }
@@ -103,7 +120,24 @@ class CommentContoller extends Controller
     public function remove(string $id)
     {
         CommentLikes::where('id', $id)->delete();
-        return json_encode($id);
+        $allCommentLikesUsers = Comment::with('commentlikes.user')->get();
+
+        $final = $allCommentLikesUsers->map(function ($comment) {
+            return [
+                'comment_id' => $comment->id,
+                'likes' => $comment->commentlikes->map(function ($like) {
+                    return [
+                        'user' => $like->user,
+                    ];
+                }),
+            ];
+        });
+        return response()->json([
+            'message' => 'Comment Deleted successfully',
+            'id' => $id,
+            'allCommentLikesUsers' => $allCommentLikesUsers,
+            'final' => $final,
+        ]);  
     }
 
 
