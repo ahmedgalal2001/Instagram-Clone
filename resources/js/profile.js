@@ -81,13 +81,13 @@ const FollowUser = document.querySelector(".FollowUser");
 const caption = document.querySelector(".caption");
 const post = document.querySelectorAll(".post");
 
-console.log(FollowUser);
+
 //-----------------------------------------------------------------------------------
 
 if (FollowUser) {
     FollowUser.addEventListener("click", async () => {
         const userId = FollowUser.getAttribute("user-id");
-        // console.log(userId);
+
         //-----------check user Following or unfollow for other user-------------------------
         if (FollowUser.textContent === "Follow") {
             await axios
@@ -177,11 +177,12 @@ function displayFollowers(followers, followingsIds, currentUser,followingsIdForC
         followers.forEach((follower) => {
             random = Math.random();
             parentFollowers.innerHTML += `
+            <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
+            <div class="d-flex justify-content-start align-items-center gap-1">
             <a   href="${follower.id}" class="custom-link">
-                <li class="list-group-item border-0 d-flex justify-content-between align-items-center">
-                    <div class="d-flex justify-content-start align-items-center gap-1">
-                        <img src="https://cdn-icons-png.flaticon.com/512/219/219970.png"
-                            class="rounded-circle img-fluid" alt="img" width="50px" />
+            <img src="https://cdn-icons-png.flaticon.com/512/219/219970.png"
+            class="rounded-circle " alt="img" width="50px" />
+            </a>
                         <div class="d-flex flex-column">
                             <p class="fs-5 mt-3  mx-1" >
                             ${follower.username}
@@ -210,7 +211,6 @@ function displayFollowers(followers, followingsIds, currentUser,followingsIdForC
 
                     </div>
                 </li>
-                </a>
             `;
 
             let dtt = document.getElementById(`${random}`);
@@ -362,12 +362,13 @@ function displayFollowings(followings,currentUser,followingsIdCurrentUsr) {
             console.log(following.id);
             const newFollowing = document.createElement("div");
             newFollowing.innerHTML = `
-            <a   href="${following.id}" class="custom-link">
             <li class="list-group-item  border-0 d-flex justify-content-between align-items-center ">
-                <div class="d-flex justify-content-start align-items-center gap-1 ">
-                    <img src="https://cdn-icons-png.flaticon.com/512/219/219970.png"
-                        class="rounded-circle img-fluid" alt="img" width="50px" />
-                    <div class="d-flex flex-column mx-1">
+            <div class="d-flex justify-content-start align-items-center gap-1 ">
+            <a   href="${following.id}" class="custom-link">
+            <img src="https://cdn-icons-png.flaticon.com/512/219/219970.png"
+            class="rounded-circle img-fluid" alt="img" width="50px" />
+            </a>
+            <div class="d-flex flex-column mx-1">
                         <p class="fs-5 mt-3">${following.username} </p>
                         <p class="text-secondary"
                             style="font-size:15px; font-weight: bold; margin-top:-19px;">${following.name}
@@ -384,7 +385,6 @@ function displayFollowings(followings,currentUser,followingsIdCurrentUsr) {
                 }
                 </div>
             </li>
-            </a>
         `;
             parentFollowings.appendChild(newFollowing);
         });
@@ -580,10 +580,11 @@ followBtn.addEventListener("click", async () => {
 
 //----------------------------Render user's comments-------------------------------------------------------
 
+console.log(postData.user.image);
                 parentComments.innerHTML = `
                     <li class="list-group-item border-0 p-0">
                         <div class="d-flex justify-content-start align-items-center gap-1">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" class="rounded-circle img-fluid" alt="img" width="35px" />
+                        <img src="${postData.user.image}" class="rounded-circle" alt="img" height="35px width="35px" />
                             <div class="d-flex">
                                 <p class="fs-6 mx-2" style="font-weight: bold">${
                                     postData.user.name
@@ -606,7 +607,7 @@ followBtn.addEventListener("click", async () => {
                 `;
 
                 parentComments.innerHTML +=
-                    postData.comments.length === 0
+                    postData.comments.length == 0
                         ? `<div class="d-flex justify-content-center align-items-center flex-column  fs-1 mb-3 ">
                         <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" class="image w-25">
                         <h3> no comments yet</h3>
@@ -616,7 +617,7 @@ followBtn.addEventListener("click", async () => {
                                   (comment) => `
                         <li class="list-group-item border-0 p-0">
                             <div class="d-flex justify-content-start align-items-center gap-1">
-                                <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" class="rounded-circle img-fluid" alt="img" width="35px" />
+                                <img src="${postData.user.image}" class="rounded-circle " alt="img" height="35px" width="35px" />
                                 <div class="commentOnPost d-flex">
                                     <p class="fs-6 mx-2" style="font-weight: bold">${comment.user.name}</p>
                                     <p class="fs-6 mx-2" style="font-weight: bold">${comment.comment_text}</p>
@@ -660,19 +661,43 @@ followBtn.addEventListener("click", async () => {
                 });
 
 
-
+                const countcommentPost=document.querySelector('.countcommentPost');
                 submitButton.addEventListener('click', function () {
                     let postId = InputText.getAttribute('post-id');
                     let commentText =InputText.value.trim();
                     axios.post("/comment", { "id": postId, "comment": commentText})
                     .then((res) => {
+                        console.log(res.data.commentsCount.comments_count);
+                        if(res.data.commentsCount.comments_count == 1)
+                        {
+                            parentComments.innerHTML =
+                            `
+                               <li class="list-group-item border-0 p-0">
+                                   <div class="d-flex justify-content-start align-items-center gap-1">
+                                   <img src="${postData.user.image}" class="rounded-circle" alt="img" height="35px width="35px" />
+                                       <div class="commentOnPost d-flex">
+                                           <p class="fs-6 mx-2" style="font-weight: bold">${postData.user.name}</p>
+                                           <p class="fs-6 mx-2" style="font-weight: bold">${res.data.comment.comment_text}</p>
+                                       </div>
+                                   </div>
+                                   <div class="d-flex">
+                                       <a type="button" class="custom-link">
+                                           <p class="text-secondary mx-5" style="font-size:13px;margin-top: -10px">
+                                               <a href="" class="text-secondary custom-link mx-2">${res.data.created_at}</a>
+
+                                           </p>
+                                       </a>
+                                   </div>
+                               </li>
+                           `;
+                        }else{
                     parentComments.innerHTML +=
                      `
                         <li class="list-group-item border-0 p-0">
                             <div class="d-flex justify-content-start align-items-center gap-1">
-                                <img src="${res.data.user_name.image_url}" class="rounded-circle img-fluid" alt="img" width="35px" />
+                                <img src="${postData.user.image}" class="rounded-circle" alt="img" height="35px width="35px" />
                                 <div class="commentOnPost d-flex">
-                                    <p class="fs-6 mx-2" style="font-weight: bold">${res.data.user_name.name}</p>
+                                    <p class="fs-6 mx-2" style="font-weight: bold">${postData.user.name}</p>
                                     <p class="fs-6 mx-2" style="font-weight: bold">${res.data.comment.comment_text}</p>
                                 </div>
                             </div>
@@ -685,7 +710,9 @@ followBtn.addEventListener("click", async () => {
                                 </a>
                             </div>
                         </li>
-                    `;
+                        `;
+                    }
+                    countcommentPost.innerHTML=res.data.commentsCount.comments_count;
 
                 }).catch((error) => {
                     console.error('Error:', error);
@@ -705,6 +732,7 @@ followBtn.addEventListener("click", async () => {
 
 
 //---------------------------like-----------------------------------------------------------
+                const countLikePost=document.querySelector('.countLikePost');
                 const icon = document.createElement("div");
                 parentPostIcon.innerHTML = "";
                 icon.innerHTML = `
@@ -754,6 +782,9 @@ followBtn.addEventListener("click", async () => {
                         postLikeModal.style.color = "black";
                         axios.delete(`/like/destroy/${likeId}`).then((res) => {
                             console.log(res.data);
+                            countLikePost.textContent=res.data.totalLikes;
+
+
 
                         });
                     } else {
@@ -764,6 +795,8 @@ followBtn.addEventListener("click", async () => {
                                 res.data.id
                             );
                             console.log(res.data);
+                            countLikePost.textContent=res.data.Likes;
+
                         });
                     }
                 });
@@ -831,7 +864,7 @@ followBtn.addEventListener("click", async () => {
         parentBookMark.appendChild(bookMark);
 
         let postSaveModal = document.getElementById(`${res.data.post.id}`);
-        console.log(postSaveModal);
+
 
 
         res.data.saved_posts.savedposts.map(function (x) {
@@ -853,12 +886,14 @@ followBtn.addEventListener("click", async () => {
                 postSaveModal.style.color = "black ";
 
                 axios.delete(`/save/destroy/${postId}`).then((res) => {
-                    // console.log(res.data);
+                    console.log(res.data);
+
+                    console.log(postId);
                 });
             } else {
                 postSaveModal.style.color = "orange ";
                 axios.post("/save", { id: postId }).then((res) => {
-                    // console.log(res.data);
+                    console.log(res.data);
                 });
             }
         });
@@ -880,7 +915,7 @@ followBtn.addEventListener("click", async () => {
 let avatarImg = document.querySelector(".avatar");
 let postsContainer = document.querySelector(".profile-details-card");
 
-console.log(postsContainer);
+
 
 document.addEventListener("DOMContentLoaded", function () {
     let avatarImg = document.querySelector(".avatar");
@@ -916,7 +951,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
 //----------------------Calc post created age-----------------------------------------------
 function formatDateRelativeToNow(dateString) {
     const date = new Date(dateString);
@@ -940,31 +974,4 @@ function formatDateRelativeToNow(dateString) {
         return `${minutesDifference}M`;
     }
 }
-
-
-
-
-
-
-// postLikeModal.addEventListener("click", function () {
-//     let postId = postLikeModal.getAttribute("data-bs-post");
-//     let likeId = postLikeModal.getAttribute("data-bs-like");
-
-//     if (postLikeModal.style.color === "red") {
-//         postLikeModal.style.color = "black";
-//         axios.delete(`/like/destroy/${likeId}`).then((res) => {
-//             console.log(res.data);
-
-//         });
-//     } else {
-//         postLikeModal.style.color = "red";
-//         axios.post("/like", { id: postId }).then((res) => {
-//             postLikeModal.setAttribute(
-//                 "data-bs-like",
-//                 res.data.id
-//             );
-//             console.log(res.data);
-//         });
-//     }
-// });
 

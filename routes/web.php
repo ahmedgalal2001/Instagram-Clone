@@ -29,8 +29,8 @@ use App\Http\Controllers\HashtagController;
 Route::middleware('auth')->group(function () {
     Route::middleware('user')->group(function () {
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/save', [ProfileController::class, 'savePosts'])->name('profile.save');
     Route::get('/profile/{id?}', [ProfileController::class, 'index'])->name('profile.index');
-    Route::get('/profile/save/{id?}', [ProfileController::class, 'savePosts'])->name('profile.save');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{username?}', [UserController::class, 'show'])->name('user.show');
@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
     // to get hashtag fillter
 
     Route::get("/likes", [ProfileController::class, 'showLikes'])->name("show.likes");
+    
 
 
     Route::post('/like', [LikeContoller::class, 'store'])->name("like.store");

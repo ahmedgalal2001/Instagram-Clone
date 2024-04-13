@@ -4,29 +4,31 @@
 @vite(['resources/js/profile.js'])
 @section('body')
 
-{{-- {{$user->id}} --}}
+
     <!------------------------------profile photo and section information---------------------------->
     <div class="col-sm-12 col-md-9 col-lg-9 ">
         <section id="header" class="row ">
 
             @if ($Current_Usr !== null && $id == $Current_Usr->id)
 
-            <section class="col-sm-3 col-md-3  col-lg-3 offset-lg-1 mt-3  text-center">
+            <section class="col-sm-3 col-md-3 mx-1 mt-5 col-lg-3 offset-lg-1 mt-3  text-center">
                 <a href="{{ route('profile.index', ['id' => Auth::id()]) }} "class="custom-link">
 
-                    <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" class="rounded-circle img-fluid w-55"
-                    alt="img" width="200px" />
+
+                    <img  width="150px" height="150px" src="{{$Current_Usr->image}}"
+                class=" rounded-circle " alt="">
                 </a>
 
             </section>
-            <section class="col-sm-8 col-md-8 col-lg-8  mt-5 ">
-                <div class="d-flex gap-2 mx-5">
+            <section class="col-sm-8 col-md-7 col-lg-7  mt-5 ">
+                <div class="d-flex gap-2 mx-3">
                     <h1 class="h2 fs-4 mx-2">{{$Current_Usr->name}}</h1>
                     <a  href="{{ route('profile.edit')}}" type="button" class="btn btn-primary text-light mb-3">Edit
                         Profile</a>
                     <a href="#" type="button" class="btn btn-primary text-light  mb-3">View Archive</a>
                     <a href="#" type="button" class="btn btn-white text-dark mb-3"><img
                             src="https://cdn-icons-png.flaticon.com/512/3225/3225632.png" width="25px"></a>
+
 
 
                 </div>
@@ -107,7 +109,7 @@
         <!---------------------------------setcions Of Posts---------------------------------------------- -->
 
         <hr>
-        <div class="d-flex justify-content-center gap-3 " style="margin-top: -21px;">
+        <div class="d-flex justify-content-center gap-2 " style="margin-top: -21px;">
             <a  class="custom-link">
                 <h6 id="Posts" class="fs-6  border-top border-light mt-1 p-3">
                     <i class="fa-regular fa-list-ul  mt-1 " style="font-size:13px  "></i> POSTS
@@ -144,7 +146,7 @@
             @else
                 @foreach ( $posts_user->posts as $post)
 
-            <article class="col-md-4 mt-4 w-30">
+            <article class="col-md-3 mx-0 mt-4 w-30 offset-1">
                 <a data-bs-toggle="modal" data-bs-target="#exampleModal" post-id="{{$post->id}}" type="button" class="post custom-link" >
                     <div class="container-article">
                         @if ($post->video == 0)
@@ -172,16 +174,24 @@
 
         <!----------------------------Sections Of Save--------------------------------------------------->
         <section id="bodySave" class="row d-none">
-            <article class="col-md-4 mt-4 w-30">
+            @if ($savedPosts->savedposts->count()!==0)
+            <article class="col-md-4  mt-4 w-30">
                 <a  href="{{route('profile.save')}}" class="custom-link" type="button">
                     <div class="container-article">
-                        <img src="https://unsplash.it/800/800.jpg?image=253" alt="post title" class="image" />
+                        <img src="{{$savedPosts->posts[0]->image_url}}" alt="post title" class="image" />
                         <div class="overlay d-flex justify-content-center align-items-center">
                             <p class="text-white fs-5 mx-2 mt-3">All Posts</p>
                         </div>
                     </div>
                 </a>
             </article>
+            @else
+            <li class="d-flex justify-content-center align-items-center flex-column  fs-1 mb-3 ">
+                <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" class="image w-25">
+                <h3> no posts saved yet</h3>
+            </li>
+
+            @endif
 
             <!-- add new article -->
         </section>
@@ -190,20 +200,10 @@
 
         <!----------------------------Sections Of Tagged--------------------------------------------------->
         <section id="bodyTagged" class="row d-none">
-            <article class="col-md-4 mt-4 w-25">
-                <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="custom-link" type="button">
-                    <div class="container-article">
-                        <img src="https://unsplash.it/800/800.jpg?image=255" alt="post title" class="image" />
-                        <div class="overlay d-flex justify-content-center align-items-center">
-                            <i class="fa-solid fa-heart text-white fs-5"></i>
-                            <p class="text-white fs-5 mx-2 mt-3">33</p>
-                            <i class="fa-solid fa-comment text-white fs-5 mx-2"></i>
-                            <p class="text-white fs-5  mt-3">33</p>
-                        </div>
-                    </div>
-                </a>
-            </article>
-
+            <li class="d-flex justify-content-center align-items-center flex-column  fs-1 mb-3 ">
+                <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" class="image w-25">
+                <h3> no Tagged yet</h3>
+            </li>
             <!-- add new article -->
         </section>
         </main>
@@ -228,8 +228,8 @@
                                 <div class="row">
                                     <div class="col-12 d-flex justify-content-between  main-post-div mb-1">
                                         <div class="d-flex avatar-container">
-                                            <img  src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png"
-                                                class="avatar rounded-circle img-fluid" alt="img" width="35px" />
+                                            <img src="{{$Current_Usr->image}}" class="rounded-circle" alt="img" height="35px" width="35px" />
+
                                                     {{-- ----------------------------------------------------------- --}}
                                                 <div class="profile-details-card d-none position-absolute p-0 mt-5" style="width:30%;z-index: 1;">
                                                     <!-- Profile details content goes here -->

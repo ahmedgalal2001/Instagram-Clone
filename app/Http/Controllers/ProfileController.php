@@ -6,6 +6,7 @@ use App\Events\FollowNotification;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Follower;
 use App\Models\Post;
+use App\Models\SaveUserPost;
 use App\Models\User;
 use FFI;
 use Illuminate\Http\RedirectResponse;
@@ -21,7 +22,11 @@ class ProfileController extends Controller
 
         $followingsForCurrentUser = User::with('following')->find(Auth::id());
         $followingsIdForCurrentUsr = $followingsForCurrentUser->following->pluck('id');
-        // dd($followingsIdForCurrentUsr );
+
+        // $savedPosts = SaveUserPost::with('posts')->where('user_id', Auth::id())->get();
+        $savedPosts=User::with('posts.savedposts')->find(Auth::id());
+
+
 
         $follows_user=User::with('following')->with('followers')->find($id);
 
@@ -35,7 +40,7 @@ class ProfileController extends Controller
 
 
 
-       return view('profile.index',compact('follows_user','posts_user','Current_Usr','user','id','followingsIdForCurrentUsr'));
+       return view('profile.index',compact('follows_user','posts_user','Current_Usr','user','id','followingsIdForCurrentUsr','savedPosts'));
     }
     /**
      * Display the user's profile form.
@@ -248,23 +253,37 @@ class ProfileController extends Controller
 
         return response()->json([
         'message'=>'done',
-        // 'postDetails'=>$postDetails,'CurrentUser'=>User::find(Auth::id())->name
+        'postDetails'=>$postDetails,'CurrentUser'=>User::find(Auth::id())->name
         ]);
     }
 
     public function savePosts()
     {
-        return view('profile.showSave');
-    }
+
+        $followingsForCurrentUser = User::with('following')->find(Auth::id());
+        $followingsIdForCurrentUsr = $followingsForCurrentUser->following->pluck('id');
+
+        $savedPosts=User::with('posts.savedposts')->find(Auth::id());
+
+
+
+        $follows_user=User::with('following')->with('followers')->find(Auth::id());
+
+        $posts_user = User::with('posts.comments')->with('posts.likes')->find(Auth::id());
+
+
+
+       return view('profile.showSave',compact('follows_user','posts_user','followingsIdForCurrentUsr','savedPosts'));
+   }
 
     public function DeletePost(string $id)
     {
-       $r= Post::where('id',$id)
+      Post::where('id',$id)
         ->delete();
 
 
         return response()->json([
-            'r'=>$r,
+
             'message'=>'Post Deleted successfully'
          ]);
     }
