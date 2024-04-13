@@ -4,19 +4,25 @@
 @vite(['resources/js/profile.js'])
 @section('body')
 
-
+{{-- {{$user->id}} --}}
     <!------------------------------profile photo and section information---------------------------->
     <div class="col-sm-12 col-md-9 col-lg-9 ">
         <section id="header" class="row ">
+
+            @if ($Current_Usr !== null && $id == $Current_Usr->id)
+
             <section class="col-sm-3 col-md-3  col-lg-3 offset-lg-1 mt-3  text-center">
-                <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" class="rounded-circle img-fluid w-55"
+                <a href="{{ route('profile.index', ['id' => Auth::id()]) }} "class="custom-link">
+
+                    <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" class="rounded-circle img-fluid w-55"
                     alt="img" width="200px" />
+                </a>
 
             </section>
             <section class="col-sm-8 col-md-8 col-lg-8  mt-5 ">
                 <div class="d-flex gap-2 mx-5">
-                    <h1 class="h2 fs-4 mx-2">Mohamedtorkey1520 </h1>
-                    <a href="{{ route('profile.edit') }}" type="button" class="btn btn-primary text-light mb-3">Edit
+                    <h1 class="h2 fs-4 mx-2">{{$Current_Usr->name}}</h1>
+                    <a  href="{{ route('profile.edit')}}" type="button" class="btn btn-primary text-light mb-3">Edit
                         Profile</a>
                     <a href="#" type="button" class="btn btn-primary text-light  mb-3">View Archive</a>
                     <a href="#" type="button" class="btn btn-white text-dark mb-3"><img
@@ -37,9 +43,63 @@
                     </a>
 
                 </div>
+                <h2 class="h6 mt-1 fw-bold mx-5">{{$Current_Usr->bio
+                }}</h2>
+                <p class="mx-5">Lorem ipsum dolor sit amet consectetur adipis</p>
+            </section>
+
+            @else
+
+            <section class="col-sm-3 col-md-3  col-lg-3 offset-lg-1 mt-3  text-center">
+                <a href="{{ route('profile.index', ['id' =>$id ]) }}" class="custom-link">
+
+                    <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" class="rounded-circle img-fluid w-55"
+                    alt="img" width="200px" />
+                </a>
+
+            </section>
+            <section class="col-sm-8 col-md-8 col-lg-8  mt-5 ">
+                <div class="d-flex gap-2 mx-5">
+                    <h1 class="h2 fs-4 mx-2">{{$user->name}}</h1>
+                    @if ($followingsIdForCurrentUsr->contains($user->id))
+                    <a user-id="{{$user->id}}" class="FollowUser btn btn-primary text-light mb-3">
+                        Following
+                    </a>
+                @else
+                    <a user-id="{{$user->id}}" class="FollowUser btn btn-primary text-light mb-3">
+                        Follow
+                    </a>
+                @endif
+
+
+                    <a  type="button" class="btn btn-primary text-light  mb-3">Message</a>
+                    <a type="button" class="btn btn-white text-dark mb-3"><img
+                            src="https://cdn-icons-png.flaticon.com/512/3225/3225632.png" width="25px"></a>
+
+
+                </div>
+
+                <div class="d-flex gap-4  mx-5">
+                    <h6 class="fs-4 mt-2"> <span class="fw-bold fs-5">{{$follows_user->posts->count()}} </span>posts</h6>
+                    <a class="followers">
+                        <h6 class="fs-5 btn btn-white text-dark" data-toggle="modal" data-target="#followers"><span
+                                class="count_followers fw-bold fs-7">{{$follows_user->followers->count()}} </span>followers</h6>
+                    </a>
+                    <a >
+                        <h6 class="fs-5 btn btn-outline-white text-dark" data-toggle="modal" data-target="#following"><span
+                                class="count_followings fw-bold fs-7">{{$follows_user->following->count()}} </span>following </h6>
+                    </a>
+
+                </div>
                 <h2 class="h6 mt-1 fw-bold mx-5">software engineer</h2>
                 <p class="mx-5">Lorem ipsum dolor sit amet consectetur adipis</p>
             </section>
+
+
+            @endif
+
+
+
         </section>
 
 
@@ -48,16 +108,24 @@
 
         <hr>
         <div class="d-flex justify-content-center gap-3 " style="margin-top: -21px;">
-            <a href="#!" class="custom-link">
+            <a  class="custom-link">
                 <h6 id="Posts" class="fs-6  border-top border-light mt-1 p-3">
                     <i class="fa-regular fa-list-ul  mt-1 " style="font-size:13px  "></i> POSTS
                 </h6>
             </a>
-            <a href="#!" class="custom-link">
+            @if ($Current_Usr !== null && $id == $Current_Usr->id)
+
+            <a  class="custom-link">
                 <h6 id="Save" class="fs-6 text-muted   mt-1 p-3"><i class="fa-regular fa-bookmark mx-1"
                         style="font-size:13px "></i> SAVE</h6>
             </a>
-            <a href="#!" class="custom-link">
+            @else
+            <a  class="custom-link d-none">
+                <h6 id="Save" class="fs-6 text-muted   mt-1 p-3"><i class="d-none fa-regular fa-bookmark mx-1"
+                        style="font-size:13px "></i> SAVE</h6>
+            </a>
+            @endif
+            <a class="custom-link">
                 <h6 id="Tagged" class="fs-6  text-muted mt-1 p-3"> <i class="fa-regular fa-user mx-1"
                         style="font-size:13px "></i>Tagged</h6>
             </a>
@@ -65,24 +133,37 @@
         <section id="bodyPosts" class="row">
 
 
-            @foreach ( $posts_user->posts as $post)
-            {{-- {{$post->likes}} --}}
+
+            @if($posts_user->posts->count()===0)
+
+                <li class="d-flex justify-content-center align-items-center flex-column  fs-1 mb-3 ">
+                    <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" class="image w-25">
+                    <h3> no posts yet</h3>
+                </li>
+
+            @else
+                @foreach ( $posts_user->posts as $post)
+
             <article class="col-md-4 mt-4 w-30">
                 <a data-bs-toggle="modal" data-bs-target="#exampleModal" post-id="{{$post->id}}" type="button" class="post custom-link" >
                     <div class="container-article">
-                        <img src="https://unsplash.it/800/800.jpg?image=257" alt="post title" height="100px" width="100px" class="image" />
-
+                        @if ($post->video == 0)
+                        <img src="{{$post->image_url}}" alt="post title" height="100px" width="100px" class="image" />
+                    @else
+                        <video controls src="{{$post->image_url }}" class="img-fluid"></video>
+                    @endif
                         <div class="overlay d-flex justify-content-center align-items-center">
                             <i class="fa-solid fa-heart text-white fs-5"></i>
-                            <p class="text-white fs-5 mx-2 mt-3">{{$post->likes->count()}}</p>
+                            <p class="countLikePost text-white fs-5 mx-2 mt-3">{{$post->likes->count()}}</p>
                             <i class="fa-solid fa-comment text-white fs-5 mx-2"></i>
-                            <p class="text-white fs-5  mt-3">{{$post->comments->count()}}</p>
+                            <p class="countcommentPost text-white fs-5  mt-3">{{$post->comments->count()}}</p>
                         </div>
                     </div>
                 </a>
             </article>
-     @endforeach
+            @endforeach
 
+        @endif
             <!-- add new article -->
         </section>
 
@@ -130,6 +211,7 @@
 
         {{-- -----------------------------modal of post ---------------------------------- --}}
         @foreach ( $posts_user->posts as $post)
+
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" style="max-width: 80%; margin: 50px auto;">
@@ -138,8 +220,7 @@
                     <div class="modal-body" style="max-height: calc(100vh - 50px);">
 
                         <div class="row">
-                            <div class="col-12 col-md-6 col-lg-6">
-                                <img src="https://unsplash.it/800/800.jpg?image=253" alt="post title" class="image" />
+                            <div class="img_post col-12 col-md-6 col-lg-6 ">
 
                             </div>
 
@@ -147,88 +228,28 @@
                                 <div class="row">
                                     <div class="col-12 d-flex justify-content-between  main-post-div mb-1">
                                         <div class="d-flex avatar-container">
-                                            <img  src="https://cdn-icons-png.flaticon.com/512/219/219970.png"
+                                            <img  src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png"
                                                 class="avatar rounded-circle img-fluid" alt="img" width="35px" />
                                                     {{-- ----------------------------------------------------------- --}}
                                                 <div class="profile-details-card d-none position-absolute p-0 mt-5" style="width:30%;z-index: 1;">
                                                     <!-- Profile details content goes here -->
-                                                    <div class="card w-100 px-1 pt-0  details-card">
-                                                        <div class="bg-image hover-overlay" data-mdb-ripple-init
-                                                            data-mdb-ripple-color="light">
-                                                            <div class="row m-0 p-0">
-                                                                <div class="col-9 d-flex align-items-center p-0">
-                                                                    <div
-                                                                        class="col-3 d-flex pt-3 justify-content-center align-items-center">
-                                                                        <div class=" position-relative avatar-container">
-                                                                            <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
-                                                                                class="rounded-circle mb-3 avatar" width="65px"
-                                                                                height="65px" alt="Avatar" />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-9 mx-3">
-                                                                        <div class="d-flex">
-                                                                            <p class="mb-0 h6">
 
-
-                                                                                mohamedtorkey
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row d-flex justify-content-between">
-                                                                <div class="col-4 d-flex flex-column align-items-center">
-                                                                    <p class="m-0">2200</p>
-                                                                    <p class="m-0">Posts</p>
-                                                                </div>
-
-                                                                <div class="col-4 d-flex flex-column align-items-center">
-                                                                    <p class="m-0">1M</p>
-                                                                    <p class="m-0">followers</p>
-                                                                </div>
-
-                                                                <div class="col-4 d-flex flex-column align-items-center">
-                                                                    <p class="m-0">50k</p>
-                                                                    <p class="m-0">following</p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-body">
-                                                            <div class="row d-flex justify-content-between">
-                                                                <div class="col-4">
-                                                                    <img src="{{ asset('images/dog.jpg') }}"
-                                                                        class="w-100 h-100 profile-post-hover">
-                                                                </div>
-                                                                <div class="col-4">
-                                                                    <img src="{{ asset('images/dog.jpg') }}"
-                                                                        class="w-100 h-100 profile-post-hover">
-                                                                </div>
-                                                                <div class="col-4">
-                                                                    <img src="{{ asset('images/dog.jpg') }}"
-                                                                        class="w-100 h-100 profile-post-hover">
-                                                                </div>
-                                                            </div>
-                                                            <div class="row mt-3">
-                                                                <div class="col-6">
-                                                                    <button class="btn btn-primary w-100">
-                                                                        <i class="fa-solid fa-user"></i>
-                                                                        View Profile
-                                                                    </button>
-                                                                </div>
-                                                                <div class="col-6">
-                                                                    <button class="btn btn-primary w-100">
-                                                                        <i class="fa-solid fa-user-plus"></i>
-                                                                        follow
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     {{-- ---------------------------- --}}
                                                 </div>
                                             <p class="fs-6 mx-2" style="font-weight: bold">{{$posts_user->name}} </p>
                                         </div>
-                                        <div>
+                                        <div class="d-flex justify-content-between align-items-center gap-3">
+                                            <div class="d-flex align-items-center justify-content-end">
+                                                <a type="button" data-toggle="modal" data-target="#postOptionsAlert">
+                                                    <svg aria-label="More options" class="savePost x1lliihq x1n2onr6 x5n08af" height="24"
+                                                        role="img" viewBox="0 0 24 24" width="24">
+                                                        <title>More options</title>
+                                                        <circle cx="12" cy="12" r="1.5" fill="black"></circle>
+                                                        <circle cx="6" cy="12" r="1.5" fill="black"></circle>
+                                                        <circle cx="18" cy="12" r="1.5" fill="black"></circle>
+                                                    </svg>
+                                                </a>
+                                            </div>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -239,7 +260,7 @@
                                 <ul class="parent-comments modal-body list-group border-0 p-0 h-50 ">
                                     <li class="list-group-item border-0 p-0">
                                         <div class="d-flex justify-content-start align-items-center gap-1">
-                                            <img src="https://cdn-icons-png.flaticon.com/512/219/219970.png"
+                                            <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png"
                                                 class="rounded-circle img-fluid" alt="img" width="35px" />
 
 
@@ -269,46 +290,19 @@
                                     </li>
 
 
-                                   {{-- <li class="list-group-item border-0 p-0">
-                                    <div class="d-flex justify-content-start align-items-center gap-1">
-                                        <img src="https://cdn-icons-png.flaticon.com/512/219/219970.png"
-                                        class="rounded-circle img-fluid" alt="img" width="35px" />
-                                        <div class="commentOnPost d-flex">
-                                            <p class="fs-6 mx-2" style="font-weight: bold">ahmed_43d </p>
-
-                                        </div>
-
-                                    </div>
-                                    <div class="d-flex">
-                                        <a type="button">
-                                            <p class="text-secondary mx-5" style="font-size:13px;margin-top: -10px">
-                                                <a href="" class="text-secondary mx-2">
-                                                    49w
-                                                </a>
-                                                <a href="" class="text-secondary mx-2">
-                                                    2likes
-                                                </a>
-                                                <a href="" class="text-secondary mx-2">
-                                                    Reply
-                                                </a>
-
-                                            </p>
-                                        </a>
-                                    </div>
-
-                                </li> --}}
-
 
                                     <!--------add comment-------->
                                 </ul>
                                 <hr>
                                 {{------------------post icon----------------------}}
-                                <div class="row">
-                                    <div class="col-4 col-lg-4 col-md-6 col-sm-6 d-flex align-items-center gap-3">
 
-                                        <a type="button" class="like-btn custom-link" id="like-btn">
-                                            <h4><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h4>
+                                <div class="row">
+                                    <div class="postIcon col-4 col-lg-4 col-md-6 col-sm-6 d-flex align-items-center gap-3">
+
+                                        <a type="button" class="like-btn" data-post-id="{{ $post->id }}" data-user-id="{{$post->user_id}}">
+                                            <i class="far fa-heart"></i>
                                         </a>
+
 
                                         <a type="button" class="custom-link">
                                             <h4><b><i class="fa-regular fa-comment"></i></b></h4>
@@ -320,34 +314,22 @@
 
 
                                     </div>
-                                    <div
-                                        class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
-                                        <a type="button" class="bookmark-btn custom-link" id="book-mark-btn">
-                                            <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
-                                        </a>
+                                    <div class="parentBookMark col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
+
                                     </div>
                                 </div>
                                 <div class="d-flex usersLiked">
 
                                 </div>
 
-                                <div class="d-flex">
-                                    <a type="button" class="custom-link">
-                                        <p class="text-secondary m-0 fs-6">April 21, 2023</p>
-                                    </a>
+                                <div class="d-flex dateOfPost">
+
                                 </div>
 
                                 <hr>
 
-                                <div class="row">
-                                    <div class="col-10">
+                                <div class="row parentComment">
 
-                                            <input type="search" class="border-0 rounded-1 btn btn-white"
-                                        placeholder="Add a comment..." />
-                                    </div>
-                                    <div class="col-2">
-                                        <a type="button" class="custom-link">Post</a>
-                                    </div>
                                 </div>
 
                             </div>
@@ -360,8 +342,33 @@
             </div>
         </div>
 
+                <!-------------------- post options Modal ------------------>
+        <div class="modal fade" id="postOptionsAlert" tabindex="-1" role="dialog" aria-labelledby="postOptionsAlert"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="parentDelete modal-header d-flex justify-content-center">
+
+                </div>
+                <div class="modal-body d-flex justify-content-center">
+                    <h4><a type="button" class="w-100 text-decoration-none text-secondary" data-dismiss="modal">Go To
+                            post</a></h4>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <h4><a type="button" class="w-100 text-decoration-none text-secondary" data-dismiss="modal">About
+                            This Account</a></h4>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <h4><a type="button" class="w-100 text-decoration-none text-secondary"
+                            data-dismiss="modal">Cancel</a></h4>
+                </div>
+
+            </div>
+        </div>
+        </div>
         @endforeach
 
+<!------------------- End of post options modal --------------------->
         <!----------------------------Footer--------------------------------------------------->
         <footer class="container mt-5 mb-5 px-3 text-center footer-font  ">
             <a href="#" class="px-2 custom-link">About</a>
@@ -405,7 +412,7 @@
 
 
                     <!---------List of followers---------------------->
-                    <ul class="parentFollowers modal-body list-group border-0 mt-3">
+                    <ul User-id={{$user->id}} class="parentFollowers modal-body list-group border-0 mt-3">
 
 
                     </ul>
@@ -449,7 +456,7 @@
                         </div>
                     </div>
                     <!------------List of following-------------->
-                    <ul id="bodyPeople" class="parentFollowings list-following modal-body list-group border-0 mt-3">
+                    <ul id="bodyPeople" user-id={{$user->id}} class="parentFollowings list-following modal-body list-group border-0 mt-3">
 
                     </ul>
 
