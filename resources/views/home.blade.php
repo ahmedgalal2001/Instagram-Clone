@@ -35,6 +35,13 @@
             </button>
         </div>
 
+        @if ($followingPosts->count() == 0)
+            <div class="d-flex flex-column justify-content-center text-secondary no-posts-message">
+                <h1><i>You don't have any post ,</i></h1><br>
+                <h1><i>Try to follow any one to see more posts</i></h1>
+            </div>
+        @endif
+
         <!------- Posts side -------->
         @foreach ($followingPosts as $post)
             <div class="card w-50 col-sm-12 col-lg-6 mt-0 mb-0 main-post-div">
@@ -550,8 +557,7 @@
 <!------------------- End of post options modal --------------------->
 
         <!-------------------- post likes others Modal ------------------>
-        <div class="modal fade others-likes-modal" id="postOthersLikesAlert" tabindex="-1" role="dialog" aria-labelledby="postOthersLikesAlert"
-            aria-hidden="true">
+        <div class="modal fade others-likes-modal" id="postOthersLikesAlert" tabindex="-1" role="dialog" data-bs-backdrop="false">
             
         </div>
         <!------------------- End of post options modal --------------------->

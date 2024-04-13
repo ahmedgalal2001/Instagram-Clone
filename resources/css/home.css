@@ -278,9 +278,6 @@ ul li a:hover {
 
 /********************************** modal z index ************************************/
 
-#postOthersLikesAlert{
-  z-index: 10000 !important;
-}
 
 .allCommentLikesUsers {
   display: none;
@@ -347,3 +344,8 @@ ul li a:hover {
 }
 
 /*********************** Alert Message *******************/
+
+.no-posts-message{
+  height: calc(100vh - 200px);
+
+}

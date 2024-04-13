@@ -1128,8 +1128,10 @@ function othersLikesModal(postId) {
         other_close_btn.addEventListener("click", function () {
             // console.log(others_likes_modal);
             others_likes_modal.classList.remove("show");
+            others_likes_modal.style.zIndex = "-1 !";
             others_likes_modal.setAttribute("aria-hidden", "true");
             others_likes_modal.setAttribute("style", "display: none");
+            document.body.classList.remove("modal-open");
         });
 
         others_likes_modal.classList.toggle("show");
