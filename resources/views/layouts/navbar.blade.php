@@ -40,7 +40,7 @@
             <img class="me-2" src="{{ asset('images/tab24x24.png') }}" alt="dog">
             <span class="desc">Create</span>
         </a>
-        <a id="profile-navbar"  class="nav-link d-flex align-items-center links-navbar p-2 "
+        <a id="profile-navbar" class="nav-link d-flex align-items-center links-navbar p-2 "
             data-img-src-default="{{ auth()->user()->image }}" data-img-src="{{ auth()->user()->image }}"
             aria-current="page" href="{{ route('profile.index') }}">
             <img id="img-user-profile" width="24px" height="24px" src="{{ auth()->user()->image }}"
@@ -115,8 +115,16 @@
         </div>
     </div>
     <div class="offcanvas-body">
-        <div id="users">
-        </div>
+        @if (Session::has('notifications'))
+            @foreach (Session::get('notifications') as $notification)
+                <div class="alert alert-{{ $notification['type'] }}">
+                    {{ $notification['message'] }}
+                </div>
+            @endforeach
+            @php
+                Session::forget('notifications');
+            @endphp
+        @endif
     </div>
 </div>
 
@@ -125,7 +133,8 @@
 <div class="modal fade" id="create-post" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog  modal-dialog-centered" id="modal-create-post" role="document">
-        <form id="uploadForm" class="w-100" action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
+        <form id="uploadForm" class="w-100" action="{{ route('posts.store') }}" method="POST"
+            enctype="multipart/form-data">
             <div class="modal-content modal-content-navbar">
                 <div class="modal-header p-2 justify-content-center">
                     <button type="button" class="btn" data-bs-dismiss="modal" aria-label="Close">
@@ -170,7 +179,7 @@
 
                                     <a class="nav-link d-flex align-items-center py-3 " aria-current="page"
                                         href="{{ route('profile.index') }}">
-                                        <img src="{{auth()->user()->image}}"
+                                        <img src="{{ auth()->user()->image }}"
                                             class=" rounded-circle me-2 my-profile" alt="">
                                         <span>{{ Auth::user()->name }}</span>
                                     </a>

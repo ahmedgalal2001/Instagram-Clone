@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('username')->unique();
             $table->string('email')->unique();
-            $table->string("image")->nullable();
+            $table->string("image")->default("https://res.cloudinary.com/doztsevci/image/upload/v1713042445/gdp8jcsixtihlcrubfh0.png");
             $table->string("gender")->nullable();
             $table->string("website")->nullable();
             $table->text("bio")->nullable();

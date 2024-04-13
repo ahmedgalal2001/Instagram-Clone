@@ -31,7 +31,6 @@
                   <td>{{ $user->gender }}</td>
                   <td>{{ $user->created_at}}</td>
                 <td>
-                  <a href="{{ route('users.showUser', $user->id) }}" class="btn btn-primary">Show</a>
                   <form style="display: inline" action="{{ route("users.destroy", $user->id) }}" method="POST">
                     @csrf
                     @method("DELETE")

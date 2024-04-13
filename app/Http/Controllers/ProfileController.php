@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\FollowNotification;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Follower;
 use App\Models\Post;
@@ -18,12 +19,12 @@ class ProfileController extends Controller
     public function index()
     {
 
-        $follows_user=User::with('following')->with('followers')->find(Auth::id());
+        $follows_user = User::with('following')->with('followers')->find(Auth::id());
 
         $posts_user = User::with('posts.comments')->with('posts.likes')->find(Auth::id());
 
 
-       return view('profile.index',compact('follows_user','posts_user'));
+        return view('profile.index', compact('follows_user', 'posts_user'));
     }
     /**
      * Display the user's profile form.
@@ -76,14 +77,14 @@ class ProfileController extends Controller
     public function add(Request $request)
     {
 
-        $follower=new Follower();
-        $follower->follower_id=Auth::id();
-        $follower->following_id=$request->input('user_id');
+        $follower = new Follower();
+        $follower->follower_id = Auth::id();
+        $follower->following_id = $request->input('user_id');
         $follower->save();
-
+        event(new FollowNotification(Auth::user(), User::find($request->input('user_id'))));
         return response()->json([
             'message' => 'User followed successfully',
-            'count'=>User::withCount('following')->withCount('followers')->where('id',Auth::id())->first()
+            'count' => User::withCount('following')->withCount('followers')->where('id', Auth::id())->first()
         ]);
     }
 
@@ -92,52 +93,51 @@ class ProfileController extends Controller
     {
 
 
-       Follower::where('following_id', Auth::id())
-                                ->where('follower_id', $id)
-                                ->delete();
+        Follower::where('following_id', Auth::id())
+            ->where('follower_id', $id)
+            ->delete();
 
 
-        $followers=User::with('followers')->find(Auth::id());
+        $followers = User::with('followers')->find(Auth::id());
 
         return response()->json([
             'message' => 'Deleted',
-            'count'=>User::withCount('following')->withCount('followers')->where('id',Auth::id())->first(),
-            'followers'=>$followers
+            'count' => User::withCount('following')->withCount('followers')->where('id', Auth::id())->first(),
+            'followers' => $followers
         ]);
     }
 
-    public function showFollowers(string $followerName='')
+    public function showFollowers(string $followerName = '')
     {
 
 
 
-            $userWithFollowers = User::with('followers')->find(Auth::id());
+        $userWithFollowers = User::with('followers')->find(Auth::id());
 
-            $userWithFollowings = User::with('following')->find(Auth::id());
+        $userWithFollowings = User::with('following')->find(Auth::id());
 
-            $followingsId = $userWithFollowings->following->pluck('id');
+        $followingsId = $userWithFollowings->following->pluck('id');
 
 
-            if ($userWithFollowers) {
+        if ($userWithFollowers) {
 
-                $followers = $userWithFollowers->followers;
+            $followers = $userWithFollowers->followers;
 
-                $followers_search = $followers->filter(function ($follower) use ($followerName) {
+            $followers_search = $followers->filter(function ($follower) use ($followerName) {
 
-                   return strpos($follower->name, $followerName) !== false;
+                return strpos($follower->name, $followerName) !== false;
+            });
 
-                });
+            $jsonResponse = json_encode([
+                'followers' => $followers_search,
+                'followingsIds' => $followingsId
+            ]);
 
-                $jsonResponse = json_encode([
-                    'followers'=>$followers_search,
-                    'followingsIds'=>$followingsId
-                ]);
-
-                return response($jsonResponse);
-            }
+            return response($jsonResponse);
+        }
     }
 
-    public function showFollowings(string $followingName='')
+    public function showFollowings(string $followingName = '')
     {
         $userWithFollowings = User::with('following')->find(Auth::id());
 
@@ -148,28 +148,25 @@ class ProfileController extends Controller
 
             $followings_search = $following->filter(function ($following) use ($followingName) {
 
-               return strpos($following->name, $followingName) !== false;
-
+                return strpos($following->name, $followingName) !== false;
             });
 
             $jsonResponse = json_encode([
-                'followings'=>$followings_search
+                'followings' => $followings_search
             ]);
 
             return response($jsonResponse);
         }
-
     }
     //----------------Show Hashtags----------------------------------
     public function showHashtags()
     {
-
     }
 
 
     public  function showLikes()
     {
-        $userWhoLiked=[];
+        $userWhoLiked = [];
         $posts_user = User::with(['posts.likes.user'])->find(Auth::id());
         foreach ($posts_user->posts as $post) {
             foreach ($post->likes as $like) {
@@ -179,15 +176,15 @@ class ProfileController extends Controller
         }
 
         return response()->json([
-            'userLiked'=>$userWhoLiked
+            'userLiked' => $userWhoLiked
         ]);
     }
     //--------------un follow------------------------------------------
     public function unFollow(string $id)
     {
         Follower::where('following_id', $id)
-                        ->where('follower_id', Auth::id())
-                        ->delete();
+            ->where('follower_id', Auth::id())
+            ->delete();
 
         return response()->json([
             'message' => 'Deleted',
@@ -198,15 +195,15 @@ class ProfileController extends Controller
     public  function showModelPost(string $id)
     {
         $postDetails = Post::with(['comments', 'likes'])
-                                ->find($id);
+            ->find($id);
 
-                                $userWhoLiked=[];
+        $userWhoLiked = [];
 
 
 
         return response()->json([
-            'message'=>'done',
-            'postDetails'=>$postDetails,'CurrentUser'=>User::find(Auth::id())->name
+            'message' => 'done',
+            'postDetails' => $postDetails, 'CurrentUser' => User::find(Auth::id())->name
         ]);
     }
 
@@ -214,7 +211,4 @@ class ProfileController extends Controller
     {
         return view('profile.showSave');
     }
-
-
-
 }
