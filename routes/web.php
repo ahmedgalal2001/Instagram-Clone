@@ -28,17 +28,22 @@ use App\Http\Controllers\HashtagController;
 
 Route::middleware('auth')->group(function () {
     Route::middleware('user')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile/{id?}', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/save/{id?}', [ProfileController::class, 'savePosts'])->name('profile.save');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/users/{username?}', [UserController::class, 'show'])->name('user.show');
     Route::post('/posts', [PostsController::class, "store"])->name("posts.store");
     Route::post('/follow', [ProfileController::class, 'add'])->name('follow.add');
+    Route::delete('/post/{id}', [ProfileController::class, 'DeletePost'])->name('Post.delete');
     Route::get('/post/{id}', [ProfileController::class, 'showModelPost'])->name('Post.show');
+    Route::post('/follow', [ProfileController::class, 'add'])->name('follow.add');
     Route::delete('/followers/{id}', [ProfileController::class, 'removeFollower'])->name('follower.delete');
     Route::delete('/following/{id}', [ProfileController::class, 'unfollow'])->name('following.delete');
+
+    Route::get("/followers/{id}/{followerName?}",[ProfileController::class,'showFollowers'])->name('show.followers');
+    Route::get("/followings/{id}/{followingName?}",[ProfileController::class,'showFollowings'])->name('show.followings');
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
     Route::get('/home', [HomeController::class, 'index']);
     Route::get("/followers/{followerName?}",[ProfileController::class,'showFollowers'])->name('show.followers');
@@ -58,9 +63,12 @@ Route::middleware('auth')->group(function () {
     Route::post('/like', [LikeContoller::class, 'store'])->name("like.store");
     Route::delete('/like/destroy/{id}', [LikeContoller::class, 'destroy'])->name("like.destroy");
     Route::post('/comment', [CommentContoller::class, 'store'])->name("comment.store");
-    Route::delete('/comment/destroy/{id}', [LikeContoller::class, 'destroy'])->name("comment.destroy");
+    Route::delete('/comment/destroy/{id}', [CommentContoller::class, 'destroy'])->name("comment.destroy");
     Route::get('/post/{id}', [PostsController::class, 'show'])->name("post.show");
-    // Route::post('/save',[PostsController::class, 'addToFavourite'])->name('save.addtofavourite');
+    Route::post('/save',[PostsController::class, 'addToFavourite'])->name('save.addtofavourite');
+    Route::delete('/save/destroy/{id}', [PostsController::class, 'destroy'])->name("save.destroy");
+    Route::post('/commentlike', [CommentContoller::class, 'add'])->name("commentlike.add");
+    Route::delete('/commentlike/remove/{id}', [CommentContoller::class, 'remove'])->name("commentlike.remove");
     });
     Route::middleware('admin')->group(function () {
         Route::get('/dashboard/posts', [AdminController::class, 'postsIndex'])->name('posts.dashboard');
@@ -71,8 +79,8 @@ Route::middleware('auth')->group(function () {
         Route::delete("/dashboard/users/{post}", [AdminController::class, "destroyUser"])->name("users.destroy");
         Route::get("/dashboard/users/{user}", [AdminController::class, "showUser"])->name("users.showUser");
     });
-    
-    
+
+
 
 });
 

@@ -84,6 +84,11 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'blocks', 'user_id', 'blocked_user_id');
     }
 
+    public function savedposts()
+    {
+        return $this->belongsToMany(Post::class, 'save_posts');
+    }
+
 
 
 }

@@ -42,7 +42,7 @@
         </a>
         <a id="profile-navbar" class="nav-link d-flex align-items-center links-navbar p-2 "
             data-img-src-default="{{ auth()->user()->image }}" data-img-src="{{ auth()->user()->image }}"
-            aria-current="page" href="{{ route('profile.index') }}">
+            aria-current="page"  href="{{ route('profile.index', ['id' => Auth::id()]) }}">
             <img id="img-user-profile" width="24px" height="24px" src="{{ auth()->user()->image }}"
                 class=" rounded-circle me-2 my-profile" alt="">
             <span class="desc">Profile</span>

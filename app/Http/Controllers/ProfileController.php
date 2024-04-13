@@ -16,21 +16,33 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    public function index()
+    public function index(string $id)
     {
 
-        $follows_user = User::with('following')->with('followers')->find(Auth::id());
+        $followingsForCurrentUser = User::with('following')->find(Auth::id());
+        $followingsIdForCurrentUsr = $followingsForCurrentUser->following->pluck('id');
+        // dd($followingsIdForCurrentUsr );
 
-        $posts_user = User::with('posts.comments')->with('posts.likes')->find(Auth::id());
+        $follows_user=User::with('following')->with('followers')->find($id);
+
+        $posts_user = User::with('posts.comments')->with('posts.likes')->find($id);
+        if(Auth::id()!==$id)
+        {
+            $user=User::find($id);
+        }
+
+        $Current_Usr=Auth::user();
 
 
-        return view('profile.index', compact('follows_user', 'posts_user'));
+
+       return view('profile.index',compact('follows_user','posts_user','Current_Usr','user','id','followingsIdForCurrentUsr'));
     }
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
     {
+
         return view('profile.edit', [
             'user' => $request->user(),
         ]);
@@ -77,14 +89,22 @@ class ProfileController extends Controller
     public function add(Request $request)
     {
 
-        $follower = new Follower();
-        $follower->follower_id = Auth::id();
-        $follower->following_id = $request->input('user_id');
+        $Current_Usr=false;
+            if(Auth::id()==$request->input('user_id'))
+            {
+                $Current_Usr=true;
+            }
+
+        $follower=new Follower();
+        $follower->follower_id=Auth::id();
+        $follower->following_id=$request->input('user_id');
         $follower->save();
-        event(new FollowNotification(Auth::user(), User::find($request->input('user_id'))));
+
+
         return response()->json([
             'message' => 'User followed successfully',
-            'count' => User::withCount('following')->withCount('followers')->where('id', Auth::id())->first()
+            'count'=>User::withCount('following')->withCount('followers')->where('id',Auth::id())->first(),
+            'Current_Usr'=>$Current_Usr
         ]);
     }
 
@@ -94,29 +114,38 @@ class ProfileController extends Controller
 
 
         Follower::where('following_id', Auth::id())
-            ->where('follower_id', $id)
-            ->delete();
+        ->where('follower_id', $id)
+        ->delete();
 
 
-        $followers = User::with('followers')->find(Auth::id());
+
+        $followers=User::with('followers')->find(Auth::id());
 
         return response()->json([
-            'message' => 'Deleted',
-            'count' => User::withCount('following')->withCount('followers')->where('id', Auth::id())->first(),
-            'followers' => $followers
-        ]);
+        'message' => 'Deleted',
+        'count'=>User::withCount('following')->withCount('followers')->where('id',Auth::id())->first(),
+        'followers'=>$followers
+            ]);
     }
 
-    public function showFollowers(string $followerName = '')
+    public function showFollowers(string $id,string $followerName='')
     {
 
 
+        $Current_Usr=false;
+        if(Auth::id()==$id)
+        {
+            $Current_Usr=true;
+        }
 
-        $userWithFollowers = User::with('followers')->find(Auth::id());
+        $userWithFollowers = User::with('followers')->find($id);
 
-        $userWithFollowings = User::with('following')->find(Auth::id());
+        $userWithFollowings = User::with('following')->find($id);
 
         $followingsId = $userWithFollowings->following->pluck('id');
+
+        $followingsForCurrentUser = User::with('following')->find(Auth::id());
+        $followingsIdForCurrentUsr = $followingsForCurrentUser->following->pluck('id');
 
 
         if ($userWithFollowers) {
@@ -125,21 +154,30 @@ class ProfileController extends Controller
 
             $followers_search = $followers->filter(function ($follower) use ($followerName) {
 
-                return strpos($follower->name, $followerName) !== false;
+               return strpos($follower->name, $followerName) !== false;
+
             });
 
             $jsonResponse = json_encode([
-                'followers' => $followers_search,
-                'followingsIds' => $followingsId
+                'followers'=>$followers_search,
+                'followingsIds'=>$followingsId,
+                'followingsIdForCurrentUsr'=>$followingsIdForCurrentUsr,
+                'Current_Usr'=>$Current_Usr
+
             ]);
 
             return response($jsonResponse);
         }
     }
 
-    public function showFollowings(string $followingName = '')
+    public function showFollowings(string $id,string $followingName='')
     {
-        $userWithFollowings = User::with('following')->find(Auth::id());
+        $Current_Usr=Auth::id();
+        $userWithFollowings = User::with('following')->find($id);
+        $followingsForCurrentUser = User::with('following')->find(Auth::id());
+        $followingsId = $followingsForCurrentUser->following->pluck('id');
+
+
 
 
         if ($userWithFollowings) {
@@ -152,7 +190,9 @@ class ProfileController extends Controller
             });
 
             $jsonResponse = json_encode([
-                'followings' => $followings_search
+                'followings'=>$followings_search,
+                'followingsId'=>$followingsId,
+                'Current_Usr'=>$Current_Usr
             ]);
 
             return response($jsonResponse);
@@ -183,27 +223,32 @@ class ProfileController extends Controller
     public function unFollow(string $id)
     {
         Follower::where('following_id', $id)
-            ->where('follower_id', Auth::id())
-            ->delete();
+        ->where('follower_id', Auth::id())
+        ->delete();
+        $Current_Usr=false;
+        if(Auth::id()==$id)
+        {
+            $Current_Usr=true;
+        }
 
         return response()->json([
-            'message' => 'Deleted',
-            'count' => User::withCount('following')->withCount('followers')->where('id', Auth::id())->first()
+        'message' => 'Deleted',
+        'count' => User::withCount('following')->withCount('followers')->withCount('posts')->where('id', Auth::id())->first(),
+        'Current_Usr'=>$Current_Usr
         ]);
     }
     //------------show Model Post-------------------------------------
     public  function showModelPost(string $id)
     {
         $postDetails = Post::with(['comments', 'likes'])
-            ->find($id);
-
-        $userWhoLiked = [];
+        ->find($id);
 
 
+        $Current_Usr=Auth::user();
 
         return response()->json([
-            'message' => 'done',
-            'postDetails' => $postDetails, 'CurrentUser' => User::find(Auth::id())->name
+        'message'=>'done',
+        // 'postDetails'=>$postDetails,'CurrentUser'=>User::find(Auth::id())->name
         ]);
     }
 
@@ -211,4 +256,17 @@ class ProfileController extends Controller
     {
         return view('profile.showSave');
     }
+
+    public function DeletePost(string $id)
+    {
+       $r= Post::where('id',$id)
+        ->delete();
+
+
+        return response()->json([
+            'r'=>$r,
+            'message'=>'Post Deleted successfully'
+         ]);
+    }
+
 }
