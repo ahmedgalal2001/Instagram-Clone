@@ -113,9 +113,9 @@ class PostsController extends Controller
 
 
 
-            
 
-            
+            $detailsLoggedUser = Auth::user();
+
             $comments = $post->comments->map(function($comment) {
                 $timestamp = $comment->created_at;
                 $now = Carbon::now();
@@ -170,6 +170,7 @@ class PostsController extends Controller
                 'allCommentLikesUsers' => $allCommentLikesUsers,
                 'final' => $final,
                 'all_likes_count' => $all_likes,
+                'detailsLoggedUser'=>$detailsLoggedUser,
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -177,7 +178,7 @@ class PostsController extends Controller
             ]);
         }
     }
-    
+
     public function addToFavourite(Request $request)
     {
         try{
