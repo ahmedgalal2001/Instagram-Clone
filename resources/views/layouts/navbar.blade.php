@@ -30,7 +30,9 @@
             href="#" data-bs-toggle="offcanvas" data-img-src-default="{{ asset('images/heart24x24.png') }}"
             data-img-src="{{ asset('images/heartfill24x24.png') }}" data-bs-target="#notify"
             aria-controls="offcanvasScrolling">
-            <img class="me-2" src="{{ asset('images/heart24x24.png') }}" alt="dog">
+            <div class="position-relative" id="notify-ball">
+                <img class="me-2" src="{{ asset('images/heart24x24.png') }}" alt="dog">
+            </div>
             <span class="desc">Notification</span>
         </a>
         <a id="modalCreate" class="nav-link d-flex align-items-center links-navbar p-2 "
@@ -42,7 +44,7 @@
         </a>
         <a id="profile-navbar" class="nav-link d-flex align-items-center links-navbar p-2 "
             data-img-src-default="{{ auth()->user()->image }}" data-img-src="{{ auth()->user()->image }}"
-            aria-current="page"  href="{{ route('profile.index', ['id' => Auth::id()]) }}">
+            aria-current="page" href="{{ route('profile.index', ['id' => Auth::id()]) }}">
             <img id="img-user-profile" width="24px" height="24px" src="{{ auth()->user()->image }}"
                 class=" rounded-circle me-2 my-profile" alt="">
             <span class="desc">Profile</span>
@@ -115,16 +117,8 @@
         </div>
     </div>
     <div class="offcanvas-body">
-        @if (Session::has('notifications'))
-            @foreach (Session::get('notifications') as $notification)
-                <div class="alert alert-{{ $notification['type'] }}">
-                    {{ $notification['message'] }}
-                </div>
-            @endforeach
-            @php
-                Session::forget('notifications');
-            @endphp
-        @endif
+        <div id="notifies">
+        </div>
     </div>
 </div>
 
@@ -198,3 +192,5 @@
         </form>
     </div>
 </div>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>

@@ -92,8 +92,8 @@ document.querySelectorAll(".commentBtn").forEach(function (button) {
               <div class="col-md-12 mb-0 aligh-items-center d-flex">
                   <div class="d-flex col-10 align-items-center">
                           <p>
-                              <a 
-                              href="${'/profile/' + res.data.comment.user_id}" 
+                              <a
+                              href="${'/profile/' + res.data.comment.user_id}"
                               class="text-decoration-none text-dark user-name-btn"
                               type="button">
                                   <b>${res.data.user_name}</b>
@@ -103,8 +103,8 @@ document.querySelectorAll(".commentBtn").forEach(function (button) {
                   </div>
 
                 <div class="col-2 d-flex align-items-start justify-content-end">
-                    <a type="button" 
-                    class="comment-like post-comment-like-${res.data.comment.id} m-2" 
+                    <a type="button"
+                    class="comment-like post-comment-like-${res.data.comment.id} m-2"
                     id="${random}"
                     data-bs-postCommment="${res.data.comment.id}"
                     data-bs-postId="${res.data.comment.post_id}">
@@ -244,29 +244,25 @@ likesBtn.forEach((like) => {
 
 
         let youParagraphBlade = document.querySelector(`#you-like-blade-${postId}`);
-        if(youParagraphBlade) youParagraphBlade.style.display = "none";
+        if (youParagraphBlade) youParagraphBlade.style.display = "none";
 
-        if (like.style.color === "red") 
-        {
+        if (like.style.color === "red") {
             like.style.color = "black";
             axios.delete(`/like/destroy/${likeId}`).then((res) => {
 
-                let likes_count =document.querySelector(`.likes-count-${postId}`);
+                let likes_count = document.querySelector(`.likes-count-${postId}`);
                 // console.log(res.data.totalLikes);
                 if (likes_count) {
-                    
+
                     likes_count.innerHTML = `${res.data.totalLikes} Likes`;
                 }
 
                 let youLike = document.querySelector(`#you-like-${postId}`);
-                if(res.data.user.length > 0)
-                {
-                    if(youLike)
-                    {
+                if (res.data.user.length > 0) {
+                    if (youLike) {
                         youLike.innerHTML = `<b>${res.data.user[0].user.name}</b>`;
                     }
-                    else
-                    {
+                    else {
                         youParagraphBlade.style.display = "block";
                         youParagraphBlade.innerHTML = `<b>${res.data.user[0].user.name}</b>`;
                     }
@@ -275,7 +271,7 @@ likesBtn.forEach((like) => {
                     let othersContent = document.querySelector(`.othersContent-${postId}`);
                     // console.log(othersContent);
                     othersContent.style.display = "none";
-                    if(youLike) youLike.style.display = "none";
+                    if (youLike) youLike.style.display = "none";
                 }
 
             });
@@ -284,10 +280,10 @@ likesBtn.forEach((like) => {
             axios.post("/like", { id: postId }).then((res) => {
                 // console.log(res.data);
                 like.setAttribute("data-bs-like", res.data.id);
-                let likes_count =document.querySelector(`.likes-count-${postId}`);
+                let likes_count = document.querySelector(`.likes-count-${postId}`);
                 // console.log(likes_count);
                 if (likes_count) {
-                    
+
                     likes_count.innerHTML = `${res.data.Likes} Likes`;
                 }
 
@@ -297,7 +293,7 @@ likesBtn.forEach((like) => {
                 // console.log(myMap);
 
 
-                
+
                 let commentLikesDiv = document.querySelector(`#likes-${postId}`);
                 let commentDetails = `
                 <div class="likess othersContent-${postId}">
@@ -305,9 +301,9 @@ likesBtn.forEach((like) => {
                         <p class="m-1" id="you-like-${postId}">
                             <b>You</b>
                         </p>
-                   
+
                         <p class="m-1">and</p>
-                        <a type="button"  
+                        <a type="button"
                         data-toggle="modal"
                         data-bs-othersLikesPost="${postId}"
                         id="others-btn-${postId}"
@@ -395,14 +391,14 @@ commentButton.forEach((btn) => {
             modalDiv.innerHTML = `
             <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
                 <div class="modal-content p-0">
-                        
+
                     <div class="modal-body m-0 p-0">
                     <div class="container-fluid">
                         <div class="row p-0">
                             <div class="col-7 col-lg-7 col-md-12 col-sm-12 d-flex p-0 m-0">
                                 <img src="${res.data.post.image_url}" class="w-100 img-fluid" />
                             </div>
-                            <div class="col-5 col-lg-5 col-md-12 col-sm-12 d-flex flex-column px-1 align-items-center justify-content-between">  
+                            <div class="col-5 col-lg-5 col-md-12 col-sm-12 d-flex flex-column px-1 align-items-center justify-content-between">
 
                                     <!------------------- User's profile --------------------->
                                             <div class="col-12 col-lg-12 col-md-12 col-sm-12 d-flex flex-column align-items-center p-0 m-0">
@@ -414,20 +410,19 @@ commentButton.forEach((btn) => {
                                                     </div>
 
                                                     <div class="d-flex col-10 justify-content-between align-items-center">
-                                                    <a 
-                                                    href="${'/profile/' + res.data.post.user.id}" 
+                                                    <a
+                                                    href="${'/profile/' + res.data.post.user.id}"
                                                     type="button"
                                                     class=" text-decoration-none text-dark">
                                                         <b>
                                                             <p class="mb-0 h6">
-                                                                ${
-                                                                    res.data.post.user
-                                                                        .name
-                                                                }
+                                                                ${res.data.post.user
+                    .name
+                }
                                                             </p>
                                                         </b>
                                                     </a>
-                                                        
+
                                                         <div>
                                                             <button type="button" class="close border-0 bg-white" data-dismiss="modal" aria-label="Close">
                                                                 <h3 aria-hidden="true" class="m-0">&times;</h3>
@@ -439,33 +434,30 @@ commentButton.forEach((btn) => {
                                                     <hr class="mt-0">
                                                     <div class="d-flex flex-column modal-comments">
                                                         <div class="p-1 modal-all-comments-display">
-                                                            ${
-                                                                res.data.allComments.length == 0
-                                                                    ? `<p class="text-center">No Comments</p>`
-                                                                    : `<div class="comments-modal-container">
-                                                                
+                                                            ${res.data.allComments.length == 0
+                    ? `<p class="text-center">No Comments</p>`
+                    : `<div class="comments-modal-container">
+
                                                                 </div>`
-                                                            }
+                }
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
                                     <!-------------------------------------------------------->
-                                    
+
                                     <!----------------------------- Icons ---------------------->
                                     <div class="col-12">
                                         <hr>
                                         <div class="row p-0 m-0 w-100">
                                             <div class="col-3 col-lg-3 col-md-3 col-sm-3 d-flex align-items-center justify-content-between">
 
-                                                <a type="button" 
-                                                    class="btn-${
-                                                        res.data.post.id
-                                                    } post-like"
-                                                    data-bs-post="${
-                                                        res.data.post.id
-                                                    }" 
+                                                <a type="button"
+                                                    class="btn-${res.data.post.id
+                } post-like"
+                                                    data-bs-post="${res.data.post.id
+                }"
                                                     id="like-btn-modal">
                                                     <h4><b><i class="fa-regular fa-heart"></i></b></h4>
                                                 </a>
@@ -481,11 +473,10 @@ commentButton.forEach((btn) => {
 
                                             </div>
                                             <div class="col-9 col-lg-9 col-md-9 col-sm-9 d-flex align-items-center justify-content-end">
-                                                <a 
-                                                type="button" 
-                                                class="bookmark-btn-${
-                                                    res.data.post.id
-                                                } post-book-mark" 
+                                                <a
+                                                type="button"
+                                                class="bookmark-btn-${res.data.post.id
+                } post-book-mark"
                                                 id="book-mark-btn">
                                                     <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
                                                 </a>
@@ -494,9 +485,9 @@ commentButton.forEach((btn) => {
 
                                         <div class="d-flex">
                                             <p class="m-1 mx-3" id="likes_modal_count-${postId}">${res.data.all_likes_count} Likes</p>
-                        
+
                                         <div class="others-modal-liked-users-${postId}">
-                                            <a type="button"  
+                                            <a type="button"
                                             data-toggle="modal"
                                             data-bs-othersLikes = "${res.data.post.id}"
                                             class = "others-modal"
@@ -505,19 +496,18 @@ commentButton.forEach((btn) => {
                                             </a>
                                         </div>
 
-                                            
+
                                         </div>
 
-    
+
                                         <div class="px-3">
-                                            <p class=" text-secondary"><i>${
-                                                res.data.posts_time
-                                            }</i></p>
+                                            <p class=" text-secondary"><i>${res.data.posts_time
+                }</i></p>
                                         </div>
                                     </div>
                                     <!---------------------------------------------------------->
 
-                                
+
                             </div>
                         </div>
                     </div>
@@ -567,22 +557,19 @@ commentButton.forEach((btn) => {
 
 
 
-                        let likes_count =document.querySelector(`.likes-count-${postId}`);
+                        let likes_count = document.querySelector(`.likes-count-${postId}`);
                         // console.log(res.data.totalLikes);
                         if (likes_count) {
-                            
+
                             likes_count.innerHTML = `${res.data.totalLikes} Likes`;
                         }
 
                         let youLike = document.querySelector(`#you-like-${postId}`);
-                        if(res.data.user.length > 0)
-                        {
-                            if(youLike)
-                            {
+                        if (res.data.user.length > 0) {
+                            if (youLike) {
                                 youLike.innerHTML = `<b>${res.data.user[0].user.name}</b>`;
                             }
-                            else
-                            {
+                            else {
                                 youParagraphBlade.style.display = "block";
                                 youParagraphBlade.innerHTML = `<b>${res.data.user[0].user.name}</b>`;
                             }
@@ -591,7 +578,7 @@ commentButton.forEach((btn) => {
                             let othersContent = document.querySelector(`.othersContent-${postId}`);
                             // console.log(othersContent);
                             othersContent.style.display = "none";
-                            if(youLike) youLike.style.display = "none";
+                            if (youLike) youLike.style.display = "none";
                         }
 
 
@@ -605,25 +592,25 @@ commentButton.forEach((btn) => {
                         postLikeModal.setAttribute("data-bs-like", res.data.id);
                         // console.log(res.data);
 
-                    let likes_modal_count = document.querySelector(`#likes_modal_count-${postId}`);
-                    likes_modal_count.innerHTML = `${res.data.Likes} Likes`;
+                        let likes_modal_count = document.querySelector(`#likes_modal_count-${postId}`);
+                        likes_modal_count.innerHTML = `${res.data.Likes} Likes`;
 
-                    let likes_count =document.querySelector(`.likes-count-${postId}`);
-                    // console.log(likes_count);
-                    if (likes_count) {
-                        
-                        likes_count.innerHTML = `${res.data.Likes} Likes`;
-                    }
+                        let likes_count = document.querySelector(`.likes-count-${postId}`);
+                        // console.log(likes_count);
+                        if (likes_count) {
 
-                    myObject.count = res.data.Likes;
-                    myMap.set(postId, myObject);
+                            likes_count.innerHTML = `${res.data.Likes} Likes`;
+                        }
 
-                    // console.log(myMap);
+                        myObject.count = res.data.Likes;
+                        myMap.set(postId, myObject);
+
+                        // console.log(myMap);
 
 
-                    
-                    let commentLikesDiv = document.querySelector(`#likes-${postId}`);
-                    let commentDetails = `
+
+                        let commentLikesDiv = document.querySelector(`#likes-${postId}`);
+                        let commentDetails = `
                     <div class="likess othersContent-${postId}">
                         <a type="button" id="a-${postId}">
                             <p class="m-1" id="you-like-${postId}">
@@ -631,7 +618,7 @@ commentButton.forEach((btn) => {
                             </p>
                         </a>
                             <p class="m-1">and</p>
-                            <a type="button"  
+                            <a type="button"
                             data-toggle="modal"
                             data-bs-othersLikesPost="${postId}"
                             id="others-btn-${postId}"
@@ -641,13 +628,13 @@ commentButton.forEach((btn) => {
                             </a>
                     </div>
                     `;
-                    commentLikesDiv.innerHTML = commentDetails;
-                    let others_btn = document.querySelector(
-                        `#others-btn-${postId}`
-                    );
-                    others_btn.addEventListener("click", () => {
-                        othersLikesModal(postId);
-                    });
+                        commentLikesDiv.innerHTML = commentDetails;
+                        let others_btn = document.querySelector(
+                            `#others-btn-${postId}`
+                        );
+                        others_btn.addEventListener("click", () => {
+                            othersLikesModal(postId);
+                        });
 
 
 
@@ -710,7 +697,7 @@ commentButton.forEach((btn) => {
             allComentsData.forEach((comment) => {
                 let allComents = `
                     <div class="comment-div-${comment.id} col-md-12 mb-0 aligh-items-center d-flex">
-                        <div class="d-flex col-10 align-items-center p-0 comments-modal">   
+                        <div class="d-flex col-10 align-items-center p-0 comments-modal">
                                 <div class="col-2 d-flex pt-2 justify-content-start align-items-center">
                                     <div class="avatar-container position-relative">
                                         <img src="${comment.user.image}"
@@ -718,21 +705,21 @@ commentButton.forEach((btn) => {
                                             height="50px" alt="Avatar" />
                                     </div>
                                 </div>
-    
+
                                 <div>
                                     <p class="m-0">
-                                        <a 
-                                        href="${'/profile/' + comment.user.id}" 
+                                        <a
+                                        href="${'/profile/' + comment.user.id}"
                                         class=" text-decoration-none text-dark"
                                         type="button">
                                             <b>${comment.user.name}</b>
                                         </a>
-                                        ${comment.comment_text} 
+                                        ${comment.comment_text}
                                     </p>
-    
+
                                     <div class="d-flex">
                                         <p class="m-0 text-secondary comment-time"></p>
-                                        
+
                                         <div>
                                             <h6 class="m-0 mx-2 text-secondary text-decoration-underline commentLikedBy">
                                                 <i>Liked By</i>
@@ -757,14 +744,14 @@ commentButton.forEach((btn) => {
                                     </div>
 
                                 </div>
-                                
+
                         </div>
                         <div class="col-2 d-flex p-2 align-items-end justify-content-end align-items-center">
-                            <a type="button" 
+                            <a type="button"
                             class="comment-like-btn-${comment.id} comment-like"
                             data-bs-postId="${postId}"
                             data-bs-postCommment="${comment.id}"
-                            data-bs-post="${comment.id}" 
+                            data-bs-post="${comment.id}"
                             id="like-btn">
                                 <h6><b><i id="like-icon" class="fa-regular fa-heart"></i></b></h6>
                             </a>
@@ -794,11 +781,11 @@ commentButton.forEach((btn) => {
 
 
 
-                    
+
                 `;
                 commentsDiv.innerHTML += allComents;
             });
-            
+
             /******************************* Adding time for each comment ********************************/
             let commentsTime = res.data.comments;
             let timeParagraph = document.querySelectorAll(".comment-time");
@@ -806,7 +793,7 @@ commentButton.forEach((btn) => {
             timeParagraph.forEach((p, index) => {
                 p.innerHTML = `<i>${commentsTime[index]}</i>`;
             });
-            
+
 
             /********************************** Delete Comment  **********************************/
 
@@ -822,7 +809,7 @@ commentButton.forEach((btn) => {
             });
 
             let ConfirmMessage = document.getElementById("confirmDelete");
-            if (ConfirmMessage){
+            if (ConfirmMessage) {
 
                 ConfirmMessage.onclick = function () {
                     var commentId = modal.getAttribute('data-comment-id');
@@ -832,7 +819,7 @@ commentButton.forEach((btn) => {
                             if (commentDiv) {
                                 commentDiv.remove();
                             }
-                            
+
                             let postContainer = document.getElementById(`post-${res.data.post.id}`);
                             if (postContainer) {
                                 let commentContainer = document.querySelector(`.user-comment-${commentId}`);
@@ -840,7 +827,7 @@ commentButton.forEach((btn) => {
                                     commentContainer.remove();
                                 }
                             }
-    
+
                             let commentInBlade = document.querySelector(`.user-comment-${commentId}`);
                             if (commentInBlade) {
                                 commentInBlade.remove();
@@ -856,9 +843,9 @@ commentButton.forEach((btn) => {
                                     commentsContainer.appendChild(commentContainer);
                                 }
                                 if (noComment && commentsContainer.children.length > 0) {
-                                    if(noComment) noComment.style.display = "none";
+                                    if (noComment) noComment.style.display = "none";
                                 } else {
-                                    if(noComment) noComment.style.display = "block";
+                                    if (noComment) noComment.style.display = "block";
                                 }
                             } else {
                                 if (noComment) noComment.style.display = "block";
@@ -914,45 +901,43 @@ commentButton.forEach((btn) => {
                 // console.log(postCommentLike);
                 // console.log(postCommentLikeModalClass);
 
-                if(postCommentLike && res.data.logged_user == comment.user_id)
-                {
+                if (postCommentLike && res.data.logged_user == comment.user_id) {
                     postCommentLikeModalClass.setAttribute("data-bs-like", `${comment.id}`);
-    
-                    if (postCommentLike && postCommentLike.style.color === "red")
-                    {
+
+                    if (postCommentLike && postCommentLike.style.color === "red") {
                         postCommentLikeModalClass.setAttribute(
                             "style",
                             "color: red !important"
                         );
-                    }else {
+                    } else {
                         postCommentLikeModalClass.setAttribute(
                             "style",
                             "color: grey !important"
                         );
                     }
-    
-        
+
+
                     postCommentLikeModalClass.addEventListener("click", function () {
                         let postId = postCommentLike.getAttribute("data-bs-postId");
                         let commentId = postCommentLike.getAttribute("data-bs-postCommment");
                         let commentLikeId = postCommentLike.getAttribute("data-bs-commentLike");
-    
+
                         // console.log(postCommentLike);
                         // console.log(postCommentLikeModalClass);
-    
-    
+
+
                         if (postCommentLikeModalClass.style.color === "red") {
-                            if(postCommentLike) postCommentLike.style.color = "grey";
+                            if (postCommentLike) postCommentLike.style.color = "grey";
                             postCommentLikeModalClass.style.color = "grey";
                             axios.delete(`/commentlike/remove/${commentLikeId}`).then((res) => {
                                 // console.log(res.data);
                                 commentLikesModalDiv(res.data.final);
                             });
                         } else {
-                            if(postCommentLike) postCommentLike.style.color = "red";
+                            if (postCommentLike) postCommentLike.style.color = "red";
                             postCommentLikeModalClass.style.color = "red";
                             axios.post("/commentlike", { id: postId, comment_id: commentId }).then((res) => {
-                                if(postCommentLike) postCommentLike.setAttribute("data-bs-commentLike", res.data.id);
+                                if (postCommentLike) postCommentLike.setAttribute("data-bs-commentLike", res.data.id);
                                 postCommentLikeModalClass.setAttribute("data-bs-commentLike", res.data.id);
                                 // console.log(res.data);
                                 // console.log(res.data.final);
@@ -964,13 +949,11 @@ commentButton.forEach((btn) => {
 
                     let comment_likes_id = document.querySelector(`.comment-like-btn-${comment.id}`);
                     // console.log(comment_likes_id);
-                    
+
                     let allLikes = res.data.allCommentLikes;
                     // console.log(likes);
-                    for(let i = 0; i < allLikes.length; i++)
-                    {
-                        if (comment.id == allLikes[i].comment_id && postId == allLikes[i].post_id && res.data.logged_user == allLikes[i].user_id)
-                        {
+                    for (let i = 0; i < allLikes.length; i++) {
+                        if (comment.id == allLikes[i].comment_id && postId == allLikes[i].post_id && res.data.logged_user == allLikes[i].user_id) {
                             comment_likes_id.setAttribute(
                                 "style",
                                 "color: red"
@@ -980,15 +963,15 @@ commentButton.forEach((btn) => {
                                 allLikes[i].id
                             );
                             break;
-                        }else {
+                        } else {
                             comment_likes_id.setAttribute(
                                 "style",
                                 "color: grey"
                             );
                         }
                     }
-                 
-                        
+
+
                     postCommentLikeModalClass.addEventListener("click", function () {
                         let postId = postCommentLikeModalClass.getAttribute("data-bs-postId");
                         let commentId = postCommentLikeModalClass.getAttribute("data-bs-postCommment");
@@ -1001,17 +984,17 @@ commentButton.forEach((btn) => {
 
                         if (postCommentLikeModalClass.style.color === "red") {
                             postCommentLikeModalClass.style.color = "grey";
-                            if(postCommentLike) postCommentLike.style.color = "grey";
+                            if (postCommentLike) postCommentLike.style.color = "grey";
                             axios.delete(`/commentlike/remove/${commentLikeId}`).then((res) => {
                                 // console.log(res.data);
                                 commentLikesModalDiv(res.data.final);
                             });
                         } else {
                             postCommentLikeModalClass.style.color = "red";
-                            if(postCommentLike) postCommentLike.style.color = "red";
+                            if (postCommentLike) postCommentLike.style.color = "red";
                             axios.post("/commentlike", { id: postId, comment_id: commentId }).then((res) => {
                                 postCommentLikeModalClass.setAttribute("data-bs-commentLike", res.data.id);
-                                if(postCommentLike) postCommentLike.setAttribute("data-bs-commentLike", res.data.id);
+                                if (postCommentLike) postCommentLike.setAttribute("data-bs-commentLike", res.data.id);
                                 // console.log(res.data);
                                 commentLikesModalDiv(res.data.final);
                             });
@@ -1023,15 +1006,15 @@ commentButton.forEach((btn) => {
 
 
 
-                
+
             })
             let commentsLikesUsersArr = res.data.final;
             // console.log(commentsLikesUsersArr);
             commentLikesModalDiv(commentsLikesUsersArr);
 
-            
 
-            
+
+
 
             /*********************************************************************************/
 
@@ -1056,7 +1039,7 @@ commentButton.forEach((btn) => {
                           <div class="modal-body p-0 d-flex justify-content-center flex-column">
                               <h6 class="text-secondary m-4"><b>${res.data.post.user.name}</b>. can see the total number of people who liked this post.</h6>
 
-                              <div class="vertical-menu w-100 m-0">      
+                              <div class="vertical-menu w-100 m-0">
                             </div>
 
                           </div>
@@ -1115,7 +1098,7 @@ function othersLikesModal(postId) {
                 <div class="modal-body p-0 d-flex justify-content-center flex-column">
                     <h6 class="text-secondary m-4"><b>${res.data.post.user.name}</b>. can see the total number of people who liked this post.</h6>
 
-                    <div class="vertical-menu w-100 m-0">      
+                    <div class="vertical-menu w-100 m-0">
                     </div>
 
                 </div>
@@ -1154,7 +1137,7 @@ function othersLikesModal(postId) {
                     <img src="https://cdn-icons-png.flaticon.com/128/15375/15375366.png"
                     class="rounded-circle avatar bg-dark" width="45px"
                     height="45px" alt="Avatar"/>
-                    <a 
+                    <a
                     href="${'/profile/' + myLike.user.id}"
                     type="button">
                     <b>${myLike.user.name}</b>
@@ -1190,16 +1173,14 @@ othersButton.forEach((btn) => {
 
 /********************************** Comments Modal Likes Div *********************************/
 
-function commentLikesModalDiv(commentsLikesUsersArr){
+function commentLikesModalDiv(commentsLikesUsersArr) {
     // console.log(commentsLikesUsersArr);
     commentsLikesUsersArr.forEach((like) => {
         let commentId = like.comment_id;
         let commentDiv = document.querySelector(`.comment-div-${commentId}`);
-        if (commentDiv) 
-        {
+        if (commentDiv) {
             let likesContainer = commentDiv.querySelector(`.allCommentLikesUsers-${commentId}`);
-            if (!likesContainer) 
-            {
+            if (!likesContainer) {
                 likesContainer = document.createElement("div");
                 likesContainer.classList.add(`allCommentLikesUsers-${commentId}`);
                 likesContainer.classList.add(`allCommentLikesUsers`);
@@ -1207,19 +1188,19 @@ function commentLikesModalDiv(commentsLikesUsersArr){
             }
             likesContainer.innerHTML = `<h4 class="m-0 text-center text-secondary"><i>Likes</i></h4>`;
 
-            like.likes.forEach((user)=>{
+            like.likes.forEach((user) => {
                 let userId = user.user.id;
                 let userName = user.user.username;
-                        let userLink = document.createElement("a");
-                        userLink.setAttribute("type", "button");
-                        userLink.classList.add("text-decoration-none");
-                        likesContainer.innerHTML += `
+                let userLink = document.createElement("a");
+                userLink.setAttribute("type", "button");
+                userLink.classList.add("text-decoration-none");
+                likesContainer.innerHTML += `
                         <div class="row w-100 d-flex align-items-center justify-content-between m-0 mb-2">
                             <div class="col-9 d-flex align-items-center">
                                 <img src="${user.user.image}"
                                 class="rounded-circle avatar bg-dark" width="40px"
                                 height="40px" alt="Avatar"/>
-                                <a 
+                                <a
                                 href="${'/profile/' + user.user.id}"
                                 type="button" class="w-100" >
                                     <b>${userName}</b>
@@ -1227,9 +1208,9 @@ function commentLikesModalDiv(commentsLikesUsersArr){
                             </div>
                         </div>
                         `;
-                })
+            })
         }
-        });
+    });
 }
 
 
@@ -1244,14 +1225,14 @@ followBtns.forEach((btn) => {
         console.log(btn);
         let userSuggestId = document.getElementById(`follow-btn-suggest-${userId}`);
         let postUserId = document.getElementById(`follow-btn-${userId}`);
-        
-        if(followType == 'follow'){
-            axios.post("/follow", { user_id : userId }).then((res) => {
+
+        if (followType == 'follow') {
+            axios.post("/follow", { user_id: userId }).then((res) => {
                 // console.log(res.data);
                 if (userSuggestId) {
                     userSuggestId.innerHTML = `Unfollow`;
                     userSuggestId.setAttribute("data-bs-type", "unfollow");
-                    if(userSuggestId.classList.contains("btn-primary")) userSuggestId.classList.remove("btn-primary");
+                    if (userSuggestId.classList.contains("btn-primary")) userSuggestId.classList.remove("btn-primary");
                     userSuggestId.classList.add("btn-secondary")
                 }
 
@@ -1259,25 +1240,25 @@ followBtns.forEach((btn) => {
                 if (postUserId) {
                     postUserId.innerHTML = `Unfollow`;
                     postUserId.setAttribute("data-bs-type", "unfollow");
-                    if(postUserId.classList.contains("btn-primary")) postUserId.classList.remove("btn-primary");
+                    if (postUserId.classList.contains("btn-primary")) postUserId.classList.remove("btn-primary");
                     postUserId.classList.add("btn-secondary")
                 }
 
             });
-        } else if(followType == 'unfollow') {
+        } else if (followType == 'unfollow') {
             axios.delete(`/following/${userId}`).then((res) => {
                 // console.log(res.data);
                 if (userSuggestId) {
                     userSuggestId.innerHTML = `<i class="fa-solid fa-user-plus"></i> follow`;
                     userSuggestId.setAttribute("data-bs-type", "follow");
-                    if(userSuggestId.classList.contains("btn-secondary")) userSuggestId.classList.remove("btn-secondary");
+                    if (userSuggestId.classList.contains("btn-secondary")) userSuggestId.classList.remove("btn-secondary");
                     userSuggestId.classList.add("btn-primary")
                 }
 
                 if (postUserId) {
                     postUserId.innerHTML = `<i class="fa-solid fa-user-plus"></i> follow`;
                     postUserId.setAttribute("data-bs-type", "follow");
-                    if(postUserId.classList.contains("btn-secondary")) postUserId.classList.remove("btn-secondary");
+                    if (postUserId.classList.contains("btn-secondary")) postUserId.classList.remove("btn-secondary");
                     postUserId.classList.add("btn-primary")
                 }
 

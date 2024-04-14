@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\FollowNotification;
+use App\Events\LikeNotification;
 use App\Listeners\FollowNotificationListener;
+use App\Listeners\LikeNotificationListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -20,7 +22,8 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        FollowNotification::class=>[FollowNotificationListener::class]
+        FollowNotification::class => [FollowNotificationListener::class],
+        LikeNotification::class => [LikeNotificationListener::class]
     ];
 
     /**

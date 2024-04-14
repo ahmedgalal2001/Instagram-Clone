@@ -1,23 +1,51 @@
+//#region imports
 import axios from "axios";
+import Echo from 'laravel-echo';
+//#endregion
 
+//#region initialization variables
 let myfile = document.getElementById("upload-img-post");
 let img_post = document.getElementById("img-post");
 let first_view = document.querySelector("#first-view");
 let sceond_view = document.querySelector("#sceond-view");
 let search_username = document.querySelector("#search-username");
 let users = document.querySelector("#users");
+let notifies = document.querySelector("#notifies");
 let modal_create_post = document.querySelector("#modal-create-post");
 let create_post = document.querySelector("#create-post");
 let caption = document.getElementById("caption");
-var form = document.getElementById("uploadForm");
+let form = document.getElementById("uploadForm");
 let btn_upload_file = document.querySelector("#btn-upload-file");
-var helperList = document.getElementById('helper-list');
+let helperList = document.getElementById('helper-list');
+let notify_ball = document.getElementById("notify-ball");
+
+//#endregion
+
+
+//#region initialize the style for modal_create_post
 sceond_view.style.display = "none";
 first_view.style.display = "flex";
 btn_upload_file.style.display = "none";
+//#endregion
 
 
+//#region to run run time notifications between users
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: 'b53520335d672170ed06',
+    cluster: 'eu',
+    encrypted: true
+});
 
+window.Echo.channel('follow')
+    .listen('.follow', async (event) => {
+        await getNotification();
+    });
+
+//#endregion
+
+
+//#region to reset form when i close modal  window
 create_post.addEventListener('hidden.bs.modal', () => {
     first_view.style.display = "flex";
     sceond_view.style.display = "none";
@@ -27,8 +55,10 @@ create_post.addEventListener('hidden.bs.modal', () => {
         modal_create_post.classList.remove("modal-xl");
 });
 
+//#endregion
 
 
+//#region to submit form by axios request
 // Add an event listener to intercept the form submission
 form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -60,14 +90,16 @@ form.addEventListener("submit", function (event) {
             `;
         })
         .catch(function (error) {
-            // Handle error response
             console.error('Error uploading file:', error);
-            // Optionally, perform any additional actions here
         });
 });
 
+//#endregion
 
-// helper list to apprea hashtage
+
+// #region function to set Hashtage
+
+// helper list to appear hashtage
 caption.oninput = function () {
     var inputText = caption.value.split(" ").pop();
     if (inputText.includes("#")) {
@@ -125,7 +157,10 @@ function selectHashtag(tag) {
 }
 
 
+// #endregion
 
+
+//#region to run video or image before upload in cloudnairy
 myfile.addEventListener('change', function (event) {
     first_view.style.display = "none";
     btn_upload_file.style.display = "inline-block";
@@ -150,6 +185,48 @@ myfile.addEventListener('change', function (event) {
     modal_create_post.classList.add("modal-xl");
 });
 
+//#endregion
+
+
+//#region to get Notification for logging user
+async function getNotification() {
+    notifies.innerHTML = "";
+    await axios.get("/notification").then((res) => {
+        console.log(res.data);
+        $(document).ready(function () {
+            var spanElement = $('<span></span>')
+                .addClass('position-absolute p-1 translate-middle bg-danger border border-light rounded-circle')
+                .css({
+                    'top': '2px',
+                    'left': '25px'
+                });
+            // Append the span element to the notify-ball element
+            if (res.data.hasUnseenNotifications)
+                $('#notify-ball').append(spanElement);
+        });
+        let count = 0;
+        if (res.data.notifies.length > 0)
+            res.data.notifies.forEach(notify => {
+                let elementUser = `
+                    <div class="user-profile">
+                        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="${'/profile/' + notify.sender.id}">
+                            <img width="48px" height="48px"
+                                src="${notify.sender.image}"
+                                class="rounded-circle me-2 img-profile" alt="">
+                            <div class="user-info">
+                            <span class="" style="font-size:12px">${notify.sender.username} started Following You. ${res.data.time_notify[count++]}</span>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                notifies.insertAdjacentHTML("beforeend", elementUser);
+            });
+    });
+}
+//#endregion
+
+
+//#region to search specific users for in instagram
 // search and print list of users
 search_username.oninput = () => {
     users.innerHTML = "";
@@ -174,19 +251,31 @@ search_username.oninput = () => {
             });
     });
 }
+//#endregion
+
+
 $(document).ready(function () {
+    //#region to reset active class for clicking on navbar
     $('.links-navbar').click(function () {
         $('.links-navbar').each(function () {
             var $currentLink = $(this);
             var defaultImgSrc = $currentLink.data("img-src-default");
             var $img = $currentLink.find("img");
             $img.attr("src", defaultImgSrc);
+            if ($(this).data("bs-target") == "#notify") {
+                axios.put("/notification").then((res) => {
+                }).catch((err) => {   })
+                $("#notify-ball").find("span").remove();
+            }
         });
         var imgSrc = $(this).data('img-src');
         $(this).find("img").attr("src", imgSrc);
         var $span = $(this).find("span");
         $span.css("font-weight", "bold");
     });
+    //#endregion
+
+    //#region to close modal and offcanvas when i click on body
     $(document).on('click', function (e) {
         var $modal = $('.modal.show');
         var $offcanvas = $('.offcanvas.show');
@@ -197,6 +286,8 @@ $(document).ready(function () {
         }
         helperLinkeRouter();
     });
+    //#endregion
+
     $('#notify').on('hidden.bs.offcanvas', function () {
         helperLinkOff("offcanvasToggleNotify");
     });
@@ -236,3 +327,8 @@ function helperLinkOff(str) {
     var $span = $currentLink.find("span");
     $span.css("font-weight", "normal");
 }
+
+
+
+
+getNotification();

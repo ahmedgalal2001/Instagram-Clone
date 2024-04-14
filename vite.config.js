@@ -16,6 +16,8 @@ export default defineConfig({
                 "resources/css/edit-profile.css",
                 "resources/css/login.css",
                 "resources/css/register.css",
+                "resources/css/profile.css",
+                "resources/js/profile.js"
             ],
             refresh: true,
         }),

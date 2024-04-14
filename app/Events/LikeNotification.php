@@ -2,14 +2,15 @@
 
 namespace App\Events;
 
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PresenceChannel;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\Channel;
 
-
-class FollowNotification implements ShouldBroadcast
+class LikeNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
     public $following;
@@ -26,10 +27,10 @@ class FollowNotification implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('like');
+        return new Channel('follow');
     }
     public function broadcastAs()
     {
-        return "like";
+        return "follow";
     }
 }
