@@ -95,6 +95,8 @@ class ProfileController extends Controller
     {
 
         $Current_Usr=false;
+        try {
+
             if(Auth::id()==$request->input('user_id'))
             {
                 $Current_Usr=true;
@@ -105,12 +107,20 @@ class ProfileController extends Controller
         $follower->following_id=$request->input('user_id');
         $follower->save();
 
-
         return response()->json([
             'message' => 'User followed successfully',
             'count'=>User::withCount('following')->withCount('followers')->where('id',Auth::id())->first(),
             'Current_Usr'=>$Current_Usr
         ]);
+
+    } catch (\Exception $th) {
+        return response()->json([
+            'message' => $th->getMessage()
+
+        ]);
+    }
+
+
     }
 
     //---------------remove follower----------------------------------

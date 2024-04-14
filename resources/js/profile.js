@@ -83,36 +83,41 @@ const post = document.querySelectorAll(".post");
 
 
 //-----------------------------------------------------------------------------------
+// console.log(FollowUser);
 
-if (FollowUser) {
-    FollowUser.addEventListener("click", async () => {
+if(FollowUser){
+    FollowUser.addEventListener("click", () => {
         const userId = FollowUser.getAttribute("user-id");
 
+        console.log(FollowUser.textContent.trim());
         //-----------check user Following or unfollow for other user-------------------------
-        if (FollowUser.textContent === "Follow") {
-            await axios
-                .post("/follow", { user_id: userId })
-                .then((res) => {
-                    FollowUser.innerHTML = "Following";
-
-                })
-                .catch((err) => {
-                    console.error(err);
-                });
-        } else {
+        if (FollowUser.textContent.trim() == "Following") {
             axios
                 .delete(`/following/${userId}`)
                 .then((res) => {
-                    FollowUser.innerHTML = "Follow";
+                    FollowUser.textContent = "Follow";
 
                 })
                 .catch((err) => {
                     console.error(err);
                 });
+
+        } else {
+
+             axios
+            .post("/follow", { user_id: userId })
+            .then((res) => {
+                FollowUser.textContent = "Following";
+
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+
         }
     });
-}
 
+}
 //-------------------Load All Followers on Modal by default-----------------------
 function loadAllFollowers() {
     const user_id = parentFollowers.getAttribute("user-id");
@@ -912,8 +917,6 @@ console.log(postData.user.image);
 
 //-------------------card Details user---------------------------------------------------
 
-let avatarImg = document.querySelector(".avatar");
-let postsContainer = document.querySelector(".profile-details-card");
 
 
 
@@ -923,32 +926,17 @@ document.addEventListener("DOMContentLoaded", function () {
     let postsContainer = document.querySelector(".main-post-div");
     console.log(avatarContainer);
 
-    avatarImg.addEventListener("mouseenter", function () {
-        let profileDetailsCard = avatarImg
-            .closest(".avatar-container")
-            .querySelector(".profile-details-card");
-        if (profileDetailsCard) {
-            profileDetailsCard.style.display = "block";
-        }
-    });
 
-    avatarContainer.addEventListener("mouseleave", function () {
-        let profileDetailsCard = avatarContainer.querySelector(
-            ".profile-details-card"
-        );
-        if (profileDetailsCard) {
-            profileDetailsCard.style.display = "none";
-        }
-    });
+    // avatarContainer.addEventListener("mouseleave", function () {
+    //     let profileDetailsCard = avatarContainer.querySelector(
+    //         ".profile-details-card"
+    //     );
+    //     if (profileDetailsCard) {
+    //         profileDetailsCard.style.display = "none";
+    //     }
+    // });
 
-    postsContainer.addEventListener("mouseleave", function () {
-        let profileDetailsCard = postsContainer.querySelector(
-            ".profile-details-card"
-        );
-        if (profileDetailsCard) {
-            profileDetailsCard.style.display = "none";
-        }
-    });
+
 });
 
 //----------------------Calc post created age-----------------------------------------------
