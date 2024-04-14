@@ -8,39 +8,44 @@ use App\Models\Follower;
 use App\Models\Post;
 use App\Models\SaveUserPost;
 use App\Models\User;
+use Error;
 use FFI;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Mockery\Expectation;
 
 class ProfileController extends Controller
 {
-    public function index(string $id)
+    public function index(string $id=null)
     {
+
+
+        if (User::where('id', $id)->first() == null) {
+            return redirect()->route('profile.index', ['id' => Auth::id()]);
+        }
 
         $followingsForCurrentUser = User::with('following')->find(Auth::id());
         $followingsIdForCurrentUsr = $followingsForCurrentUser->following->pluck('id');
-
-        // $savedPosts = SaveUserPost::with('posts')->where('user_id', Auth::id())->get();
-        $savedPosts=User::with('posts.savedposts')->find(Auth::id());
+        $savedPosts = User::with('posts.savedposts')->find(Auth::id());
 
 
 
-        $follows_user=User::with('following')->with('followers')->find($id);
+        $follows_user = User::with('following')->with('followers')->find($id);
 
         $posts_user = User::with('posts.comments')->with('posts.likes')->find($id);
-        if(Auth::id()!==$id)
-        {
-            $user=User::find($id);
+        if (Auth::id() !== $id) {
+            $user = User::find($id);
         }
 
-        $Current_Usr=Auth::user();
+        $Current_Usr = Auth::user();
 
 
 
-       return view('profile.index',compact('follows_user','posts_user','Current_Usr','user','id','followingsIdForCurrentUsr','savedPosts'));
+        return view('profile.index',compact('follows_user','posts_user','Current_Usr','user','id','followingsIdForCurrentUsr','savedPosts'));
+
     }
     /**
      * Display the user's profile form.
@@ -95,6 +100,8 @@ class ProfileController extends Controller
     {
 
         $Current_Usr=false;
+        try {
+
             if(Auth::id()==$request->input('user_id'))
             {
                 $Current_Usr=true;
@@ -105,12 +112,20 @@ class ProfileController extends Controller
         $follower->following_id=$request->input('user_id');
         $follower->save();
 
-
         return response()->json([
             'message' => 'User followed successfully',
             'count'=>User::withCount('following')->withCount('followers')->where('id',Auth::id())->first(),
             'Current_Usr'=>$Current_Usr
         ]);
+
+    } catch (\Exception $th) {
+        return response()->json([
+            'message' => $th->getMessage()
+
+        ]);
+    }
+
+
     }
 
     //---------------remove follower----------------------------------
