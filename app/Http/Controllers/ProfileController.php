@@ -19,7 +19,7 @@ use Mockery\Expectation;
 
 class ProfileController extends Controller
 {
-    public function index(string $id=null)
+    public function index(string $id = null)
     {
 
 
@@ -41,16 +41,17 @@ class ProfileController extends Controller
         $posts_user = User::with('posts.comments')->with('posts.likes')->find($id);
         if (Auth::id() !== $id) {
             $user = User::find($id);
-        if (Auth::id() !== $id) {
-            $user = User::find($id);
+            if (Auth::id() !== $id) {
+                $user = User::find($id);
+            }
+
+            $Current_Usr = Auth::user();
+            $Current_Usr = Auth::user();
+
+
+
+            return view('profile.index', compact('follows_user', 'posts_user', 'Current_Usr', 'user', 'id', 'followingsIdForCurrentUsr', 'savedPosts'));
         }
-
-        $Current_Usr = Auth::user();
-        $Current_Usr = Auth::user();
-
-
-
-        return view('profile.index', compact('follows_user', 'posts_user', 'Current_Usr', 'user', 'id', 'followingsIdForCurrentUsr', 'savedPosts'));
     }
     /**
      * Display the user's profile form.
