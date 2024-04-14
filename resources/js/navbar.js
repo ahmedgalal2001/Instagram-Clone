@@ -1,6 +1,5 @@
 //#region imports
 import axios from "axios";
-import Echo from 'laravel-echo';
 //#endregion
 
 //#region initialization variables

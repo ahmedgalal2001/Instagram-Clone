@@ -16,7 +16,6 @@
                 <i class="fas fa-angle-left"></i>
             </button>
             <div class="scroll-images d-flex align-items-start">
-                {{-- @for ($i = 0; $i < 15; $i++) --}}
                 @foreach ($suggestedUsers as $suggestedUser)
                     <div class="d-flex flex-column align-items-center m-2">
                         <a 
@@ -28,7 +27,6 @@
                         <p>{{ Str::limit($suggestedUser->name, 10) }}</p>
                     </div>
                 @endforeach
-                {{-- @endfor --}}
             </div>
             <button class="right">
                 <i class="fas fa-angle-right"></i>
@@ -120,30 +118,43 @@
                                                     </div>
 
                                                     <div class="col-4 d-flex flex-column align-items-center">
-                                                        <p class="m-0">1M</p>
+                                                        @foreach($usersWithFollowersCount as $user)
+                                                            @if($user->id === $post->user->id)
+                                                                <div class="col-4 d-flex flex-column align-items-center">
+                                                                    <p class="m-0">{{ $user->followers_count }}</p>
+                                                                </div>
+                                                                @endif
+                                                        @endforeach
                                                         <p class="m-0">followers</p>
                                                     </div>
 
                                                     <div class="col-4 d-flex flex-column align-items-center">
-                                                        <p class="m-0">50k</p>
+                                                        @foreach($usersWithFollowingCount as $user)
+                                                            @if($user->id === $post->user->id)
+                                                            <div class="col-4 d-flex flex-column align-items-center">
+                                                                <p class="m-0">{{ $user->following_count }}</p>
+                                                            </div>
+                                                            @endif
+                                                    @endforeach
                                                         <p class="m-0">following</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <div class="row d-flex justify-content-between">
-                                                    <div class="col-4">
-                                                        <img src="{{ asset('images/dog.jpg') }}"
-                                                            class="w-100 h-100 profile-post-hover">
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <img src="{{ asset('images/dog.jpg') }}"
-                                                            class="w-100 h-100 profile-post-hover">
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <img src="{{ asset('images/dog.jpg') }}"
-                                                            class="w-100 h-100 profile-post-hover">
-                                                    </div>
+                                                <div class="row d-flex">
+                                                   @foreach ($threePosts as $t_post)
+                                                            @php
+                                                                $posts = $t_post->posts->take(3);
+                                                            @endphp
+                                                            @foreach ($posts as $image)
+                                                                <div class="col-4">
+                                                                    @if ($image->user_id == $post->user->id)
+                                                                        <img src="{{ $image->image_url }}"
+                                                                        width="80vh" height="100vh">
+                                                                    @endif
+                                                                </div>
+                                                            @endforeach
+                                                    @endforeach
                                                 </div>
                                                 <div class="row mt-3">
                                                     <div class="col-6 flex-grow-1">
@@ -189,7 +200,7 @@
 
                     </div>
                     @if ($post->video == 0)
-                        <img src="{{ $post->image_url }}" class="img-fluid" />
+                        <img src="{{ $post->image_url }}" class="w-100 img-fluid" />
                     @else
                         <video controls autoplay src="{{ $post->image_url }}" class="img-fluid"></video>
                     @endif
@@ -199,6 +210,8 @@
                         <div class="col-4 col-lg-4 col-md-6 col-sm-6 d-flex align-items-center justify-content-between">
 
                             <a type="button" class="post-like"
+                                data-img-src-default="{{ asset("/images/heart_black.png") }}"
+                                data-img-src="{{ asset("/images/heart.png") }}"
                                 @foreach ($post->likes as $like)
                                 @if (Auth::id() == $like->user_id && $post->id == $like->post_id)
                                 style="color:red !important;"
@@ -206,22 +219,33 @@
                                 @endif 
                                 @endforeach
                                 data-bs-post="{{ $post->id }}" id="postLike-{{ $post->id }}">
-                                <h4><b><i class="fa-regular fa-heart"></i></b></h4>
+
+                                    <img 
+                                    @foreach ($post->likes as $like)
+                                    @if (Auth::id() == $like->user_id && $post->id == $like->post_id)
+                                    src="{{ asset("/images/heart.png")}}"
+                                    @endif
+                                    @endforeach 
+                                    src="{{ asset("/images/heart_black.png") }}"
+                                    alt="">
+
                             </a>
 
                             <a type="button" class="comment-btn" data-toggle="modal"
                                 data-bs-commentBtn = "{{ $post->id }}" data-target="#commentsModal">
-                                <h4><b><i class="fa-regular fa-comment"></i></b></h4>
+                                <img src="{{ asset("/images/chat.png") }}" alt="">
                             </a>
 
                             <a type="button">
-                                <h4><b><i class="far fa-paper-plane"></i></b></h4>
+                                <img src="{{ asset("/images/send.png") }}" alt="">
                             </a>
 
 
                         </div>
                         <div class="col-8 col-lg-8 col-md-6 col-sm-6 d-flex align-items-center justify-content-end">
                             <a type="button"
+                            data-img-src-default="{{ asset("/images/bookmark_blak.png") }}"
+                            data-img-src="{{ asset("/images/bookmark.png") }}"
                             @foreach($post->savedposts as $mark)
                                 @if (Auth::id() == $mark->id)
                                     style="color:orange !important;"
@@ -231,7 +255,14 @@
                             data-bs-post="{{ $post->id }}"
                             class="post-book-mark"
                             >
-                                <h4><b><i class="fa-regular fa-bookmark"></i></b></h4>
+                                    <img 
+                                    @foreach($post->savedposts as $mark)
+                                    @if (Auth::id() == $mark->id)
+                                    src="{{ asset("/images/bookmark.png") }}"
+                                    @endif
+                                    @endforeach 
+                                    src="{{ asset("/images/bookmark_blak.png") }}"
+                                    alt="">
                             </a>
                         </div>
                         
@@ -263,7 +294,6 @@
                         @endphp
                         <p class="m-1 mx-0 likes-count-{{ $post->id }}">{{ count($allLikes) }} Likes</p>
                         @if (count($allLikes) <= 0)
-                            {{-- <p class="m-1 mx-2" id="p-{{ $post->id }}"><b>No Likes</b></p> --}}
                             <div class="likess" id="likes-{{ $post->id }}">
                                
                             </div>
@@ -330,6 +360,8 @@
 
 
                                                 <a type="button" 
+                                                data-img-src-default="{{ asset("/images/heart2.png") }}"
+                                                data-img-src="{{ asset("/images/heart1.png") }}"
                                                     class="comment-like m-2"
                                                     id="comment-like-{{ $comment->id }}"
                                                         @foreach ($comments as $comment_like)
@@ -340,7 +372,16 @@
                                                         @endforeach
                                                     data-bs-postCommment="{{ $comment->id }}"
                                                     data-bs-postId="{{ $post->id }}">
-                                                    <h6><b><i class="fa-regular fa-heart"></i></b></h6>
+
+                                                        <img 
+                                                        @foreach ($comments as $comment_like)
+                                                        @if (Auth::id() == $comment_like->user_id && $post->id == $comment_like->post_id && $comment->id == $comment_like->comment_id)
+                                                        src="{{ asset("/images/heart1.png") }}"
+                                                        @endif
+                                                        @endforeach 
+                                                        src="{{ asset("/images/heart2.png") }}"
+                                                        alt="">
+
                                                 </a>
 
                                             </div>
@@ -453,31 +494,46 @@
                                                     </div>
         
                                                     <div class="col-4 d-flex flex-column align-items-center">
-                                                        <p class="m-0">1M</p>
+                                                        @foreach($usersWithFollowersCount as $user)
+                                                            @if($user->id === $suggestedUser->id)
+                                                                <div class="col-4 d-flex flex-column align-items-center">
+                                                                    <p class="m-0">{{ $user->followers_count }}</p>
+                                                                </div>
+                                                                @endif
+                                                        @endforeach
                                                         <p class="m-0">followers</p>
                                                     </div>
+                                                    
         
                                                     <div class="col-4 d-flex flex-column align-items-center">
-                                                        <p class="m-0">50k</p>
+                                                        @foreach($usersWithFollowingCount as $user)
+                                                            @if($user->id === $suggestedUser->id)
+                                                            <div class="col-4 d-flex flex-column align-items-center">
+                                                                <p class="m-0">{{ $user->following_count }}</p>
+                                                            </div>
+                                                            @endif
+                                                        @endforeach
                                                         <p class="m-0">following</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <div class="row d-flex justify-content-between">
-                                                    <div class="col-4">
-                                                        <img src="{{ asset('images/dog.jpg') }}"
-                                                            class="w-100 h-100 profile-post-hover">
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <img src="{{ asset('images/dog.jpg') }}"
-                                                            class="w-100 h-100 profile-post-hover">
-                                                    </div>
-                                                    <div class="col-4">
-                                                        <img src="{{ asset('images/dog.jpg') }}"
-                                                            class="w-100 h-100 profile-post-hover">
-                                                    </div>
+                                                <div class="row d-flex">
+                                                   @foreach ($threePosts as $t_post)
+                                                            @php
+                                                                $posts = $t_post->posts->take(3);
+                                                            @endphp
+                                                            @foreach ($posts as $image)
+                                                                @if ($image->user_id == $suggestedUser->id)
+                                                                    <div class="col-4">
+                                                                        <img src="{{ $image->image_url }}"
+                                                                        width="80vh" height="100vh">
+                                                                    </div>
+                                                                @endif
+                                                            @endforeach
+                                                    @endforeach
                                                 </div>
+                                                
                                                 <div class="row mt-3">
                                                     <div class="col-6 mt-4">
                                                         <a 
@@ -557,7 +613,8 @@
 <!------------------- End of post options modal --------------------->
 
         <!-------------------- post likes others Modal ------------------>
-        <div class="modal fade others-likes-modal" id="postOthersLikesAlert" tabindex="-1" role="dialog" data-bs-backdrop="false">
+        <div class="modal fade others-likes-modal" id="postOthersLikesAlert" tabindex="-1" role="dialog" data-bs-backdrop="static" 
+        aria-hidden="true">
             
         </div>
         <!------------------- End of post options modal --------------------->
