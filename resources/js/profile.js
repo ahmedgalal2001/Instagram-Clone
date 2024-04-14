@@ -85,12 +85,12 @@ const post = document.querySelectorAll(".post");
 //-----------------------------------------------------------------------------------
 
 if (FollowUser) {
-    FollowUser.addEventListener("click", async () => {
+    FollowUser.addEventListener("click",() => {
         const userId = FollowUser.getAttribute("user-id");
 
         //-----------check user Following or unfollow for other user-------------------------
-        if (FollowUser.textContent === "Follow") {
-            await axios
+        if (FollowUser.textContent.trim() === "Follow") {
+             axios
                 .post("/follow", { user_id: userId })
                 .then((res) => {
                     FollowUser.innerHTML = "Following";
@@ -478,7 +478,7 @@ post.forEach((a) => {
                 <div class="col-md-9 d-flex align-items-center p-0">
                     <div class="col-3 d-flex pt-3 justify-content-center align-items-center">
                         <div class="position-relative avatar-container">
-                            <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png"
+                            <img src="${postData.user.image}"
                                 class="rounded-circle mb-3 avatar" width="50px" height="50px" alt="Avatar" />
                         </div>
                     </div>
@@ -491,17 +491,17 @@ post.forEach((a) => {
             </div>
             <div class="row d-flex justify-content-between">
                 <div class="col-md-4 d-flex flex-column align-items-center">
-                    <p class="m-0">2200</p>
+                    <p class="m-0">2</p>
                     <p class="m-0">Posts</p>
                 </div>
 
                 <div class="col-md-4 d-flex flex-column align-items-center">
-                    <p class="m-0">1M</p>
+                    <p class="m-0">2</p>
                     <p class="m-0">followers</p>
                 </div>
 
                 <div class="col-md-4 d-flex flex-column align-items-center">
-                    <p class="m-0">50k</p>
+                    <p class="m-0">1</p>
                     <p class="m-0">following</p>
                 </div>
             </div>
@@ -640,6 +640,7 @@ console.log(postData.user.image);
 
                 parentComment.innerHTML=`
 
+
                     <div class="col-10">
                     <input type="text" post-id=${postData.id} class="comment-txt  border-0 rounded-1 btn btn-white"
                     placeholder="Add a comment..." />
@@ -671,7 +672,28 @@ console.log(postData.user.image);
                         if(res.data.commentsCount.comments_count == 1)
                         {
                             parentComments.innerHTML =
-                            `
+                            ` <li class="list-group-item border-0 p-0">
+                            <div class="d-flex justify-content-start align-items-center gap-1">
+                            <img src="${postData.user.image}" class="rounded-circle" alt="img" height="35px width="35px" />
+                                <div class="d-flex">
+                                    <p class="fs-6 mx-2" style="font-weight: bold">${
+                                        postData.user.name
+                                    }</p>
+                                    <p class="caption mx-1" style="font-size:15px;">${
+                                        postData.caption
+                                    }</p>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <a type="button" class="custom-link">
+                                    <p class="text-secondary mx-5" style="font-size:13px;margin-top: -10px">
+                                        <a href="" class="text-secondary custom-link mx-2">${formatDateRelativeToNow(
+                                            postData.created_at
+                                        )}</a>
+                                    </p>
+                                </a>
+                            </div>
+                        </li>
                                <li class="list-group-item border-0 p-0">
                                    <div class="d-flex justify-content-start align-items-center gap-1">
                                    <img src="${postData.user.image}" class="rounded-circle" alt="img" height="35px width="35px" />
@@ -740,6 +762,7 @@ console.log(postData.user.image);
                     class="btn-${res.data.post.id} "
                     data-bs-post="${res.data.post.id}"
                     id="like-btn-modal">
+
                     <h4><b><i class="fa-regular fa-heart"></i></b></h4>
                     </a>
 
@@ -855,7 +878,7 @@ console.log(postData.user.image);
         bookMark.innerHTML = `
             <a type="button" id="${res.data.post.id}"
             data-bs-post="${res.data.post.id}"
-            class="bookmark-btn" id="book-mark-btn">
+            class="bookmark-btn " id="book-mark-btn">
             <h4><b><i id="book-mark-icon" class="fa-regular fa-bookmark"></i></b></h4>
 
         </a>

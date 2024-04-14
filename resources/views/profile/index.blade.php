@@ -47,16 +47,15 @@
                 </div>
                 <h2 class="h6 mt-1 fw-bold mx-5">{{$Current_Usr->bio
                 }}</h2>
-                <p class="mx-5">Lorem ipsum dolor sit amet consectetur adipis</p>
+
             </section>
 
             @else
 
             <section class="col-sm-3 col-md-3  col-lg-3 offset-lg-1 mt-3  text-center">
                 <a href="{{ route('profile.index', ['id' =>$id ]) }}" class="custom-link">
-
-                    <img src="https://cdn-icons-png.flaticon.com/512/2202/2202112.png" class="rounded-circle img-fluid w-55"
-                    alt="img" width="200px" />
+                    <img  width="150px" height="150px" src="{{$user->image}}"
+                    class=" rounded-circle " alt="">
                 </a>
 
             </section>
@@ -93,8 +92,9 @@
                     </a>
 
                 </div>
-                <h2 class="h6 mt-1 fw-bold mx-5">software engineer</h2>
-                <p class="mx-5">Lorem ipsum dolor sit amet consectetur adipis</p>
+                <h2 class="h6 mt-1 fw-bold mx-5">{{$user->bio
+                }}</h2>
+
             </section>
 
 
@@ -152,7 +152,7 @@
                         @if ($post->video == 0)
                         <img src="{{$post->image_url}}" alt="post title" height="100px" width="100px" class="image" />
                     @else
-                        <video controls src="{{$post->image_url }}" class="img-fluid"></video>
+                        <video controls src="{{$post->image_url }}" height="100px" width="100px" class="image"></video>
                     @endif
                         <div class="overlay d-flex justify-content-center align-items-center">
                             <i class="fa-solid fa-heart text-white fs-5"></i>
