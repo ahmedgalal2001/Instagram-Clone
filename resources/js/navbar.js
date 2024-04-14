@@ -30,18 +30,16 @@ btn_upload_file.style.display = "none";
 
 
 //#region to run run time notifications between users
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: 'b53520335d672170ed06',
-    cluster: 'eu',
-    encrypted: true
+Pusher.logToConsole = true;
+
+var pusher = new Pusher('b53520335d672170ed06', {
+    cluster: 'eu'
 });
 
-window.Echo.channel('follow')
-    .listen('.follow', async (event) => {
-        await getNotification();
-    });
-
+var channel = pusher.subscribe('follow');
+channel.bind('follow', async function (data) {
+    await getNotification();
+});
 //#endregion
 
 
@@ -264,7 +262,7 @@ $(document).ready(function () {
             $img.attr("src", defaultImgSrc);
             if ($(this).data("bs-target") == "#notify") {
                 axios.put("/notification").then((res) => {
-                }).catch((err) => {   })
+                }).catch((err) => { })
                 $("#notify-ball").find("span").remove();
             }
         });

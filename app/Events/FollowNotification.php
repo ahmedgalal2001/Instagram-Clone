@@ -26,10 +26,10 @@ class FollowNotification implements ShouldBroadcast
 
     public function broadcastOn()
     {
-        return new Channel('like');
+        return new Channel('follow');
     }
     public function broadcastAs()
     {
-        return "like";
+        return "follow";
     }
 }
