@@ -15,11 +15,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Mockery\Expectation;
 
 class ProfileController extends Controller
 {
-    public function index(string $id)
+    public function index(string $id=null)
     {
+
+
+        if (User::where('id', $id)->first() == null) {
+            return redirect()->route('profile.index', ['id' => Auth::id()]);
+        }
 
         $followingsForCurrentUser = User::with('following')->find(Auth::id());
         $followingsIdForCurrentUsr = $followingsForCurrentUser->following->pluck('id');
@@ -30,12 +36,16 @@ class ProfileController extends Controller
 
 
         $follows_user = User::with('following')->with('followers')->find($id);
+        $follows_user = User::with('following')->with('followers')->find($id);
 
         $posts_user = User::with('posts.comments')->with('posts.likes')->find($id);
         if (Auth::id() !== $id) {
             $user = User::find($id);
+        if (Auth::id() !== $id) {
+            $user = User::find($id);
         }
 
+        $Current_Usr = Auth::user();
         $Current_Usr = Auth::user();
 
 

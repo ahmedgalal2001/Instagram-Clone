@@ -14,8 +14,8 @@
 
         </section>
     <section id="bodySave" class="row" >
+        @if($savedPosts->savedposts->count()!==0)
         @foreach ($savedPosts->savedposts as $post )
-
         <article class="col-md-4  mt-4 w-30">
             <a data-bs-toggle="modal" data-bs-target="#exampleModal" post-id="{{$post->id}}" type="button" class="post custom-link" >
                 <div class="container-article">
@@ -34,6 +34,12 @@
             </a>
         </article>
         @endforeach
+        @else
+        <li class="d-flex justify-content-center align-items-center flex-column  fs-1 mb-3 ">
+            <img src="https://cdn-icons-png.flaticon.com/512/685/685655.png" class="image w-25">
+            <h3> no posts saved yet</h3>
+        </li>
+        @endif
 
 
 
