@@ -29,8 +29,8 @@ btn_upload_file.style.display = "none";
 //#endregion
 
 
-//#region to run run time notifications between users
-Pusher.logToConsole = true;
+//#region to run run time Follow and likes between users
+
 
 var pusher = new Pusher('b53520335d672170ed06', {
     cluster: 'eu'
@@ -41,6 +41,9 @@ channel.bind('follow', async function (data) {
     await getNotification();
 });
 //#endregion
+
+
+
 
 
 //#region to reset form when i close modal  window
@@ -190,7 +193,6 @@ myfile.addEventListener('change', function (event) {
 async function getNotification() {
     notifies.innerHTML = "";
     await axios.get("/notification").then((res) => {
-        console.log(res.data);
         $(document).ready(function () {
             var spanElement = $('<span></span>')
                 .addClass('position-absolute p-1 translate-middle bg-danger border border-light rounded-circle')
@@ -203,36 +205,91 @@ async function getNotification() {
                 $('#notify-ball').append(spanElement);
         });
         let count = 0;
-        if (res.data.notifies.length > 0)
+        if (res.data.notifies.length > 0) {
+            let random = 0.0;
             res.data.notifies.forEach(notify => {
+                random = Math.random();
                 let elementUser = `
                     <div class="user-profile">
                         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="${'/profile/' + notify.sender.id}">
                             <img width="48px" height="48px"
                                 src="${notify.sender.image}"
                                 class="rounded-circle me-2 img-profile" alt="">
-                            <div class="user-info">
-                            <span class="" style="font-size:12px">${notify.sender.username} started Following You. ${res.data.time_notify[count++]}</span>
+                            <div class="user-info-img-notify" id="${random}">
                             </div>
-                        </a>
-                    </div>
-                `;
+                            </a>
+                            </div>
+                            `;
                 notifies.insertAdjacentHTML("beforeend", elementUser);
+                let userInfo = document.getElementById(`${random}`);
+                let elementMessage = "";
+                if (notify.message === "Like") {
+                    if (notify.post_img === "video")
+                        elementMessage = `
+                                <span class="" style="font-size:12px">${notify.sender.username} started <span class="text-danger">${notify.message}d</span> Your Video. ${res.data.time_notify[count++]}</span>
+
+                                `
+                    else
+                        elementMessage = `
+                                <span class="" style="font-size:12px">${notify.sender.username} started <span class="text-danger">${notify.message}d</span> You. ${res.data.time_notify[count++]}</span>
+                                <img width="44px" height="44px" src="${notify.post_img}"/>
+                                `
+                }
+                else {
+                    elementMessage = `
+                            <span class="" style="font-size:12px">${notify.sender.username} started <span class="text-danger">${notify.message}ing</span> You. ${res.data.time_notify[count++]}</span>
+                            `
+                }
+                userInfo.innerHTML = elementMessage;
             });
+        }
     });
 }
 //#endregion
 
 
-//#region to search specific users for in instagram
+//#region to search specific users and hashtages for in instagram
 // search and print list of users
 search_username.oninput = () => {
     users.innerHTML = "";
     let username = search_username.value;
-    axios.get(`/users/${username}`).then((res) => {
-        if (res.data.length > 0)
-            res.data.forEach(user => {
-                let elementUser = `
+    var inputText = search_username.value;
+    if (inputText.includes("#")) {
+        var hashtags = inputText.match(/#[a-zA-Z0-9_]+/g) || [];
+        if (hashtags.length > 0) {
+            hashtags.map(function (tag) {
+                let tagName = tag.substring(1);
+                axios.get(`/hashtags/filter/${tagName}`)
+                    .then((res) => {
+                        if (res.data.hashtages.length > 0) {
+                            res.data.hashtages.forEach(hashtage => {
+                                let elementUser = `
+                                    <div class="user-profile">
+                                        <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="${'/hashtags/' + hashtage.tag}">
+                                            <img width="48px" height="48px"
+                                                src="/images/hashtag.png"
+                                                class="rounded-circle me-2 img-profile" alt="">
+                                            <div class="user-info">
+                                            <span class="user-username">${hashtage.tag}</span>
+                                            <span class="user-name">${hashtage.tag}</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                `;
+                                users.innerHTML += elementUser;
+                            });
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching data:", error);
+                    });
+            });
+        }
+    } else {
+        axios.get(`/users/${username}`).then((res) => {
+            if (res.data.length > 0)
+                res.data.forEach(user => {
+                    let elementUser = `
     <div class="user-profile">
         <a class="nav-link d-flex align-items-center py-3" aria-current="page" href="${'/profile/' + user.id}">
             <img width="48px" height="48px"
@@ -245,9 +302,10 @@ search_username.oninput = () => {
         </a>
     </div>
 `;
-                users.insertAdjacentHTML("beforeend", elementUser);
-            });
-    });
+                    users.innerHTML += elementUser;
+                });
+        });
+    }
 }
 //#endregion
 
@@ -294,6 +352,13 @@ $(document).ready(function () {
     });
     $('#create-post').on('hidden.bs.modal', function () {
         helperLinkOff("modalCreate");
+    });
+
+    $(".list-inline-item").on("click", function () {
+        var words = $('#caption').val().split(" ");
+        words.pop();
+        $('#caption').val(words.join(" ") + " " + $(this).text() + " ");
+        $('#caption').focus();
     });
     helperLinkeRouter();
 });

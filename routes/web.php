@@ -59,19 +59,19 @@ Route::middleware('auth')->group(function () {
         Route::get("/hashtags/{tag}", [HashtagController::class, 'index'])->name('hashtag.index');
         // to get hashtag fillter
 
-    Route::get("/likes", [ProfileController::class, 'showLikes'])->name("show.likes");
+        Route::get("/likes", [ProfileController::class, 'showLikes'])->name("show.likes");
 
 
 
-    Route::post('/like', [LikeContoller::class, 'store'])->name("like.store");
-    Route::delete('/like/destroy/{id}', [LikeContoller::class, 'destroy'])->name("like.destroy");
-    Route::post('/comment', [CommentContoller::class, 'store'])->name("comment.store");
-    Route::delete('/comment/destroy/{id}', [CommentContoller::class, 'destroy'])->name("comment.destroy");
-    Route::get('/post/{id}', [PostsController::class, 'show'])->name("post.show");
-    Route::post('/save',[PostsController::class, 'addToFavourite'])->name('save.addtofavourite');
-    Route::delete('/save/destroy/{id}', [PostsController::class, 'destroy'])->name("save.destroy");
-    Route::post('/commentlike', [CommentContoller::class, 'add'])->name("commentlike.add");
-    Route::delete('/commentlike/remove/{id}', [CommentContoller::class, 'remove'])->name("commentlike.remove");
+        Route::post('/like', [LikeContoller::class, 'store'])->name("like.store");
+        Route::delete('/like/destroy/{id}', [LikeContoller::class, 'destroy'])->name("like.destroy");
+        Route::post('/comment', [CommentContoller::class, 'store'])->name("comment.store");
+        Route::delete('/comment/destroy/{id}', [CommentContoller::class, 'destroy'])->name("comment.destroy");
+        Route::get('/post/{id}', [PostsController::class, 'show'])->name("post.show");
+        Route::post('/save', [PostsController::class, 'addToFavourite'])->name('save.addtofavourite');
+        Route::delete('/save/destroy/{id}', [PostsController::class, 'destroy'])->name("save.destroy");
+        Route::post('/commentlike', [CommentContoller::class, 'add'])->name("commentlike.add");
+        Route::delete('/commentlike/remove/{id}', [CommentContoller::class, 'remove'])->name("commentlike.remove");
         Route::get("/likes", [ProfileController::class, 'showLikes'])->name("show.likes");
 
         Route::get("/notification", [NotificationController::class, 'index'])->name("notify.index");

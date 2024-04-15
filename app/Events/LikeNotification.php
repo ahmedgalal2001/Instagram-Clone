@@ -13,24 +13,25 @@ use Illuminate\Queue\SerializesModels;
 class LikeNotification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
-    public $following;
-    public $follower;
-
+    public $userMakeLike;
+    public $userHasLike;
+    public $postImg;
     /**
      * Create a new event instance.
      */
-    public function __construct($follower, $following)
+    public function __construct($userMakeLike, $userHasLike , $postImg)
     {
-        $this->follower = $follower;
-        $this->following = $following;
+        $this->userMakeLike = $userMakeLike;
+        $this->userHasLike = $userHasLike;
+        $this->postImg = $postImg;
     }
 
     public function broadcastOn()
     {
-        return new Channel('like');
+        return new Channel('follow');
     }
     public function broadcastAs()
     {
-        return "like";
+        return "follow";
     }
 }

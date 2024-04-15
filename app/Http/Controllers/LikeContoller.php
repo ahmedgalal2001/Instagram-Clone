@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LikeNotification;
 use App\Models\Like;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +37,11 @@ class LikeContoller extends Controller
         $like = new Like();
         $like->user_id = $id_user;
         $like->post_id = $id_post;
+        $user_create_post = Post::where('id', $id_post)->first();
+        $post_img = $user_create_post->image_url;
+        if($user_create_post->video == 1) $post_img = "video";
         $like->save();
+        event(new LikeNotification($id_user, $user_create_post->user_id,$post_img));
 
         $user = Like::with('user')->where('post_id', $like->post_id)->get();
         $all_likes = Like::where('post_id', $id_post)->count();
@@ -79,7 +85,7 @@ class LikeContoller extends Controller
         $like = Like::find($id);
         Like::where('id', $id)->delete();
         $user = Like::with('user')->where('post_id', $like->post_id)->get();
-        
+
         $postLikes = Like::where('post_id', $like->post_id)->get();
         $totalLikes = $postLikes->count();
 

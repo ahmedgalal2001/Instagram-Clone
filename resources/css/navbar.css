@@ -143,6 +143,22 @@
     display: flex;
     flex-direction: column; /* Adjust margin between image and user info */
 }
+.user-info-img-notify{
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+}
+
+.list-inline-item{
+    padding: 5px;
+}
+.scrollable-menu {
+    max-height: 200px !important;
+    max-width: 200px !important;
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+}
 .user-profile .user-name,
 .user-profile .user-username {
     font-size: 14px;

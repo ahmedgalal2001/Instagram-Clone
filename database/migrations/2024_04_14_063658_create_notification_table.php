@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean("seen");
             $table->string("message");
             $table->timestamps();
+            $table->string("post_img")->nullable();
             $table->foreign('senderId')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('reciverId')->references('id')->on('users')->onDelete('cascade');
         });

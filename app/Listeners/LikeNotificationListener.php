@@ -23,12 +23,13 @@ class LikeNotificationListener
      */
     public function handle(LikeNotification $event): void
     {
-        info($event->follower);
-        info($event->following);
+        info($event->userMakeLike);
+        info($event->userHasLike);
         try {
             $notification = new Notification();
-            $notification->senderId = $event->follower;
-            $notification->reciverId = $event->following;
+            $notification->senderId = $event->userMakeLike;
+            $notification->reciverId = $event->userHasLike;
+            $notification->post_img = $event->postImg;
             $notification->seen = false;
             $notification->message = 'Like';
             $notification->save();
