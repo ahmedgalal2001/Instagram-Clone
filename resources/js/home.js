@@ -45,6 +45,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /***************** Toggle comment btn during typing *******************/
 
+$(".list-inline-item").on("click", function (e) {
+    e.stopPropagation();
+    var words = $('.comment-txt').val().split(" ");
+    $('.comment-txt').val(words.join(" ") + " " + $(this).text() + " ");
+    $('.comment-txt').focus();
+});
+
 document.querySelectorAll('.comment-txt').forEach(function (input) {
     input.addEventListener('input', function () {
         let isEmpty = input.value.trim() === ''
