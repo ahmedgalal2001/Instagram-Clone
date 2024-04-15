@@ -20,7 +20,15 @@ class HomeController extends Controller
         $loggedInUser = Auth::user();
         $suggestedUsers = User::withCount('posts')->with('savedposts')->take(8)->get();
 
-        $userWithFollowers = User::with('followers')->find(Auth::id());
+        $threePosts = User::with('posts')->take(3)->get();
+
+        //dd($threePosts);
+            
+
+        $usersWithFollowersCount = User::withCount('followers')->get();
+        $usersWithFollowingCount = User::withCount('following')->get();
+        //dd($usersWithFollowingCount);
+        // dd($usersWithFollowersCount);
         $userWithFollowings = User::with('following')->find(Auth::id());
         $followingsId = $userWithFollowings->following->pluck('id');
         
@@ -35,6 +43,9 @@ class HomeController extends Controller
                             ->with('suggestedUsers', $suggestedUsers)
                             ->with('loggedInUser', $loggedInUser)
                             ->with('followingsIds', $followingsId)
-                            ->with('followingPosts' , $followingPosts);
+                            ->with('followingPosts' , $followingPosts)
+                            ->with('usersWithFollowersCount' , $usersWithFollowersCount)
+                            ->with('usersWithFollowingCount' , $usersWithFollowingCount)
+                            ->with('threePosts' , $threePosts);
     }
 }
