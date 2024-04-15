@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\SaveUserPost;
 use Illuminate\Support\Carbon;
 use App\Models\Like;
@@ -213,6 +214,21 @@ class PostsController extends Controller
     public function update(Request $request, string $id)
     {
         //
+    }
+
+        /**
+     * get posts.
+     */
+    public function emoji()
+    {
+        $userWithFollowings = User::with('following')->find(Auth::id());
+        $followingsId = $userWithFollowings->following->pluck('id');
+        $followingsId[] = Auth::id();
+
+        $followingPosts = Post::whereIn('user_id' , $followingsId)->latest()->get();
+        return response()->json([
+            'followingPosts' => $followingPosts,
+        ]);
     }
 
 

@@ -346,3 +346,33 @@ ul li a:hover {
   height: calc(100vh - 200px);
 
 }
+
+
+/********************************** Emoji Picker ************************************/
+
+.scrollable-menu {
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  max-width: 4em;
+  overflow-x: auto;
+
+}
+
+
+.emotion-list{
+  white-space: nowrap;
+}
+
+
+.scrollable-menu::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.scrollable-menu::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+.scrollable-menu::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
