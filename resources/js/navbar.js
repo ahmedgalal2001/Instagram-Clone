@@ -102,6 +102,8 @@ form.addEventListener("submit", function (event) {
 // helper list to appear hashtage
 caption.oninput = function () {
     var inputText = caption.value.split(" ").pop();
+    var characterCount = $('#caption').val().length;
+    $('#count').text(characterCount);
     if (inputText.includes("#")) {
         var hashtags = inputText.match(/#[a-zA-Z0-9_]+/g) || [];
         if (hashtags.length > 0) {
@@ -353,10 +355,12 @@ $(document).ready(function () {
         helperLinkOff("modalCreate");
     });
 
-    $(".list-inline-item").on("click", function () {
-        var words = $('#caption').val().split(" ");
-        words.pop();
-        $('#caption').val(words.join(" ") + " " + $(this).text() + " ");
+    $(".list-inline-item").on("click", function (e) {
+        e.stopPropagation();
+        var words = $('#caption').val();
+        $('#caption').val(words + $(this).text());
+        var characterCount = $('#caption').val().length;
+        $('#count').text(characterCount);
         $('#caption').focus();
     });
     helperLinkeRouter();
