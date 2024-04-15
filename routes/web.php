@@ -60,6 +60,7 @@ Route::middleware('auth')->group(function () {
         // to get hashtag fillter
 
         Route::get("/likes", [ProfileController::class, 'showLikes'])->name("show.likes");
+        Route::get("/posts", [PostsController::class, 'emoji'])->name("posts.emoji");
 
 
 

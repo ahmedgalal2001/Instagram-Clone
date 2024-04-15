@@ -45,12 +45,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /***************** Toggle comment btn during typing *******************/
 
-$(".list-inline-item").on("click", function (e) {
-    e.stopPropagation();
-    var words = $('.comment-txt').val().split(" ");
-    $('.comment-txt').val(words.join(" ") + " " + $(this).text() + " ");
-    $('.comment-txt').focus();
+
+axios.get('/posts').then(res => {
+    res.data.followingPosts.forEach(post => {
+        // Assuming each post has a unique identifier like post.id
+        $(document).on("click", `#emoji-${post.id} .list-inline-item`, function (e) {
+            e.stopPropagation();
+            var words = $(`#text-post-${post.id}`).val();
+            $(`#text-post-${post.id}`).val(words + $(this).text());
+            $(`#text-post-${post.id}`).focus();
+        });
+    });
 });
+
+
 
 document.querySelectorAll('.comment-txt').forEach(function (input) {
     input.addEventListener('input', function () {
@@ -96,31 +104,30 @@ document.querySelectorAll('.commentBtn').forEach(function (button) {
                     `user-comment-${res.data.comment.id}`
                 )
                 newCommentDiv.innerHTML = `
-              <div class="col-md-12 mb-0 aligh-items-center d-flex">
-                  <div class="d-flex col-10 align-items-center">
-                          <p>
-                              <a
-                              href="${'/profile/' + res.data.comment.user_id}"
-                              class="text-decoration-none text-dark user-name-btn"
-                              type="button">
-                                  <b>${res.data.user_name}</b>
-                              </a>
-                              ${commentText}
-                          </p>
-                  </div>
+                <div class="col-md-12 mb-0 aligh-items-center d-flex">
+                    <div class="d-flex col-10 align-items-center">
+                        <p class="w-100">
+                            <a
+                            href="${'/profile/' + res.data.comment.user_id}"
+                            class="text-decoration-none text-dark user-name-btn"
+                            type="button">
+                                <b>${res.data.user_name}</b>
+                            </a>
+                            ${commentText}
+                        </p>
+                    </div>
 
-                <div class="col-2 d-flex align-items-start justify-content-end">
-                    <a type="button" 
-                    class="comment-like post-comment-like-${res.data.comment.id
-                    } m-2" 
-                    id="${random}"
-                    data-bs-postCommment="${res.data.comment.id}"
-                    data-bs-postId="${res.data.comment.post_id}">
-                        <img src="/images/heart2.png" />
-                    </a>
-                </div>
-
-              </div> 
+                    <div class="col-2 d-flex align-items-start justify-content-end">
+                        <a type="button" 
+                        class="comment-like post-comment-like-${res.data.comment.id
+                        } m-2" 
+                        id="${random}"
+                        data-bs-postCommment="${res.data.comment.id}"
+                        data-bs-postId="${res.data.comment.post_id}">
+                            <img src="/images/heart2.png" />
+                        </a>
+                    </div>
+               </div> 
           `
 
                 let postContainer = document.getElementById(`post-${postId}`)
@@ -774,8 +781,8 @@ commentButton.forEach(btn => {
             allComentsData.forEach(comment => {
                 let allComents = `
                     <div class="comment-div-${comment.id
-                    } col-md-12 mb-0 aligh-items-center d-flex">
-                        <div class="d-flex col-10 align-items-center p-0 comments-modal">   
+                    } col-md-10 mb-0 aligh-items-center d-flex">
+                        <div class="d-flex col-12 align-items-center p-0 w-100 comments-modal">   
                                 <div class="col-2 d-flex pt-2 justify-content-start align-items-center">
                                     <div class="avatar-container position-relative">
                                         <img src="${comment.user.image}"
@@ -784,17 +791,16 @@ commentButton.forEach(btn => {
                                     </div>
                                 </div>
 
-                                <div>
-                                    <p class="m-0">
-                                        <a
-                                        href="${'/profile/' + comment.user.id}"
-                                        class=" text-decoration-none text-dark"
-                                        type="button">
-                                            <b>${comment.user.name}</b>
-                                        </a>
-                                        ${comment.comment_text}
-                                    </p>
-
+                                <div class="d-flex col-10 flex-column">
+                                        <p class="m-0" style="word-wrap: break-word;">
+                                            <a
+                                            href="${'/profile/' + comment.user.id}"
+                                            class=" text-decoration-none w-100 text-dark"
+                                            type="button">
+                                                <b>${comment.user.name}</b>
+                                            </a>
+                                            ${comment.comment_text}
+                                        </p>
                                     <div class="d-flex">
                                         <p class="m-0 text-secondary comment-time"></p>
 
@@ -802,16 +808,13 @@ commentButton.forEach(btn => {
                                             <h6 class="m-0 mx-2 text-secondary text-decoration-underline commentLikedBy">
                                                 <i>Liked By</i>
                                             </h6>
-                                            <div class="allCommentLikesUsers allCommentLikesUsers-${comment.id
-                    }">
+                                            <div class="allCommentLikesUsers allCommentLikesUsers-${comment.id}">
                                                 <h4 class="m-0 text-center text-secondary"><i>Likes</i></h4>
                                                 <hr>
                                             </div>
                                         </div>
 
-                                        ${res.data.logged_user ==
-                        comment.user_id
-                        ? `
+                                        ${res.data.logged_user ==comment.user_id ? `
                                         <div class="comment-delete">
                                             <a type="button" class="comment-delete-btn" data-comment-id="${comment.id}">
                                                 <h6 class="m-0 text-danger mx-2 text-secondary text-decoration-underline">
@@ -819,9 +822,7 @@ commentButton.forEach(btn => {
                                                 </h6>
                                             </a>
                                         </div>
-                                        `
-                        : ''
-                    }
+                                        ` : '' }
 
 
                                     </div>
@@ -1245,9 +1246,9 @@ function othersLikesModal(postId) {
                     <div class="col-11 d-flex align-items-center justify-content-center">
                         <p class="m-0"><b>Likes</b></p>
                     </div>
-                    <button type="button" class="close c-btn border-0 bg-white" id="close-${postId}">
-                    <h3 aria-hidden="true" class="m-0">&times;</h3>
-                </button>
+                    <button type="button" class="close other-close-btn border-0 bg-white" id="close-${postId}">
+                        <h3 aria-hidden="true" class="m-0">&times;</h3>
+                    </button>
                 </div>
                 <hr class="m-0">
                 <div class="modal-body p-0 d-flex justify-content-center flex-column">
@@ -1260,24 +1261,28 @@ function othersLikesModal(postId) {
             </div>
         </div>
         `
-        $(document).ready(function () {
-            $(`.c-btn`).on('click', function (e) {
-                var $modal = $('#postOthersLikesAlert')
-                $modal.remove()
-            })
-        })
+        let other_close_btn = document.querySelector(".other-close-btn");
+        let others_likes_modal = document.querySelector(".others-likes-modal");
+        other_close_btn.addEventListener("click", function () {
+            // console.log(others_likes_modal);
+            others_likes_modal.classList.remove("show");
+            others_likes_modal.setAttribute("aria-hidden", "true");
+            others_likes_modal.setAttribute("style", "display: none");
+            let backDrow = document.querySelector(".modal-backdrop")
+            if(backDrow) backDrow.classList.remove("modal-backdrop");
+        });
 
-        othersModalMainDiv.classList.toggle('show')
-        othersModalMainDiv.setAttribute(
-            'aria-hidden',
-            othersModalMainDiv.classList.contains('show') ? 'false' : 'true'
-        )
-        othersModalMainDiv.setAttribute(
-            'style',
-            othersModalMainDiv.classList.contains('show')
-                ? 'display: block'
-                : 'display: none'
-        )
+        others_likes_modal.classList.toggle("show");
+        others_likes_modal.setAttribute(
+            "aria-hidden",
+            others_likes_modal.classList.contains("show") ? "false" : "true"
+        );
+        others_likes_modal.setAttribute(
+            "style",
+            others_likes_modal.classList.contains("show")
+                ? "display: block"
+                : "display: none"
+        );
 
         let likes_div = document.querySelector('.vertical-menu')
         likes.forEach(myLike => {

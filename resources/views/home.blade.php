@@ -346,7 +346,7 @@
                                         @if ($post->id == $comment->post_id && $comment->user_id == Auth::id())  
                                             <div class="col-md-12 mb-0 aligh-items-center d-flex justify-content-between user-comment-{{ $comment->id }}">
                                                 <div class="d-flex col-10 align-items-center">
-                                                        <p>
+                                                        <p class="w-100">
                                                             <a 
                                                             href="{{ url('profile/' . $post->user->id) }}" 
                                                             class="text-decoration-none text-dark user-name-btn"
@@ -399,7 +399,7 @@
                     </div>
                     <div class="row d-flex align-item-center">
                         <div class="col-10 d-flex">
-                            <input type="text" name="comment" data-bs-comment="{{ $post->id }}" placeholder="Add a comment..."
+                            <input type="text" name="comment" data-bs-comment="{{ $post->id }}" id="text-post-{{ $post->id }}" placeholder="Add a comment..."
                                 class="comment-txt w-100 fs-6">
                         </div>
                         <div class="col-2 d-flex align-items-center">
@@ -419,7 +419,7 @@
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="btn-emotion">
                                     <div class="container">
-                                        <ul class="list-inline emotion-list scrollable-menu ">
+                                        <ul class="list-inline emotion-list scrollable-menu" data-bs-emoo="{{ $post->id }}" id="emoji-{{ $post->id }}">
                                             <li class="list-inline-item">😍</li>
                                             <li class="list-inline-item">😂</li>
                                             <li class="list-inline-item">😢</li>
