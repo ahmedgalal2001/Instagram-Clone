@@ -5,10 +5,13 @@ This project is a PHP-based Instagram clone built using the Laravel framework. I
 ## Features
 
 - User authentication system
-- Photo uploading and sharing
+- Real time Instagram
+- Photo and video uploading and sharing
 - Follow/unfollow users
 - Like and comment on posts
 - Explore feed
+- search on users or hashtags
+- Notification
 
 ## Installation
 
@@ -24,7 +27,9 @@ This project is a PHP-based Instagram clone built using the Laravel framework. I
 
 - PHP
 - Laravel framework
-- MySQL (or any compatible database)
+- Cloudinary
+- Axios
+- MySQL
 
 ## Contributors
 
@@ -35,10 +40,6 @@ This project is a PHP-based Instagram clone built using the Laravel framework. I
 - [Mohamed Torkey](https://github.com/mohamedtorkey20)
 - [Ahmad Mansour](https://github.com/Ahmed10257)
 
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).
 
 ## Disclaimer
 
