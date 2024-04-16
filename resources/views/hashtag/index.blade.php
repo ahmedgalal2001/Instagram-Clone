@@ -54,9 +54,9 @@
                 <a post-id="{{$post->id}}" type="button" class="post custom-link" >
                     <div class="container-article">
                         @if ($post->video == 0)
-                        <img src="{{$post->image_url}}" alt="post title" height="100px" width="100px" class="image" />
+                        <img src="{{$post->image_url}}" alt="post title" class="image w-100 h-100" />
                     @else
-                        <video controls src="{{$post->image_url }}" class="img-fluid"></video>
+                        <video controls src="{{$post->image_url }}" class=" w-100 h-100"></video>
                     @endif
                         <div class="overlay d-flex justify-content-center align-items-center">
                             <i class="fa-solid fa-heart text-white fs-5"></i>

@@ -208,6 +208,7 @@ class PostsController extends Controller
         //
     }
 
+    
     /**
      * Update the specified resource in storage.
      */
@@ -216,7 +217,7 @@ class PostsController extends Controller
         //
     }
 
-        /**
+    /**
      * get posts.
      */
     public function emoji()
@@ -230,7 +231,6 @@ class PostsController extends Controller
             'followingPosts' => $followingPosts,
         ]);
     }
-
 
     /**
      * Remove the specified resource from storage.

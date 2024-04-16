@@ -20,7 +20,7 @@ class HomeController extends Controller
         $loggedInUser = Auth::user();
         $suggestedUsers = User::withCount('posts')->with('savedposts')->take(8)->get();
 
-        $threePosts = User::with('posts')->take(3)->get();
+        $threePosts = User::with('posts')->get();
 
         //dd($threePosts);
             

@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 axios.get('/posts').then(res => {
     res.data.followingPosts.forEach(post => {
         // Assuming each post has a unique identifier like post.id
-        $(document).on("click", `#emoji-${post.id} .list-inline-item`, function (e) {
+        $(`.list-inline-item-${post.id}`).on("click", function (e) {
             e.stopPropagation();
             var words = $(`#text-post-${post.id}`).val();
             $(`#text-post-${post.id}`).val(words + $(this).text());
@@ -57,6 +57,7 @@ axios.get('/posts').then(res => {
         });
     });
 });
+
 
 
 

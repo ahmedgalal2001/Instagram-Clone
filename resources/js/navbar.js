@@ -30,7 +30,7 @@ btn_upload_file.style.display = "none";
 
 //#region to run run time Follow and likes between users
 
-
+Pusher.logToConsole = true;
 var pusher = new Pusher('b53520335d672170ed06', {
     cluster: 'eu'
 });
